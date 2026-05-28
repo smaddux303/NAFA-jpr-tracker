@@ -187,14 +187,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
   display: none; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--white); border-radius: var(--radius) var(--radius) 0 0; width: 100%;
-  max-width: 680px; max-height: 90vh; overflow-y: auto;
+  max-width: 680px; max-height: 75vh; overflow-y: auto;
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
-.modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
-.modal-header { padding: 0.9rem 1.2rem 0.5rem; display: flex; align-items: center; justify-content: space-between; }
-.modal-title  { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--ash); line-height: 1; }
-.modal-close  { background: var(--paper); border: 1px solid var(--border); border-radius: 6px;
-  font-size: 16px; padding: 4px 10px; cursor: pointer; color: var(--smoke); }
-.modal-body   { padding: 0 1.2rem 1.2rem; }
+.modal-nav { display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding: 0.8rem 1.2rem 0.8rem; border-bottom: 1px solid var(--border);
+  background: var(--white); position: sticky; top: 0; z-index: 10; }
+.modal-nav-btn { background: var(--paper); border: 1px solid var(--border); border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--smoke);
+  padding: 9px 16px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.modal-nav-btn.primary { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.modal-nav-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--ash);
+  text-align: center; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── BACK BUTTON ── */
 .back-btn { background: none; border: none; color: var(--smoke); font-size: 13px; font-weight: 600;
@@ -256,28 +259,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modal-inner">
-    <div class="modal-handle"></div>
-    <!-- NAV ROW -->
-    <div style="display:flex;align-items:center;justify-content:space-between;
-      padding:0.8rem 1.2rem 0.4rem;gap:10px;border-bottom:1px solid var(--border)">
-      <button onclick="closeModal()"
-        style="background:var(--paper);border:1px solid var(--border);border-radius:8px;
-        font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--smoke);
-        padding:8px 14px;cursor:pointer;white-space:nowrap">
-        ✕ Close
-      </button>
-      <div class="modal-title" id="modal-title"
-        style="font-size:1.1rem;text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-        Detail
-      </div>
-      <button onclick="closeModal();showTab('roster')"
-        style="background:var(--navy);border:none;border-radius:8px;
-        font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--white);
-        padding:8px 14px;cursor:pointer;white-space:nowrap">
-        🏠 Home
-      </button>
+    <div class="modal-nav" id="modal-nav">
+      <button class="modal-nav-btn" onclick="closeModal()">✕ Close</button>
+      <div class="modal-nav-title" id="modal-title">Detail</div>
+      <button class="modal-nav-btn primary" onclick="closeModal();showTab('roster')">🏠 Home</button>
     </div>
-    <div class="modal-body" style="padding:1rem 1.2rem 1.2rem" id="modal-body"></div>
+    <div style="padding:1rem 1.2rem 1.2rem" id="modal-body"></div>
   </div>
 </div>
 
@@ -1006,16 +993,15 @@ function renderSetup() {
       ${S.candidates.map(c=>{
         const sq = S.squads.find(s=>s.id===c.squad_id);
         return `
-        <div class="setup-item">
+        <div class="setup-item" onclick="openManageCandidate('${c.id}')" style="cursor:pointer">
           <div style="flex:1;min-width:0">
             <div class="setup-item-name">${c.name}</div>
-            <div class="setup-item-sub">${sq?sq.name+' · ':''}${c.agency||''}</div>
+            <div class="setup-item-sub">
+              ${sq?`<span class="squad-badge" style="font-size:9px;padding:1px 5px">${sq.name}</span> `:'<span style="color:var(--mist)">No squad</span> '}
+              ${c.agency?'· '+c.agency:''}
+            </div>
           </div>
-          <div class="setup-item-actions">
-            <button class="action-btn" onclick="openReassignSquad('${c.id}','${c.name.replace(/'/g,"\\'")}')">Squad</button>
-            <button class="action-btn" onclick="openEditCandidate('${c.id}')">Edit</button>
-            <button class="action-btn danger" onclick="confirmRemoveCandidate('${c.id}','${c.name.replace(/'/g,"\\'")}');document.getElementById('modal-overlay').classList.add('open')">Remove</button>
-          </div>
+          <span style="color:var(--mist);font-size:18px;flex-shrink:0">›</span>
         </div>`;
       }).join('')}
     </div>
@@ -1158,9 +1144,41 @@ async function addCandidate() {
   } catch(e) { showToast('⚠️ '+e.message); }
 }
 
+function openManageCandidate(id) {
+  const c  = S.candidates.find(x=>x.id===id);
+  if (!c) return;
+  const sq = S.squads.find(s=>s.id===c.squad_id);
+  document.getElementById('modal-title').textContent = c.name;
+  document.getElementById('modal-body').innerHTML = `
+    <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem">
+      <div style="font-size:12px;color:var(--smoke)">
+        <strong>Squad:</strong> ${sq?sq.name:'Not assigned'}<br>
+        ${c.agency?`<strong>Agency:</strong> ${c.agency}`:''}
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-navy" onclick="openReassignSquad('${id}','${c.name.replace(/'/g,"\\'")}')">
+        👥 Reassign Squad
+      </button>
+      <button class="btn btn-outline" style="color:var(--ash);border-color:var(--border)" onclick="openEditCandidate('${id}')">
+        ✏️ Edit Name / Agency
+      </button>
+      <button class="btn btn-danger" style="margin-top:0.5rem" onclick="confirmRemoveCandidate('${id}','${c.name.replace(/'/g,"\\'")}')">
+        🗑 Remove Candidate
+      </button>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
 function openReassignSquad(cid, name) {
   document.getElementById('modal-title').textContent = 'Reassign Squad';
   document.getElementById('modal-body').innerHTML = `
+    <button onclick="openManageCandidate('${cid}')"
+      style="width:100%;background:var(--paper);border:1px solid var(--border);border-radius:8px;
+      padding:10px;margin-bottom:1rem;font-size:13px;font-weight:600;color:var(--navy);
+      font-family:'DM Sans',sans-serif;cursor:pointer">
+      ‹ Back to ${name}
+    </button>
     <p style="font-size:14px;margin-bottom:1rem">Move <strong>${name}</strong> to a different squad.</p>
     <div class="field">
       <label class="field-label">Squad</label>
@@ -1169,10 +1187,7 @@ function openReassignSquad(cid, name) {
         ${S.squads.map(sq=>`<option value="${sq.id}">${sq.name}</option>`).join('')}
       </select>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.5rem">
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-navy" onclick="saveReassignSquad('${cid}')">Save</button>
-    </div>`;
+    <button class="btn btn-navy" style="margin-top:0.5rem" onclick="saveReassignSquad('${cid}')">Save</button>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
 
@@ -1185,8 +1200,8 @@ async function saveReassignSquad(cid) {
       S.candidates[idx].squad_id = squadId;
       S.candidates[idx].squads   = S.squads.find(s=>s.id===squadId)||null;
     }
-    closeModal();
     showToast('✅ Squad updated');
+    openManageCandidate(cid);
     renderSetup();
   } catch(e) { showToast('⚠️ '+e.message); }
 }
