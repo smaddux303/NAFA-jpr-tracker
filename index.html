@@ -247,7 +247,10 @@ const SUPA_KEY = 'sb_publishable_E6ng6c46FUTYCsIzMQ2RHQ_S7X6LDG-';
 const HEADERS  = { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` };
 
 async function sb(path, method='GET', body=null) {
-  const opts = { method, headers: HEADERS };
+  const headers = { ...HEADERS };
+  if (method === 'POST')  headers['Prefer'] = 'return=representation';
+  if (method === 'PATCH') headers['Prefer'] = 'return=representation';
+  const opts = { method, headers };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, opts);
   if (!res.ok) { const err = await res.text(); throw new Error(err); }
@@ -716,7 +719,7 @@ async function logAttemptFromHistory(cid, jprCode, passed) {
   const notes      = document.getElementById('hist-notes')?.value.trim() || '';
   if (instructor) localStorage.setItem('nafa_instructor', instructor);
   try {
-    const result = await sb('attempts?select=*', 'POST', { candidate_id: cid, jpr_code: jprCode, passed, instructor, notes });
+    const result = await sb('attempts', 'POST', { candidate_id: cid, jpr_code: jprCode, passed, instructor, notes });
     const newAttempt = Array.isArray(result) ? result[0] : result;
     if (newAttempt) state.attempts.unshift(newAttempt);
     await refreshAttempts();
@@ -941,9 +944,13 @@ async function createClass() {
   if (!name) { showToast('Class name is required'); return; }
   if (!state.academyId) { showToast('Academy not found'); return; }
   try {
-    const result = await sb('classes?select=*', 'POST', {
-      academy_id: state.academyId, name, start_date: startDate || null,
-      certification_track: 'FF1', active_jprs: JPRS.map(j => j.code), active: true
+    const result = await sb('classes', 'POST', {
+      academy_id: state.academyId,
+      name,
+      start_date: startDate || null,
+      certification_track: 'FF1',
+      active_jprs: JPRS.map(j => j.code),
+      active: true
     });
     const newClass = Array.isArray(result) ? result[0] : result;
     if (newClass) {
@@ -979,7 +986,7 @@ async function addCandidate() {
     showToast('Candidate already exists'); return;
   }
   try {
-    const result = await sb('candidates?select=*', 'POST', { class_id: state.activeClass.id, name, agency });
+    const result = await sb('candidates', 'POST', { class_id: state.activeClass.id, name, agency });
     const newCand = Array.isArray(result) ? result[0] : result;
     if (newCand) {
       state.candidates.push(newCand);
