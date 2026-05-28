@@ -258,8 +258,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
   <div class="modal" id="modal-inner">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <div class="modal-title" id="modal-title">Detail</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+        <button class="modal-close" onclick="closeModal()" title="Close">✕</button>
+        <div class="modal-title" id="modal-title" style="font-size:1.2rem">Detail</div>
+      </div>
+      <button onclick="closeModal();showTab('roster')"
+        style="background:rgba(26,26,46,0.08);border:1px solid var(--border);border-radius:6px;
+        font-size:12px;font-weight:600;padding:5px 10px;cursor:pointer;color:var(--navy);
+        font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0">
+        🏠 Home
+      </button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
@@ -735,7 +743,12 @@ function openJprHistory(cid, jprCode) {
 
   document.getElementById('modal-title').textContent = jprCode;
   document.getElementById('modal-body').innerHTML = `
-    <button class="back-btn" onclick="openCandidateModal('${cid}')">‹ Back to ${c.name}</button>
+    <button class="back-btn" onclick="openCandidateModal('${cid}')"
+      style="background:var(--paper);border:1px solid var(--border);border-radius:8px;
+      padding:8px 14px;margin-bottom:1rem;font-size:13px;font-weight:600;
+      color:var(--navy);display:flex;align-items:center;gap:6px">
+      ‹ Back to ${c.name}
+    </button>
 
     <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem">
       <div style="font-size:13px;font-weight:600;color:var(--ash);margin-bottom:2px">${jpr.name}</div>
@@ -1010,9 +1023,16 @@ function renderSetup() {
         Select which JPRs will appear in the Field and Grid tabs for this class. Deselect any that aren't being trained yet.
       </p>
       <div style="display:flex;gap:8px;margin-bottom:0.8rem;flex-wrap:wrap">
-        <button class="btn btn-sm btn-navy"    onclick="selectAllJprs()">Select All</button>
-        <button class="btn btn-sm btn-outline" onclick="selectMandatory()">Mandatory Only</button>
-        <button class="btn btn-sm btn-outline" onclick="clearAllJprs()">Clear All</button>
+        ${(()=>{
+          const all  = activeJprCodes.length === JPRS.length;
+          const mand = !all && activeJprCodes.length === JPRS.filter(j=>j.mandatory).length &&
+                       JPRS.filter(j=>j.mandatory).every(j=>activeJprCodes.includes(j.code));
+          const none = activeJprCodes.length === 0;
+          return `
+          <button class="btn btn-sm ${all?'btn-navy':'btn-outline'}"    onclick="selectAllJprs()">Select All</button>
+          <button class="btn btn-sm ${mand?'btn-navy':'btn-outline'}"   onclick="selectMandatory()">Mandatory Only</button>
+          <button class="btn btn-sm ${none?'btn-navy':'btn-outline'}"   onclick="clearAllJprs()">Clear All</button>`;
+        })()}
       </div>
       <div>${jprChecklistHTML}</div>
     </div>
