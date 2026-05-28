@@ -17,9 +17,9 @@
   --ash: #2C2C2A; --smoke: #5F5E5A; --mist: #B4B2A9;
   --paper: #F4F3EF; --white: #FFFFFF; --border: rgba(44,44,42,0.12); --radius: 12px;
   --navy: #1A1A2E; --gold: #E8B84B;
-  --pass: #2E7D32; --pass-pale: #E8F5E9;
-  --fail: #C62828; --fail-pale: #FFEBEE;
-  --warn: #E65100; --warn-pale: #FFF3E0;
+  --good: #2E7D32; --good-pale: #E8F5E9;
+  --warn: #C62828; --warn-pale: #FFEBEE;
+  --info: #1565C0; --info-pale: #E3F2FD;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
@@ -36,8 +36,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 .class-pill { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 4px 12px;
   font-size: 11px; font-weight: 600; color: var(--gold); cursor: pointer;
   white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; border: none; }
-
-/* ── TAB BAR ── */
 .tab-bar { display: flex; border-top: 1px solid rgba(255,255,255,0.08); }
 .tab-btn { flex: 1; padding: 9px 0; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.4);
@@ -47,7 +45,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 /* ── SCREENS ── */
 .screen { display: none; padding: 1rem; max-width: 680px; margin: 0 auto; }
 .screen.active { display: block; }
-.screen-top { height: 0.8rem; }
 
 /* ── CARDS ── */
 .card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 1rem; overflow: hidden; }
@@ -61,7 +58,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 .field:last-child { margin-bottom: 0; }
 .field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
   color: var(--smoke); margin-bottom: 5px; display: block; }
-.field-label .req { color: var(--fail); }
+.req { color: var(--warn); }
 .field-input, .field-select, .field-textarea {
   width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
   background: var(--paper); color: var(--ash); font-family: 'DM Sans', sans-serif; font-size: 15px;
@@ -71,39 +68,79 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 .field-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235F5E5A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
 .field-textarea { resize: none; min-height: 70px; font-size: 14px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ── BUTTONS ── */
 .btn { width: 100%; padding: 13px; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; letter-spacing: 0.02em; }
+  font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
 .btn:active { opacity: 0.8; }
 .btn-navy   { background: var(--navy); color: var(--white); }
 .btn-gold   { background: var(--gold); color: var(--navy); }
-.btn-danger { background: none; border: 1px solid rgba(198,40,40,0.3); color: var(--fail); font-size: 13px; padding: 10px; }
+.btn-good   { background: var(--good); color: var(--white); }
+.btn-danger { background: none; border: 1px solid rgba(198,40,40,0.3); color: var(--warn); font-size: 13px; padding: 10px; }
 .btn-sm     { padding: 7px 14px; font-size: 12px; width: auto; border-radius: 8px; }
 .btn-outline { background: none; border: 1px solid var(--border); color: var(--smoke); font-size: 13px; padding: 8px 14px; width: auto; border-radius: 8px; }
 
-/* ── ATTEMPT BUTTONS ── */
-.attempt-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0.8rem; }
-.attempt-btn { padding: 20px 10px; border: 2px solid; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
-  font-size: 17px; font-weight: 700; cursor: pointer; background: none; transition: all 0.15s; }
-.attempt-btn.pass { border-color: var(--pass); color: var(--pass); }
-.attempt-btn.pass:active { background: var(--pass); color: var(--white); }
-.attempt-btn.fail { border-color: var(--fail); color: var(--fail); }
-.attempt-btn.fail:active { background: var(--fail); color: var(--white); }
+/* ── LOCKED JPR BANNER ── */
+.locked-jpr { background: var(--navy); border-radius: var(--radius); padding: 0.9rem 1rem;
+  margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.locked-jpr-left {}
+.locked-jpr-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+.locked-jpr-code  { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--gold); line-height: 1; }
+.locked-jpr-name  { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.locked-jpr-change { background: rgba(255,255,255,0.1); border: none; border-radius: 8px;
+  color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+  padding: 6px 12px; cursor: pointer; flex-shrink: 0; }
 
-/* ── RECRUIT LIST ── */
-.recruit-list { display: flex; flex-direction: column; gap: 8px; }
-.recruit-row { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
+/* ── REP COUNTER ── */
+.rep-counter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+.rep-box { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 0.8rem; text-align: center; }
+.rep-box-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--smoke); margin-bottom: 8px; }
+.rep-box-controls { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.rep-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border);
+  background: var(--paper); font-size: 20px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+  color: var(--ash); transition: all 0.15s; }
+.rep-btn:active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.rep-value { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--ash); line-height: 1; min-width: 40px; }
+.rep-box.success .rep-btn:active { background: var(--good); border-color: var(--good); }
+.rep-box.success .rep-value { color: var(--good); }
+
+/* ── LOG BTN ── */
+.log-session-btn { width: 100%; padding: 16px; background: var(--good); color: var(--white);
+  border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
+  font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1rem; }
+.log-session-btn:active { opacity: 0.8; }
+
+/* ── RECENT LOG ── */
+.section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--smoke); font-weight: 600; margin-bottom: 0.7rem; }
+.log-list { display: flex; flex-direction: column; gap: 8px; }
+.log-item { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 0.75rem 1rem; display: flex; align-items: center; gap: 10px; }
+.log-bar { width: 4px; border-radius: 2px; align-self: stretch; flex-shrink: 0; }
+.log-text { flex: 1; font-size: 13px; line-height: 1.5; min-width: 0; }
+.log-time { font-size: 11px; color: var(--smoke); flex-shrink: 0; }
+.log-del  { background: none; border: none; font-size: 16px; color: var(--mist); cursor: pointer; padding: 2px 4px; flex-shrink: 0; }
+.log-del:active { color: var(--warn); }
+
+/* ── STAT CHIPS ── */
+.stat-chip { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; display: inline-block; }
+.chip-good { background: var(--good-pale); color: var(--good); }
+.chip-warn { background: var(--warn-pale); color: var(--warn); }
+.chip-info { background: var(--info-pale); color: var(--info); }
+.chip-mist { background: #F0EFE9; color: var(--smoke); }
+
+/* ── CANDIDATE LIST ── */
+.candidate-list { display: flex; flex-direction: column; gap: 8px; }
+.candidate-row { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
   padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between;
   gap: 10px; cursor: pointer; transition: border-color 0.15s; }
-.recruit-row:active { border-color: var(--gold); }
-.recruit-name { font-weight: 700; font-size: 14px; }
-.recruit-agency { font-size: 11px; color: var(--smoke); margin-top: 1px; }
-.recruit-progress { height: 4px; border-radius: 2px; background: var(--border); margin-top: 7px; overflow: hidden; }
-.recruit-progress-fill { height: 100%; border-radius: 2px; background: var(--pass); transition: width 0.4s; }
-.stat-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
-.badge-pass { background: var(--pass-pale); color: var(--pass); }
-.badge-fail { background: var(--fail-pale); color: var(--fail); }
-.badge-warn { background: var(--warn-pale); color: var(--warn); }
-.badge-pct  { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--ash); }
+.candidate-row:active { border-color: var(--gold); }
+.candidate-name   { font-weight: 700; font-size: 14px; }
+.candidate-meta   { font-size: 11px; color: var(--smoke); margin-top: 2px; }
+.candidate-stats  { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
 
 /* ── GRID ── */
 .grid-scroll { overflow-x: auto; margin-bottom: 1rem; border-radius: var(--radius); border: 1px solid var(--border); }
@@ -111,39 +148,28 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 .jpr-grid th { background: var(--navy); color: rgba(255,255,255,0.7); padding: 6px 8px;
   font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; white-space: nowrap; }
 .jpr-grid th.sticky-col { text-align: left; min-width: 120px; position: sticky; left: 0; z-index: 2; }
-.jpr-grid th.jpr-col { min-width: 52px; text-align: center; }
-.jpr-grid td { padding: 6px 4px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.jpr-grid th.jpr-col { min-width: 60px; text-align: center; }
+.jpr-grid td { padding: 5px 4px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .jpr-grid td.sticky-col { font-weight: 600; font-size: 12px; background: var(--white);
-  position: sticky; left: 0; z-index: 1; white-space: nowrap; padding: 6px 8px; }
+  position: sticky; left: 0; z-index: 1; white-space: nowrap; padding: 5px 8px; }
 .jpr-grid tr:nth-child(even) td { background: #FAFAF8; }
 .jpr-grid tr:nth-child(even) td.sticky-col { background: #FAFAF8; }
-.jpr-dot { display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 26px; border-radius: 5px; font-size: 11px; font-weight: 700; margin: 0 auto; }
-.dot-pass    { background: var(--pass-pale); color: var(--pass); }
-.dot-fail    { background: var(--fail-pale);  color: var(--fail); }
-.dot-none    { background: #F0EFE9; color: var(--mist); }
-.jpr-cell { text-align: center; }
+.jpr-cell-inner { display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 34px; padding: 2px; }
+.jpr-reps { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; line-height: 1; }
+.jpr-success { font-size: 9px; color: var(--smoke); }
 
-/* ── RECENT LOG ── */
-.log-list { display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; }
-.log-item { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
-  padding: 0.7rem 1rem; display: flex; align-items: center; gap: 10px; }
-.log-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.log-dot.pass { background: var(--pass); }
-.log-dot.fail { background: var(--fail); }
-.log-text { flex: 1; font-size: 13px; line-height: 1.4; }
-.log-time { font-size: 11px; color: var(--smoke); flex-shrink: 0; }
-.log-del  { background: none; border: none; font-size: 16px; color: var(--mist); cursor: pointer; padding: 2px 4px; flex-shrink: 0; }
-.log-del:active { color: var(--fail); }
-
-/* ── STAT ROW ── */
-.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
-.stat-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 0.85rem; text-align: center; }
-.stat-num   { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; line-height: 1; color: var(--navy); }
-.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--smoke); margin-top: 2px; }
-
-/* ── SECTION LABEL ── */
-.section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--smoke); font-weight: 600; margin-bottom: 0.7rem; }
+/* ── SETUP ITEMS ── */
+.setup-item { display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 10px; border-bottom: 1px solid var(--border); gap: 8px; }
+.setup-item:last-child { border-bottom: none; }
+.setup-item-name { font-weight: 600; font-size: 13px; }
+.setup-item-sub  { font-size: 11px; color: var(--smoke); margin-top: 1px; }
+.setup-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.action-btn { background: var(--paper); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--smoke); font-size: 12px; padding: 4px 10px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+.action-btn.danger { background: var(--warn-pale); border-color: rgba(198,40,40,0.2); color: var(--warn); }
 
 /* ── JPR CHECKLIST ── */
 .jpr-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
@@ -154,40 +180,39 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 .jpr-check-label { font-size: 13px; line-height: 1.3; }
 .jpr-code-badge { font-weight: 700; color: var(--navy); font-size: 11px; display: block; margin-bottom: 1px; }
 .mandatory-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  background: var(--fail-pale); color: var(--fail); padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+  background: var(--warn-pale); color: var(--warn); padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
 
 /* ── MODAL ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200;
   display: none; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--white); border-radius: var(--radius) var(--radius) 0 0; width: 100%;
-  max-width: 680px; max-height: 88vh; overflow-y: auto;
+  max-width: 680px; max-height: 90vh; overflow-y: auto;
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
 .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
 .modal-header { padding: 0.9rem 1.2rem 0.5rem; display: flex; align-items: center; justify-content: space-between; }
-.modal-title  { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--ash); line-height: 1; }
+.modal-title  { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--ash); line-height: 1; }
 .modal-close  { background: var(--paper); border: 1px solid var(--border); border-radius: 6px;
   font-size: 16px; padding: 4px 10px; cursor: pointer; color: var(--smoke); }
 .modal-body   { padding: 0 1.2rem 1.2rem; }
-.modal-jpr-row { background: var(--paper); border-radius: 8px; padding: 8px 10px;
-  display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
-.modal-jpr-name { font-size: 12px; flex: 1; line-height: 1.3; }
-.modal-jpr-code { font-size: 10px; font-weight: 700; color: var(--navy); display: block; margin-bottom: 1px; }
-.modal-stats { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
 
-/* ── EMPTY / LOADING ── */
-.empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--smoke); font-size: 14px; }
+/* ── BACK BUTTON ── */
+.back-btn { background: none; border: none; color: var(--smoke); font-size: 13px; font-weight: 600;
+  cursor: pointer; padding: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 4px;
+  font-family: 'DM Sans', sans-serif; }
+.back-btn:active { color: var(--navy); }
+
+/* ── NO CLASS / EMPTY ── */
+.no-class { background: var(--white); border-radius: var(--radius); border: 2px dashed var(--border);
+  padding: 2rem; text-align: center; margin: 0.5rem 0 1rem; }
+.no-class-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.no-class-text { font-size: 14px; color: var(--smoke); margin-bottom: 1rem; line-height: 1.5; }
+.empty-state { text-align: center; padding: 2rem 1rem; color: var(--smoke); font-size: 14px; }
 .empty-icon  { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .spinner-wrap { text-align: center; padding: 2.5rem; }
 .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--gold);
   border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── NO CLASS ── */
-.no-class { background: var(--white); border-radius: var(--radius); border: 2px dashed var(--border);
-  padding: 2rem; text-align: center; margin: 0.5rem 0 1rem; }
-.no-class-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.no-class-text { font-size: 14px; color: var(--smoke); margin-bottom: 1rem; line-height: 1.5; }
 
 /* ── TOAST ── */
 .toast { position: fixed; bottom: calc(84px + env(safe-area-inset-bottom)); left: 50%;
@@ -197,8 +222,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ── INFO NOTE ── */
-.info-note { background: #E3F2FD; border: 1px solid rgba(21,101,192,0.2); border-radius: var(--radius);
+.info-note { background: var(--info-pale); border: 1px solid rgba(21,101,192,0.2); border-radius: var(--radius);
   padding: 0.8rem 1rem; font-size: 12px; color: #0D47A1; line-height: 1.5; margin-bottom: 1rem; }
+
+/* ── SQUAD BADGE ── */
+.squad-badge { display: inline-block; background: var(--navy); color: var(--gold);
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -213,20 +242,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
   </div>
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-field"    onclick="showTab('field')">📋 Field</button>
-    <button class="tab-btn"        id="tab-recruits" onclick="showTab('recruits')">👤 Recruits</button>
+    <button class="tab-btn"        id="tab-roster"   onclick="showTab('roster')">👤 Roster</button>
     <button class="tab-btn"        id="tab-grid"     onclick="showTab('grid')">📊 Grid</button>
     <button class="tab-btn"        id="tab-setup"    onclick="showTab('setup')">⚙️ Setup</button>
   </div>
 </div>
 
-<div class="screen active" id="screen-field"><div class="screen-top"></div><div id="field-content"></div></div>
-<div class="screen"        id="screen-recruits"><div class="screen-top"></div><div id="recruits-content"></div></div>
-<div class="screen"        id="screen-grid"><div class="screen-top"></div><div id="grid-content"></div></div>
-<div class="screen"        id="screen-setup"><div class="screen-top"></div><div id="setup-content"></div></div>
+<div class="screen active" id="screen-field" ><div style="height:0.8rem"></div><div id="field-content" ></div></div>
+<div class="screen"        id="screen-roster"><div style="height:0.8rem"></div><div id="roster-content"></div></div>
+<div class="screen"        id="screen-grid"  ><div style="height:0.8rem"></div><div id="grid-content"  ></div></div>
+<div class="screen"        id="screen-setup" ><div style="height:0.8rem"></div><div id="setup-content" ></div></div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal">
+  <div class="modal" id="modal-inner">
     <div class="modal-handle"></div>
     <div class="modal-header">
       <div class="modal-title" id="modal-title">Detail</div>
@@ -240,85 +269,81 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 
 <script>
 // ══════════════════════════════════════════════
-// SUPABASE CONFIG
+// CONFIG
 // ══════════════════════════════════════════════
 const SUPA_URL = 'https://gjtqxswaosbmsykqcmdf.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqdHF4c3dhb3NibXN5a3FjbWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NjYzNTcsImV4cCI6MjA5NTU0MjM1N30.yl7Yy0xxFibHCl-HA2VoZwXwJPeh6KJkeQjJ6Lui-ho';
-const HEADERS  = { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` };
+const HDR = { 'Content-Type':'application/json', 'apikey':SUPA_KEY, 'Authorization':`Bearer ${SUPA_KEY}` };
 
 async function sb(path, method='GET', body=null) {
-  const headers = { ...HEADERS };
-  if (method === 'POST')  headers['Prefer'] = 'return=representation';
-  if (method === 'PATCH') headers['Prefer'] = 'return=representation';
-  const opts = { method, headers };
+  const h = {...HDR};
+  if (method==='POST'||method==='PATCH') h['Prefer']='return=representation';
+  const opts = {method, headers:h};
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, opts);
-  if (!res.ok) { const err = await res.text(); throw new Error(err); }
-  if (res.status === 204) return null;
+  if (!res.ok) throw new Error(await res.text());
+  if (res.status===204) return null;
   return res.json();
 }
 
 // ══════════════════════════════════════════════
-// COLORADO DFPC FF1 JPR LIST (Revised 1/1/2025)
+// COLORADO DFPC FF1 JPRS (Revised 1/1/2025)
 // ══════════════════════════════════════════════
 const JPRS = [
-  // Section 1 — General Requirements
-  { code:'FFI-1A', section:'1', name:'Donning PPE',                          mandatory:true  },
-  { code:'FFI-1B', section:'1', name:'Ropes and Knots',                      mandatory:true  },
-  { code:'FFI-1C', section:'1', name:'Hoisting Tools',                       mandatory:false },
-  { code:'FFI-1D', section:'1', name:'Documentation, Standard, or Code',     mandatory:false },
-  { code:'FFI-1E', section:'1', name:'Field Reduction and Doff PPE',         mandatory:false },
-  // Section 2 — Fire Department Communications
-  { code:'FFI-2A', section:'2', name:'Initiate a Response',                  mandatory:false },
-  { code:'FFI-2B', section:'2', name:'Receive a Telephone Call',             mandatory:false },
-  { code:'FFI-2C', section:'2', name:'Transmit on Radio',                    mandatory:false },
-  { code:'FFI-2D', section:'2', name:'Mayday Operations',                    mandatory:true  },
-  // Section 3 — Fire Ground Operations
-  { code:'FFI-3A', section:'3', name:'Don SCBA and Emergency Procedures',    mandatory:true  },
-  { code:'FFI-3B', section:'3', name:'Respond on Apparatus',                 mandatory:false },
-  { code:'FFI-3C', section:'3', name:'Scene Safety',                         mandatory:false },
-  { code:'FFI-3D', section:'3', name:'Forcible Entry',                       mandatory:true  },
-  { code:'FFI-3E', section:'3', name:'Exit Hazardous Environment',           mandatory:false },
-  { code:'FFI-3F', section:'3', name:'Ground Ladders',                       mandatory:true  },
-  { code:'FFI-3G', section:'3', name:'Vehicle Fire',                         mandatory:true  },
-  { code:'FFI-3H', section:'3', name:'Class A Fire — Stacked or Piled',      mandatory:false },
-  { code:'FFI-3I', section:'3', name:'Search and Rescue',                    mandatory:true  },
-  { code:'FFI-3J', section:'3', name:'Horizontal Ventilation',               mandatory:true  },
-  { code:'FFI-3K', section:'3', name:'Vertical Ventilation',                 mandatory:false },
-  { code:'FFI-3L', section:'3', name:'Overhaul a Fire Scene',                mandatory:false },
-  { code:'FFI-3M', section:'3', name:'Salvage',                              mandatory:false },
-  { code:'FFI-3N', section:'3', name:'Water Supply',                         mandatory:true  },
-  { code:'FFI-3O', section:'3', name:'Extinguishers',                        mandatory:false },
-  { code:'FFI-3P', section:'3', name:'Scene Lighting',                       mandatory:false },
-  { code:'FFI-3Q', section:'3', name:'Control Utilities',                    mandatory:false },
-  { code:'FFI-3R', section:'3', name:'Ground Fire',                          mandatory:false },
-  { code:'FFI-3S', section:'3', name:'Air Monitoring',                       mandatory:false },
-  // Live Fire
-  { code:'FFI-LFA', section:'LF', name:'Live Fire A — Grade Level',         mandatory:true  },
-  { code:'FFI-LFB', section:'LF', name:'Live Fire B — Above Grade',         mandatory:false },
-  { code:'FFI-LFC', section:'LF', name:'Live Fire C — Below Grade',         mandatory:false },
-  // Section 5 — Prevention, Preparedness & Maintenance
-  { code:'FFI-5A', section:'5', name:'Clean and Check Equipment',            mandatory:false },
-  { code:'FFI-5B', section:'5', name:'Clean and Inspect Hose',               mandatory:true  },
+  {code:'FFI-1A',sec:'1',name:'Donning PPE',mandatory:true},
+  {code:'FFI-1B',sec:'1',name:'Ropes and Knots',mandatory:true},
+  {code:'FFI-1C',sec:'1',name:'Hoisting Tools',mandatory:false},
+  {code:'FFI-1D',sec:'1',name:'Documentation, Standard, or Code',mandatory:false},
+  {code:'FFI-1E',sec:'1',name:'Field Reduction and Doff PPE',mandatory:false},
+  {code:'FFI-2A',sec:'2',name:'Initiate a Response',mandatory:false},
+  {code:'FFI-2B',sec:'2',name:'Receive a Telephone Call',mandatory:false},
+  {code:'FFI-2C',sec:'2',name:'Transmit on Radio',mandatory:false},
+  {code:'FFI-2D',sec:'2',name:'Mayday Operations',mandatory:true},
+  {code:'FFI-3A',sec:'3',name:'Don SCBA and Emergency Procedures',mandatory:true},
+  {code:'FFI-3B',sec:'3',name:'Respond on Apparatus',mandatory:false},
+  {code:'FFI-3C',sec:'3',name:'Scene Safety',mandatory:false},
+  {code:'FFI-3D',sec:'3',name:'Forcible Entry',mandatory:true},
+  {code:'FFI-3E',sec:'3',name:'Exit Hazardous Environment',mandatory:false},
+  {code:'FFI-3F',sec:'3',name:'Ground Ladders',mandatory:true},
+  {code:'FFI-3G',sec:'3',name:'Vehicle Fire',mandatory:true},
+  {code:'FFI-3H',sec:'3',name:'Class A Fire — Stacked or Piled',mandatory:false},
+  {code:'FFI-3I',sec:'3',name:'Search and Rescue',mandatory:true},
+  {code:'FFI-3J',sec:'3',name:'Horizontal Ventilation',mandatory:true},
+  {code:'FFI-3K',sec:'3',name:'Vertical Ventilation',mandatory:false},
+  {code:'FFI-3L',sec:'3',name:'Overhaul a Fire Scene',mandatory:false},
+  {code:'FFI-3M',sec:'3',name:'Salvage',mandatory:false},
+  {code:'FFI-3N',sec:'3',name:'Water Supply',mandatory:true},
+  {code:'FFI-3O',sec:'3',name:'Extinguishers',mandatory:false},
+  {code:'FFI-3P',sec:'3',name:'Scene Lighting',mandatory:false},
+  {code:'FFI-3Q',sec:'3',name:'Control Utilities',mandatory:false},
+  {code:'FFI-3R',sec:'3',name:'Ground Fire',mandatory:false},
+  {code:'FFI-3S',sec:'3',name:'Air Monitoring',mandatory:false},
+  {code:'FFI-LFA',sec:'LF',name:'Live Fire A — Grade Level',mandatory:true},
+  {code:'FFI-LFB',sec:'LF',name:'Live Fire B — Above Grade',mandatory:false},
+  {code:'FFI-LFC',sec:'LF',name:'Live Fire C — Below Grade',mandatory:false},
+  {code:'FFI-5A',sec:'5',name:'Clean and Check Equipment',mandatory:false},
+  {code:'FFI-5B',sec:'5',name:'Clean and Inspect Hose',mandatory:true},
 ];
+const SEC_LABELS = {'1':'Section 1 — General Requirements','2':'Section 2 — Communications',
+  '3':'Section 3 — Fire Ground Operations','LF':'Live Fire','5':'Section 5 — Maintenance'};
 
-const SECTION_LABELS = {
-  '1':  'Section 1 — General Requirements',
-  '2':  'Section 2 — Fire Department Communications',
-  '3':  'Section 3 — Fire Ground Operations',
-  'LF': 'Live Fire',
-  '5':  'Section 5 — Prevention, Preparedness & Maintenance',
-};
+function jprByCode(code){ return JPRS.find(j=>j.code===code); }
 
 // ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
-let state = {
-  academyId:   null,
-  activeClass: null,   // full class object
-  candidates:  [],
-  attempts:    [],
-  classes:     [],
+let S = {
+  academyId: null,
+  activeClass: null,
+  classes: [],
+  squads: [],
+  candidates: [],
+  attempts: [],
+  // Field screen state
+  lockedJpr: null,
+  reps: 1,
+  successReps: 0,
+  selectedSquadFilter: 'all',
 };
 
 // ══════════════════════════════════════════════
@@ -327,56 +352,52 @@ let state = {
 async function init() {
   showSpinner('field');
   try {
-    // Get NAFA academy
-    const academies = await sb('academies?name=eq.North Area Fire Academy&select=id,name');
-    if (academies && academies.length > 0) state.academyId = academies[0].id;
-
-    // Get stored active class ID
-    const storedClassId = localStorage.getItem('nafa_active_class_id');
-
-    // Load classes
+    const academies = await sb('academies?name=eq.North%20Area%20Fire%20Academy&select=id');
+    if (academies?.length) S.academyId = academies[0].id;
     await loadClasses();
-
-    if (storedClassId) {
-      const found = state.classes.find(c => c.id === storedClassId);
-      if (found) { state.activeClass = found; await loadClassData(); }
+    const stored = localStorage.getItem('nafa_class_id');
+    if (stored) {
+      const found = S.classes.find(c=>c.id===stored);
+      if (found) { S.activeClass = found; await loadClassData(); }
     }
-    updateHeaderPill();
+    updatePill();
     renderField();
-  } catch(e) {
-    showError('field', 'Could not connect to database. Check your connection.<br><small>' + e.message + '</small>');
-  }
+  } catch(e) { showError('field', e.message); }
 }
 
 async function loadClasses() {
-  if (!state.academyId) return;
-  state.classes = await sb(`classes?academy_id=eq.${state.academyId}&order=created_at.desc&select=*`) || [];
+  if (!S.academyId) return;
+  S.classes = await sb(`classes?academy_id=eq.${S.academyId}&order=created_at.desc`) || [];
 }
 
 async function loadClassData() {
-  if (!state.activeClass) return;
-  const cid = state.activeClass.id;
-  state.candidates = await sb(`candidates?class_id=eq.${cid}&order=name.asc&select=*`) || [];
-  state.attempts   = await sb(`attempts?candidate_id=in.(${state.candidates.map(c=>c.id).join(',') || 'null'})&select=*&order=attempted_at.desc`) || [];
+  if (!S.activeClass) return;
+  const cid = S.activeClass.id;
+  S.squads     = await sb(`squads?class_id=eq.${cid}&order=name.asc`) || [];
+  S.candidates = await sb(`candidates?class_id=eq.${cid}&order=name.asc&select=*,squads(name)`) || [];
+  if (S.candidates.length) {
+    S.attempts = await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})&order=attempted_at.desc`) || [];
+  } else {
+    S.attempts = [];
+  }
 }
 
 // ══════════════════════════════════════════════
 // TABS
 // ══════════════════════════════════════════════
 function showTab(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-  if (name === 'field')    renderField();
-  if (name === 'recruits') renderRecruits();
-  if (name === 'grid')     renderGrid();
-  if (name === 'setup')    renderSetup();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name==='field')  renderField();
+  if (name==='roster') renderRoster();
+  if (name==='grid')   renderGrid();
+  if (name==='setup')  renderSetup();
 }
 
-function updateHeaderPill() {
-  document.getElementById('header-class-pill').textContent =
-    state.activeClass ? state.activeClass.name : 'No Class';
+function updatePill() {
+  document.getElementById('header-class-pill').textContent = S.activeClass?.name || 'No Class';
 }
 
 // ══════════════════════════════════════════════
@@ -384,367 +405,408 @@ function updateHeaderPill() {
 // ══════════════════════════════════════════════
 function renderField() {
   const el = document.getElementById('field-content');
-  if (!state.activeClass) {
-    el.innerHTML = `<div class="no-class">
-      <div class="no-class-icon">🏫</div>
-      <div class="no-class-text">No active class selected.<br>Go to <strong>Setup</strong> to create or select a class.</div>
-      <button class="btn btn-gold" onclick="showTab('setup')">Go to Setup</button>
-    </div>`;
+  if (!S.activeClass) {
+    el.innerHTML = noClassHTML('Go to Setup to create or select a class.');
     return;
   }
-  if (state.candidates.length === 0) {
-    el.innerHTML = `<div class="no-class">
-      <div class="no-class-icon">👤</div>
-      <div class="no-class-text">No candidates yet.<br>Add them in <strong>Setup → Candidates</strong>.</div>
-      <button class="btn btn-navy" onclick="showTab('setup')">Add Candidates</button>
-    </div>`;
+  if (!S.candidates.length) {
+    el.innerHTML = noClassHTML('No candidates yet. Add them in Setup.', 'setup');
     return;
   }
 
-  // Active JPRs
-  const activeJprCodes = state.activeClass.active_jprs || JPRS.map(j => j.code);
-  const activeJprs = JPRS.filter(j => activeJprCodes.includes(j.code));
+  const activeJprs = getActiveJprs();
+  const jpr = S.lockedJpr ? jprByCode(S.lockedJpr) : null;
+
+  // Filter candidates by squad
+  const visibleCandidates = S.selectedSquadFilter === 'all'
+    ? S.candidates
+    : S.candidates.filter(c => c.squad_id === S.selectedSquadFilter);
 
   el.innerHTML = `
+    <!-- JPR LOCK BANNER -->
+    ${jpr ? `
+    <div class="locked-jpr">
+      <div class="locked-jpr-left">
+        <div class="locked-jpr-label">Active JPR — Tap to change</div>
+        <div class="locked-jpr-code">${jpr.code}</div>
+        <div class="locked-jpr-name">${jpr.name}</div>
+      </div>
+      <button class="locked-jpr-change" onclick="clearLockedJpr()">Change JPR</button>
+    </div>` : `
     <div class="card">
-      <div class="card-header">📋 Log JPR Attempt</div>
+      <div class="card-header">📋 Select JPR</div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">JPR — stays locked after selection <span class="req">*</span></label>
+          <select class="field-select" id="f-jpr-select" onchange="lockJpr(this.value)">
+            <option value="">— Select JPR to lock —</option>
+            ${Object.keys(SEC_LABELS).map(sec => {
+              const jprs = activeJprs.filter(j=>j.sec===sec);
+              if (!jprs.length) return '';
+              return `<optgroup label="${SEC_LABELS[sec]}">
+                ${jprs.map(j=>`<option value="${j.code}">${j.code} — ${j.name}${j.mandatory?' ★':''}</option>`).join('')}
+              </optgroup>`;
+            }).join('')}
+          </select>
+        </div>
+      </div>
+    </div>`}
+
+    ${jpr ? `
+    <!-- SQUAD FILTER -->
+    ${S.squads.length > 0 ? `
+    <div style="display:flex;gap:8px;margin-bottom:1rem;overflow-x:auto;padding-bottom:2px">
+      <button onclick="setSquadFilter('all')" class="btn btn-sm ${S.selectedSquadFilter==='all'?'btn-navy':'btn-outline'}">All</button>
+      ${S.squads.map(sq=>`
+        <button onclick="setSquadFilter('${sq.id}')"
+          class="btn btn-sm ${S.selectedSquadFilter===sq.id?'btn-navy':'btn-outline'}"
+          style="white-space:nowrap">${sq.name}</button>`).join('')}
+    </div>` : ''}
+
+    <!-- CANDIDATE SELECT -->
+    <div class="card">
+      <div class="card-header">👤 Candidate & Reps</div>
       <div class="card-body">
         <div class="field">
           <label class="field-label">Candidate <span class="req">*</span></label>
           <select class="field-select" id="f-candidate">
             <option value="">— Select candidate —</option>
-            ${state.candidates.map(c => `<option value="${c.id}">${c.name}${c.agency ? ' — ' + c.agency : ''}</option>`).join('')}
+            ${visibleCandidates.map(c=>`<option value="${c.id}">${c.name}${c.squads?.name?' — '+c.squads.name:''}</option>`).join('')}
           </select>
         </div>
-        <div class="field">
-          <label class="field-label">JPR <span class="req">*</span></label>
-          <select class="field-select" id="f-jpr">
-            <option value="">— Select JPR —</option>
-            ${Object.keys(SECTION_LABELS).map(sec => {
-              const jprs = activeJprs.filter(j => j.section === sec);
-              if (!jprs.length) return '';
-              return `<optgroup label="${SECTION_LABELS[sec]}">
-                ${jprs.map(j => `<option value="${j.code}">${j.code} — ${j.name}${j.mandatory ? ' ★' : ''}</option>`).join('')}
-              </optgroup>`;
-            }).join('')}
-          </select>
+
+        <!-- REP COUNTERS -->
+        <div class="rep-counter">
+          <div class="rep-box">
+            <div class="rep-box-label">Reps Attempted</div>
+            <div class="rep-box-controls">
+              <button class="rep-btn" onclick="adjustReps('reps',-1)">−</button>
+              <div class="rep-value" id="rep-count">${S.reps}</div>
+              <button class="rep-btn" onclick="adjustReps('reps',1)">+</button>
+            </div>
+          </div>
+          <div class="rep-box success">
+            <div class="rep-box-label">Successful</div>
+            <div class="rep-box-controls">
+              <button class="rep-btn" onclick="adjustReps('success',-1)">−</button>
+              <div class="rep-value" id="success-count" style="color:var(--good)">${S.successReps}</div>
+              <button class="rep-btn" onclick="adjustReps('success',1)">+</button>
+            </div>
+          </div>
         </div>
+
         <div class="field">
           <label class="field-label">Instructor</label>
           <input class="field-input" id="f-instructor" placeholder="Your name"
-            value="${localStorage.getItem('nafa_instructor') || ''}">
+            value="${localStorage.getItem('nafa_instructor')||''}">
         </div>
         <div class="field">
           <label class="field-label">Notes (optional)</label>
-          <textarea class="field-textarea" id="f-notes" placeholder="Any notes on this attempt…"></textarea>
-        </div>
-        <div class="attempt-btns">
-          <button class="attempt-btn pass" onclick="logAttempt(true)">✅ Pass</button>
-          <button class="attempt-btn fail" onclick="logAttempt(false)">❌ Fail</button>
+          <textarea class="field-textarea" id="f-notes" placeholder="Observations, coaching points…"></textarea>
         </div>
       </div>
     </div>
 
-    <div class="section-label">Recent Attempts</div>
-    <div id="recent-log">${renderRecentLogHTML()}</div>`;
+    <button class="log-session-btn" onclick="logSession()">
+      ✅ Log Session
+    </button>` : ''}
+
+    <!-- RECENT LOG -->
+    <div class="section-label">Recent Sessions</div>
+    <div id="recent-log">${renderRecentHTML()}</div>`;
 }
 
-function renderRecentLogHTML() {
-  const recent = state.attempts.slice(0, 20);
-  if (!recent.length) return `<div style="color:var(--smoke);font-size:13px;padding:0.5rem 0">No attempts logged yet.</div>`;
+function lockJpr(code) {
+  if (!code) return;
+  S.lockedJpr = code;
+  S.reps = 1;
+  S.successReps = 0;
+  renderField();
+}
+
+function clearLockedJpr() {
+  S.lockedJpr = null;
+  renderField();
+}
+
+function setSquadFilter(id) {
+  S.selectedSquadFilter = id;
+  renderField();
+}
+
+function adjustReps(type, delta) {
+  if (type === 'reps') {
+    S.reps = Math.max(1, S.reps + delta);
+    if (S.successReps > S.reps) S.successReps = S.reps;
+    document.getElementById('rep-count').textContent = S.reps;
+    document.getElementById('success-count').textContent = S.successReps;
+  } else {
+    S.successReps = Math.max(0, Math.min(S.reps, S.successReps + delta));
+    document.getElementById('success-count').textContent = S.successReps;
+  }
+}
+
+function renderRecentHTML() {
+  const recent = S.attempts.slice(0, 20);
+  if (!recent.length) return `<div style="color:var(--smoke);font-size:13px;padding:0.5rem 0">No sessions logged yet.</div>`;
   return `<div class="log-list">` + recent.map(a => {
-    const cand = state.candidates.find(c => c.id === a.candidate_id);
-    const jpr  = JPRS.find(j => j.code === a.jpr_code);
-    const time = new Date(a.attempted_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    const cand = S.candidates.find(c=>c.id===a.candidate_id);
+    const jpr  = jprByCode(a.jpr_code);
+    const pct  = a.reps > 0 ? Math.round((a.successful_reps/a.reps)*100) : 0;
+    const col  = pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+    const dt   = new Date(a.attempted_at);
+    const time = dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     return `
     <div class="log-item">
-      <div class="log-dot ${a.passed ? 'pass' : 'fail'}"></div>
+      <div class="log-bar" style="background:${col}"></div>
       <div class="log-text">
-        <strong>${cand?.name || '—'}</strong> · ${a.jpr_code}<br>
-        <span style="font-size:11px;color:var(--smoke)">${jpr?.name || ''}</span>
-        ${a.notes ? `<br><span style="font-size:11px;color:var(--smoke);font-style:italic">${a.notes}</span>` : ''}
+        <strong>${cand?.name||'—'}</strong> · ${a.jpr_code}<br>
+        <span style="font-size:11px;color:var(--smoke)">${a.successful_reps}/${a.reps} reps (${pct}%)${a.instructor?' · '+a.instructor:''}</span>
+        ${a.notes?`<br><span style="font-size:11px;color:var(--smoke);font-style:italic">${a.notes}</span>`:''}
       </div>
       <div class="log-time">${time}</div>
-      <button class="log-del" onclick="deleteAttempt('${a.id}')">✕</button>
+      <button class="log-del" onclick="deleteSession('${a.id}')">✕</button>
     </div>`;
   }).join('') + `</div>`;
 }
 
-async function logAttempt(passed) {
-  const candidateId = document.getElementById('f-candidate').value;
-  const jprCode     = document.getElementById('f-jpr').value;
-  const instructor  = document.getElementById('f-instructor').value.trim();
-  const notes       = document.getElementById('f-notes').value.trim();
+async function logSession() {
+  const candidateId = document.getElementById('f-candidate')?.value;
+  const instructor  = document.getElementById('f-instructor')?.value.trim()||'';
+  const notes       = document.getElementById('f-notes')?.value.trim()||'';
 
-  if (!candidateId) { showToast('Select a candidate'); return; }
-  if (!jprCode)     { showToast('Select a JPR'); return; }
+  if (!S.lockedJpr)    { showToast('Select a JPR first'); return; }
+  if (!candidateId)    { showToast('Select a candidate'); return; }
 
   if (instructor) localStorage.setItem('nafa_instructor', instructor);
 
   try {
-    const result = await sb('attempts', 'POST', { candidate_id: candidateId, jpr_code: jprCode, passed, instructor, notes });
-    // Optimistically add to local state
-    const newAttempt = Array.isArray(result) ? result[0] : result;
-    if (newAttempt) state.attempts.unshift(newAttempt);
-    // Also reload to get server-assigned timestamp
-    await refreshAttempts();
-    showToast(passed ? '✅ Pass logged!' : '❌ Fail logged');
-    document.getElementById('f-jpr').value   = '';
+    const result = await sb('attempts', 'POST', {
+      candidate_id: candidateId,
+      jpr_code: S.lockedJpr,
+      reps: S.reps,
+      successful_reps: S.successReps,
+      instructor,
+      notes,
+    });
+    const newA = Array.isArray(result) ? result[0] : result;
+    if (newA) S.attempts.unshift(newA);
+
+    // Reset reps but keep JPR locked and candidate selected
+    S.reps = 1;
+    S.successReps = 0;
+    showToast(`✅ Logged — ${S.successReps}/${S.reps} reps`);
+
+    // Just update the counters and recent log without full re-render
+    if (document.getElementById('rep-count')) {
+      document.getElementById('rep-count').textContent = 1;
+      document.getElementById('success-count').textContent = 0;
+    }
     document.getElementById('f-notes').value = '';
-    document.getElementById('recent-log').innerHTML = renderRecentLogHTML();
+    document.getElementById('recent-log').innerHTML = renderRecentHTML();
   } catch(e) { showToast('⚠️ Save failed: ' + e.message); }
 }
 
-async function refreshAttempts() {
-  if (!state.candidates.length) return;
-  state.attempts = await sb(`attempts?candidate_id=in.(${state.candidates.map(c=>c.id).join(',')})&select=*&order=attempted_at.desc`) || [];
-}
-
-async function deleteAttempt(id) {
+async function deleteSession(id) {
   try {
     await sb(`attempts?id=eq.${id}`, 'DELETE');
-    state.attempts = state.attempts.filter(a => a.id !== id);
-    document.getElementById('recent-log').innerHTML = renderRecentLogHTML();
-    showToast('Attempt removed');
+    S.attempts = S.attempts.filter(a=>a.id!==id);
+    document.getElementById('recent-log').innerHTML = renderRecentHTML();
+    showToast('Session removed');
   } catch(e) { showToast('⚠️ Delete failed'); }
 }
 
 // ══════════════════════════════════════════════
-// RECRUITS SCREEN
+// ROSTER SCREEN
 // ══════════════════════════════════════════════
-function renderRecruits() {
-  const el = document.getElementById('recruits-content');
-  if (!state.activeClass) { el.innerHTML = noClassHTML(); return; }
+function renderRoster() {
+  const el = document.getElementById('roster-content');
+  if (!S.activeClass) { el.innerHTML = noClassHTML(); return; }
 
-  const activeJprCodes = state.activeClass.active_jprs || JPRS.map(j => j.code);
-  const total = activeJprCodes.length;
-  const totalAttempts = state.attempts.length;
-  const totalPasses   = state.attempts.filter(a => a.passed).length;
+  const totalReps = S.attempts.reduce((s,a)=>s+a.reps, 0);
+  const totalSucc = S.attempts.reduce((s,a)=>s+a.successful_reps, 0);
+  const overallPct = totalReps > 0 ? Math.round((totalSucc/totalReps)*100) : 0;
 
   let html = `
-    <div class="stat-row">
-      <div class="stat-card"><div class="stat-num">${state.candidates.length}</div><div class="stat-label">Candidates</div></div>
-      <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Active JPRs</div></div>
-      <div class="stat-card"><div class="stat-num">${totalAttempts}</div><div class="stat-label">Attempts</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
+      <div class="card" style="margin:0;text-align:center;padding:0.8rem">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--navy);line-height:1">${S.candidates.length}</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke)">Candidates</div>
+      </div>
+      <div class="card" style="margin:0;text-align:center;padding:0.8rem">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--navy);line-height:1">${totalReps}</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke)">Total Reps</div>
+      </div>
+      <div class="card" style="margin:0;text-align:center;padding:0.8rem">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--navy);line-height:1">${overallPct}%</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke)">Success Rate</div>
+      </div>
     </div>
-    <div class="recruit-list">`;
+    <div class="candidate-list">`;
 
-  if (!state.candidates.length) {
-    html += `<div class="empty-state"><div class="empty-icon">👤</div>No candidates added yet.</div>`;
+  if (!S.candidates.length) {
+    html += `<div class="empty-state"><div class="empty-icon">👤</div>No candidates yet.</div>`;
   } else {
-    state.candidates.forEach(c => {
-      const mine   = state.attempts.filter(a => a.candidate_id === c.id);
-      const passed = new Set(mine.filter(a => a.passed).map(a => a.jpr_code));
-      const failed = mine.filter(a => !a.passed && !passed.has(a.jpr_code)).length;
-      const pct    = total > 0 ? Math.round((passed.size / total) * 100) : 0;
+    S.candidates.forEach(c => {
+      const mine    = S.attempts.filter(a=>a.candidate_id===c.id);
+      const reps    = mine.reduce((s,a)=>s+a.reps,0);
+      const succ    = mine.reduce((s,a)=>s+a.successful_reps,0);
+      const pct     = reps>0?Math.round((succ/reps)*100):0;
+      const jprsHit = new Set(mine.map(a=>a.jpr_code)).size;
+      const squad   = S.squads.find(sq=>sq.id===c.squad_id);
       html += `
-      <div class="recruit-row" onclick="openCandidateModal('${c.id}')">
+      <div class="candidate-row" onclick="openCandidateModal('${c.id}')">
         <div style="flex:1;min-width:0">
-          <div class="recruit-name">${c.name}</div>
-          ${c.agency ? `<div class="recruit-agency">${c.agency}</div>` : ''}
-          <div class="recruit-progress">
-            <div class="recruit-progress-fill" style="width:${pct}%"></div>
+          <div class="candidate-name">${c.name}</div>
+          <div class="candidate-meta">
+            ${squad?`<span class="squad-badge">${squad.name}</span> · `:''}
+            ${c.agency||''}
+          </div>
+          <div style="height:4px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)'};border-radius:2px"></div>
           </div>
         </div>
-        <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
-          <span class="stat-badge badge-pass">${passed.size}/${total}</span>
-          ${failed > 0 ? `<span class="stat-badge badge-fail">${failed}✗</span>` : ''}
-          <span class="badge-pct">${pct}%</span>
+        <div class="candidate-stats">
+          <span class="stat-chip chip-info">${jprsHit} JPRs</span>
+          <span class="stat-chip ${pct>=80?'chip-good':pct>=50?'':'chip-warn'}">${pct}%</span>
+          <span style="color:var(--mist);font-size:16px">›</span>
         </div>
       </div>`;
     });
   }
-
   html += `</div>`;
   el.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════
-// CANDIDATE MODAL
-// ══════════════════════════════════════════════
+// ── Candidate detail modal ──
 function openCandidateModal(cid) {
-  const c = state.candidates.find(x => x.id === cid);
+  const c = S.candidates.find(x=>x.id===cid);
   if (!c) return;
-  const activeJprCodes = state.activeClass?.active_jprs || JPRS.map(j => j.code);
-  const activeJprs = JPRS.filter(j => activeJprCodes.includes(j.code));
-
-  const myAttempts  = state.attempts.filter(a => a.candidate_id === cid);
-  const passedJprs  = new Set(myAttempts.filter(a => a.passed).map(a => a.jpr_code));
-  const totalPassed = passedJprs.size;
-  const pct         = activeJprs.length > 0 ? Math.round((totalPassed / activeJprs.length) * 100) : 0;
+  const mine = S.attempts.filter(a=>a.candidate_id===cid);
+  const activeJprs = getActiveJprs();
+  const squad = S.squads.find(sq=>sq.id===c.squad_id);
 
   document.getElementById('modal-title').textContent = c.name;
   document.getElementById('modal-body').innerHTML = `
-    ${c.agency ? `<p style="font-size:12px;color:var(--smoke);margin-bottom:0.5rem">${c.agency}</p>` : ''}
-
-    <!-- Progress summary -->
-    <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:flex;align-items:center;gap:12px">
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--smoke);margin-bottom:5px">
-          <span>Progress</span><span>${totalPassed} / ${activeJprs.length} JPRs passed</span>
-        </div>
-        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
-          <div style="height:100%;width:${pct}%;background:var(--pass);border-radius:3px;transition:width 0.4s"></div>
-        </div>
-      </div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--navy);line-height:1">${pct}%</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.8rem">
+      ${squad?`<span class="squad-badge">${squad.name}</span>`:''}
+      ${c.agency?`<span class="stat-chip chip-mist">${c.agency}</span>`:''}
     </div>
-
-    <p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem">Tap any JPR to see full attempt history.</p>
-
-    <!-- JPR rows — tappable -->
+    <p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem">Tap any JPR to see full rep history.</p>
     <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:1rem">
       ${activeJprs.map(jpr => {
-        const attempts = myAttempts.filter(a => a.jpr_code === jpr.code);
-        const passes   = attempts.filter(a => a.passed).length;
-        const fails    = attempts.filter(a => !a.passed).length;
-        const isPassed = passes > 0;
-        const hasData  = attempts.length > 0;
+        const sessions = mine.filter(a=>a.jpr_code===jpr.code);
+        const reps = sessions.reduce((s,a)=>s+a.reps,0);
+        const succ = sessions.reduce((s,a)=>s+a.successful_reps,0);
+        const pct  = reps>0?Math.round((succ/reps)*100):null;
         return `
-        <div class="modal-jpr-row" onclick="openJprHistory('${cid}','${jpr.code}')"
-          style="cursor:pointer;transition:background 0.15s" onmousedown="this.style.background='#F0EFE9'" onmouseup="this.style.background=''">
-          <div class="modal-jpr-name" style="flex:1">
-            <span class="modal-jpr-code">${jpr.code}${jpr.mandatory ? ' <span class="mandatory-tag">Mandatory</span>' : ''}</span>
-            ${jpr.name}
+        <div onclick="openJprHistory('${cid}','${jpr.code}')"
+          style="background:var(--paper);border-radius:8px;padding:9px 12px;
+          display:flex;align-items:center;gap:8px;cursor:pointer">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:700;color:var(--navy)">${jpr.code}${jpr.mandatory?' <span class="mandatory-tag">Mandatory</span>':''}</div>
+            <div style="font-size:12px;color:var(--ash)">${jpr.name}</div>
           </div>
-          <div class="modal-stats" style="display:flex;align-items:center;gap:6px">
-            ${hasData
-              ? `<span class="stat-badge ${isPassed ? 'badge-pass' : 'badge-fail'}">${passes}✓ ${fails > 0 ? fails + '✗' : ''}</span>`
-              : `<span style="font-size:11px;color:var(--mist)">—</span>`}
-            <span style="color:var(--mist);font-size:14px">›</span>
+          <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+            ${reps>0
+              ? `<span class="stat-chip chip-info">${reps} reps</span>
+                 <span class="stat-chip ${pct>=80?'chip-good':pct>=50?'chip-mist':'chip-warn'}">${pct}%</span>`
+              : `<span style="font-size:11px;color:var(--mist)">No reps</span>`}
+            <span style="color:var(--mist);font-size:16px">›</span>
           </div>
         </div>`;
       }).join('')}
     </div>
-
-    <button class="btn btn-danger" onclick="confirmDeleteCandidate('${cid}', '${c.name.replace(/'/g,"\\'")}')">🗑 Remove Candidate</button>`;
+    <button class="btn btn-danger" onclick="confirmRemoveCandidate('${cid}','${c.name.replace(/'/g,"\\'")}')">🗑 Remove Candidate</button>`;
 
   document.getElementById('modal-overlay').classList.add('open');
 }
 
-// ── JPR attempt history drill-down ──
+// ── JPR history drill-down ──
 function openJprHistory(cid, jprCode) {
-  const c   = state.candidates.find(x => x.id === cid);
-  const jpr = JPRS.find(j => j.code === jprCode);
-  if (!c || !jpr) return;
-
-  const attempts = state.attempts
-    .filter(a => a.candidate_id === cid && a.jpr_code === jprCode)
-    .sort((a,b) => new Date(b.attempted_at) - new Date(a.attempted_at));
-
-  const passes = attempts.filter(a => a.passed).length;
-  const fails  = attempts.filter(a => !a.passed).length;
+  const c   = S.candidates.find(x=>x.id===cid);
+  const jpr = jprByCode(jprCode);
+  if (!c||!jpr) return;
+  const sessions = S.attempts.filter(a=>a.candidate_id===cid&&a.jpr_code===jprCode)
+    .sort((a,b)=>new Date(b.attempted_at)-new Date(a.attempted_at));
+  const totalReps = sessions.reduce((s,a)=>s+a.reps,0);
+  const totalSucc = sessions.reduce((s,a)=>s+a.successful_reps,0);
+  const pct = totalReps>0?Math.round((totalSucc/totalReps)*100):0;
 
   document.getElementById('modal-title').textContent = jprCode;
   document.getElementById('modal-body').innerHTML = `
+    <button class="back-btn" onclick="openCandidateModal('${cid}')">‹ Back to ${c.name}</button>
 
-    <!-- Back button -->
-    <button onclick="openCandidateModal('${cid}')"
-      style="background:none;border:none;color:var(--smoke);font-size:13px;font-weight:600;
-      cursor:pointer;padding:0;margin-bottom:1rem;display:flex;align-items:center;gap:4px;font-family:'DM Sans',sans-serif">
-      ‹ Back to ${c.name}
-    </button>
-
-    <!-- JPR info -->
     <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem">
       <div style="font-size:13px;font-weight:600;color:var(--ash);margin-bottom:2px">${jpr.name}</div>
-      <div style="font-size:11px;color:var(--smoke)">${jpr.mandatory ? '★ Mandatory' : 'Random'} · NFPA 1001</div>
+      <div style="font-size:11px;color:var(--smoke)">${jpr.mandatory?'★ Mandatory':'Random'}</div>
     </div>
 
-    <!-- Summary badges -->
-    <div style="display:flex;gap:8px;margin-bottom:1rem">
-      <span class="stat-badge badge-pass" style="font-size:13px;padding:5px 12px">${passes} Pass${passes !== 1 ? 'es' : ''}</span>
-      <span class="stat-badge badge-fail" style="font-size:13px;padding:5px 12px">${fails} Fail${fails !== 1 ? 's' : ''}</span>
-      <span class="stat-badge" style="background:var(--paper);color:var(--smoke);font-size:13px;padding:5px 12px">${attempts.length} Total</span>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+      <span class="stat-chip chip-info" style="font-size:13px;padding:5px 12px">${totalReps} Total Reps</span>
+      <span class="stat-chip chip-good" style="font-size:13px;padding:5px 12px">${totalSucc} Successful</span>
+      <span class="stat-chip ${pct>=80?'chip-good':pct>=50?'chip-mist':'chip-warn'}" style="font-size:13px;padding:5px 12px">${pct}% Rate</span>
     </div>
 
-    <!-- Attempt list -->
-    ${attempts.length === 0 ? `
-      <div class="empty-state" style="padding:1.5rem">
-        <div class="empty-icon">📋</div>
-        No attempts logged yet for this JPR.
-      </div>` : `
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--smoke);font-weight:600;margin-bottom:0.5rem">
-        Attempt History
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        ${attempts.map((a, i) => {
-          const dt = new Date(a.attempted_at);
-          const dateStr = dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-          const timeStr = dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-          return `
-          <div style="background:var(--paper);border-radius:8px;padding:10px 12px;
-            border-left:3px solid ${a.passed ? 'var(--pass)' : 'var(--fail)'}">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span style="font-size:11px;font-weight:700;color:${a.passed ? 'var(--pass)' : 'var(--fail)'};
-                  background:${a.passed ? 'var(--pass-pale)' : 'var(--fail-pale)'};
-                  padding:2px 8px;border-radius:4px">
-                  ${a.passed ? '✓ PASS' : '✗ FAIL'}
-                </span>
-                <span style="font-size:12px;color:var(--smoke)">${dateStr} · ${timeStr}</span>
-              </div>
-              <button onclick="deleteAttemptFromHistory('${a.id}','${cid}','${jprCode}')"
-                style="background:none;border:none;color:var(--mist);font-size:15px;cursor:pointer;padding:2px 4px;flex-shrink:0">✕</button>
+    ${sessions.length===0 ? `
+    <div class="empty-state" style="padding:1.5rem">
+      <div class="empty-icon">📋</div>No sessions logged for this JPR yet.
+    </div>` : `
+    <div class="section-label">Session History</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:1rem">
+      ${sessions.map(a => {
+        const dt  = new Date(a.attempted_at);
+        const ds  = dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        const ts  = dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+        const p   = a.reps>0?Math.round((a.successful_reps/a.reps)*100):0;
+        const col = p>=80?'var(--good)':p>=50?'#F9A825':'var(--warn)';
+        return `
+        <div style="background:var(--paper);border-radius:8px;padding:10px 12px;border-left:3px solid ${col}">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <div>
+              <span style="font-size:13px;font-weight:700;color:${col}">${a.successful_reps}/${a.reps} reps (${p}%)</span>
+              <span style="font-size:11px;color:var(--smoke);margin-left:8px">${ds} · ${ts}</span>
             </div>
-            ${a.instructor ? `<div style="font-size:11px;color:var(--smoke);margin-top:5px">👤 ${a.instructor}</div>` : ''}
-            ${a.notes ? `<div style="font-size:12px;color:var(--ash);margin-top:5px;font-style:italic">"${a.notes}"</div>` : ''}
-          </div>`;
-        }).join('')}
-      </div>`}
-
-    <!-- Log new attempt from here -->
-    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--smoke);font-weight:600;margin-bottom:0.6rem">
-        Log New Attempt
-      </div>
-      <div class="field">
-        <label class="field-label">Instructor</label>
-        <input class="field-input" id="hist-instructor" placeholder="Your name"
-          value="${localStorage.getItem('nafa_instructor') || ''}">
-      </div>
-      <div class="field">
-        <label class="field-label">Notes (optional)</label>
-        <textarea class="field-textarea" id="hist-notes" placeholder="Any notes on this attempt…" style="min-height:60px"></textarea>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.5rem">
-        <button class="attempt-btn pass" onclick="logAttemptFromHistory('${cid}','${jprCode}',true)">✅ Pass</button>
-        <button class="attempt-btn fail" onclick="logAttemptFromHistory('${cid}','${jprCode}',false)">❌ Fail</button>
-      </div>
-    </div>`;
+            <button onclick="deleteSessionFromHistory('${a.id}','${cid}','${jprCode}')"
+              style="background:none;border:none;color:var(--mist);font-size:15px;cursor:pointer;padding:2px 4px">✕</button>
+          </div>
+          ${a.instructor?`<div style="font-size:11px;color:var(--smoke);margin-top:4px">👤 ${a.instructor}</div>`:''}
+          ${a.notes?`<div style="font-size:12px;color:var(--ash);margin-top:4px;font-style:italic">"${a.notes}"</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>`}`;
 }
 
-async function logAttemptFromHistory(cid, jprCode, passed) {
-  const instructor = document.getElementById('hist-instructor')?.value.trim() || '';
-  const notes      = document.getElementById('hist-notes')?.value.trim() || '';
-  if (instructor) localStorage.setItem('nafa_instructor', instructor);
+async function deleteSessionFromHistory(id, cid, jprCode) {
   try {
-    const result = await sb('attempts', 'POST', { candidate_id: cid, jpr_code: jprCode, passed, instructor, notes });
-    const newAttempt = Array.isArray(result) ? result[0] : result;
-    if (newAttempt) state.attempts.unshift(newAttempt);
-    await refreshAttempts();
-    showToast(passed ? '✅ Pass logged!' : '❌ Fail logged');
-    openJprHistory(cid, jprCode); // refresh the view
-  } catch(e) { showToast('⚠️ Save failed: ' + e.message); }
-}
-
-async function deleteAttemptFromHistory(attemptId, cid, jprCode) {
-  try {
-    await sb(`attempts?id=eq.${attemptId}`, 'DELETE');
-    state.attempts = state.attempts.filter(a => a.id !== attemptId);
-    showToast('Attempt removed');
-    openJprHistory(cid, jprCode); // refresh the view
+    await sb(`attempts?id=eq.${id}`, 'DELETE');
+    S.attempts = S.attempts.filter(a=>a.id!==id);
+    showToast('Session removed');
+    openJprHistory(cid, jprCode);
   } catch(e) { showToast('⚠️ Delete failed'); }
 }
 
-async function deleteCandidate(id) {
+function confirmRemoveCandidate(id, name) {
+  document.getElementById('modal-title').textContent = 'Remove Candidate';
+  document.getElementById('modal-body').innerHTML = `
+    <p style="font-size:14px;line-height:1.6;margin-bottom:1rem">
+      Remove <strong>${name}</strong>?<br>
+      <span style="color:var(--warn);font-size:13px">All their rep history will be permanently deleted.</span>
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn" style="background:var(--warn);color:var(--white);border:none" onclick="removeCandidate('${id}')">Yes, Remove</button>
+    </div>`;
+}
+
+async function removeCandidate(id) {
   try {
     await sb(`attempts?candidate_id=eq.${id}`, 'DELETE');
     await sb(`candidates?id=eq.${id}`, 'DELETE');
-    state.candidates = state.candidates.filter(c => c.id !== id);
-    state.attempts   = state.attempts.filter(a => a.candidate_id !== id);
+    S.candidates = S.candidates.filter(c=>c.id!==id);
+    S.attempts   = S.attempts.filter(a=>a.candidate_id!==id);
     closeModal();
-    renderRecruits();
+    renderRoster();
     showToast('Candidate removed');
   } catch(e) { showToast('⚠️ Delete failed'); }
 }
@@ -754,45 +816,56 @@ async function deleteCandidate(id) {
 // ══════════════════════════════════════════════
 function renderGrid() {
   const el = document.getElementById('grid-content');
-  if (!state.activeClass) { el.innerHTML = noClassHTML(); return; }
-
-  const activeJprCodes = state.activeClass.active_jprs || JPRS.map(j => j.code);
-  const activeJprs = JPRS.filter(j => activeJprCodes.includes(j.code));
-
-  if (!state.candidates.length || !activeJprs.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div>Add candidates and select JPRs to see the grid.</div>`;
+  if (!S.activeClass) { el.innerHTML = noClassHTML(); return; }
+  const activeJprs = getActiveJprs();
+  if (!S.candidates.length||!activeJprs.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div>Add candidates and JPRs to see the grid.</div>`;
     return;
   }
 
   const thead = `<tr>
     <th class="sticky-col">Candidate</th>
-    ${activeJprs.map(j => `<th class="jpr-col" title="${j.name}">${j.code.replace('FFI-','')}</th>`).join('')}
+    ${activeJprs.map(j=>`<th class="jpr-col" title="${j.name}">${j.code.replace('FFI-','')}</th>`).join('')}
   </tr>`;
 
-  const tbody = state.candidates.map(c => {
+  const tbody = S.candidates.map(c => {
     const cells = activeJprs.map(jpr => {
-      const attempts = state.attempts.filter(a => a.candidate_id === c.id && a.jpr_code === jpr.code);
-      const passes   = attempts.filter(a => a.passed).length;
-      const fails    = attempts.filter(a => !a.passed).length;
-      let cls = 'dot-none', txt = '—';
-      if (passes > 0)     { cls = 'dot-pass'; txt = `${passes}✓`; }
-      else if (fails > 0) { cls = 'dot-fail'; txt = `${fails}✗`; }
-      return `<td class="jpr-cell"><div class="jpr-dot ${cls}">${txt}</div></td>`;
+      const sessions = S.attempts.filter(a=>a.candidate_id===c.id&&a.jpr_code===jpr.code);
+      const reps = sessions.reduce((s,a)=>s+a.reps,0);
+      const succ = sessions.reduce((s,a)=>s+a.successful_reps,0);
+      const pct  = reps>0?Math.round((succ/reps)*100):null;
+      const col  = pct===null?'var(--mist)':pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+      return `<td class="jpr-cell">
+        <div class="jpr-cell-inner">
+          ${reps>0
+            ? `<div class="jpr-reps" style="color:${col}">${succ}/${reps}</div>
+               <div class="jpr-success" style="color:${col}">${pct}%</div>`
+            : `<div style="color:var(--mist);font-size:14px">—</div>`}
+        </div>
+      </td>`;
     }).join('');
-    return `<tr><td class="sticky-col">${c.name}</td>${cells}</tr>`;
+    const squad = S.squads.find(sq=>sq.id===c.squad_id);
+    return `<tr>
+      <td class="sticky-col">
+        ${c.name}
+        ${squad?`<div style="font-size:10px;color:var(--smoke)">${squad.name}</div>`:''}
+      </td>
+      ${cells}
+    </tr>`;
   }).join('');
 
   el.innerHTML = `
     <p style="font-size:11px;color:var(--smoke);margin-bottom:0.8rem">
-      Scroll right for all JPRs. ★ = Mandatory. Green = passed, Red = attempted but not yet passed.
+      Shows successful/total reps per JPR. Scroll right for all JPRs.
     </p>
     <div class="grid-scroll">
       <table class="jpr-grid"><thead>${thead}</thead><tbody>${tbody}</tbody></table>
     </div>
     <div style="font-size:11px;color:var(--smoke);display:flex;gap:12px;flex-wrap:wrap;margin-top:0.5rem">
-      <span><span style="display:inline-block;width:12px;height:8px;background:var(--pass-pale);border-radius:2px;vertical-align:middle;margin-right:3px"></span>Passed</span>
-      <span><span style="display:inline-block;width:12px;height:8px;background:var(--fail-pale);border-radius:2px;vertical-align:middle;margin-right:3px"></span>Attempted, not passed</span>
-      <span><span style="display:inline-block;width:12px;height:8px;background:#F0EFE9;border-radius:2px;vertical-align:middle;margin-right:3px"></span>Not attempted</span>
+      <span style="color:var(--good)">■</span> ≥80% &nbsp;
+      <span style="color:#F9A825">■</span> 50–79% &nbsp;
+      <span style="color:var(--warn)">■</span> &lt;50% &nbsp;
+      <span style="color:var(--mist)">—</span> No reps yet
     </div>`;
 }
 
@@ -801,19 +874,18 @@ function renderGrid() {
 // ══════════════════════════════════════════════
 function renderSetup() {
   const el  = document.getElementById('setup-content');
-  const cls = state.activeClass;
-  const activeJprCodes = cls?.active_jprs || JPRS.map(j => j.code);
+  const cls = S.activeClass;
+  const activeJprCodes = cls?.active_jprs || JPRS.map(j=>j.code);
 
-  // JPR checklist grouped by section
-  const jprChecklistHTML = Object.keys(SECTION_LABELS).map(sec => {
-    const jprs = JPRS.filter(j => j.section === sec);
-    return `<div class="jpr-section-title">${SECTION_LABELS[sec]}</div>
-    ${jprs.map(j => `
+  const jprChecklistHTML = Object.keys(SEC_LABELS).map(sec => {
+    const jprs = JPRS.filter(j=>j.sec===sec);
+    return `<div class="jpr-section-title">${SEC_LABELS[sec]}</div>
+    ${jprs.map(j=>`
       <label class="jpr-check-item">
-        <input type="checkbox" value="${j.code}" ${activeJprCodes.includes(j.code) ? 'checked' : ''}
-          onchange="toggleJpr('${j.code}', this.checked)">
+        <input type="checkbox" value="${j.code}" ${activeJprCodes.includes(j.code)?'checked':''}
+          onchange="toggleJpr('${j.code}',this.checked)">
         <div class="jpr-check-label">
-          <span class="jpr-code-badge">${j.code}${j.mandatory ? ' <span class="mandatory-tag">Mandatory</span>' : ''}</span>
+          <span class="jpr-code-badge">${j.code}${j.mandatory?' <span class="mandatory-tag">Mandatory</span>':''}</span>
           ${j.name}
         </div>
       </label>`).join('')}`;
@@ -821,120 +893,147 @@ function renderSetup() {
 
   el.innerHTML = `
 
-    <!-- SELECT ACTIVE CLASS -->
-    <div class="card">
-      <div class="card-header">🏫 Active Class</div>
-      <div class="card-body">
-        ${state.classes.length > 0 ? `
-        <div class="field">
-          <label class="field-label">Switch Class</label>
-          <select class="field-select" id="s-class-select" onchange="switchClass(this.value)">
-            <option value="">— Select a class —</option>
-            ${state.classes.map(c => `<option value="${c.id}" ${cls?.id === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
-          </select>
-        </div>` : ''}
-        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.8rem">
-          ${cls ? `Currently active: <strong>${cls.name}</strong>` : 'No class selected.'}
-        </p>
-      </div>
+  <!-- SELECT CLASS -->
+  <div class="card">
+    <div class="card-header">🏫 Active Class</div>
+    <div class="card-body">
+      ${S.classes.length>0?`
+      <div class="field">
+        <label class="field-label">Switch Class</label>
+        <select class="field-select" id="s-class-select" onchange="switchClass(this.value)">
+          <option value="">— Select a class —</option>
+          ${S.classes.map(c=>`<option value="${c.id}" ${cls?.id===c.id?'selected':''}>${c.name}</option>`).join('')}
+        </select>
+      </div>`:''}
+      <p style="font-size:12px;color:var(--smoke)">${cls?`Active: <strong>${cls.name}</strong>`:'No class selected.'}</p>
     </div>
+  </div>
 
-    <!-- CREATE NEW CLASS -->
-    <div class="card">
-      <div class="card-header">➕ Create New Class</div>
-      <div class="card-body">
-        <div class="field">
-          <label class="field-label">Class Name <span class="req">*</span></label>
-          <input class="field-input" id="s-classname" placeholder="e.g. Recruit Class 2025-A">
-        </div>
-        <div class="field">
-          <label class="field-label">Start Date</label>
-          <input class="field-input" type="date" id="s-startdate">
-        </div>
-        <button class="btn btn-gold" style="margin-top:0.5rem" onclick="createClass()">Create Class</button>
+  <!-- CREATE CLASS -->
+  <div class="card">
+    <div class="card-header">➕ Create New Class</div>
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">Class Name <span class="req">*</span></label>
+        <input class="field-input" id="s-classname" placeholder="e.g. Recruit Class 2025-A">
       </div>
+      <div class="field">
+        <label class="field-label">Start Date</label>
+        <input class="field-input" type="date" id="s-startdate">
+      </div>
+      <button class="btn btn-gold" style="margin-top:0.5rem" onclick="createClass()">Create Class</button>
     </div>
+  </div>
 
-    ${cls ? `
-    <!-- ADD CANDIDATE -->
-    <div class="card">
-      <div class="card-header">👤 Add Candidate</div>
-      <div class="card-body">
-        <div class="field">
-          <label class="field-label">Name <span class="req">*</span></label>
-          <input class="field-input" id="s-cname" placeholder="First Last">
-        </div>
-        <div class="field">
-          <label class="field-label">Agency (optional)</label>
-          <input class="field-input" id="s-cagency" placeholder="e.g. Westminster FD">
-        </div>
-        <button class="btn btn-navy" style="margin-top:0.5rem" onclick="addCandidate()">＋ Add Candidate</button>
-      </div>
+  ${cls ? `
+
+  <!-- SQUADS -->
+  <div class="card">
+    <div class="card-header">
+      <span>👥 Squads (${S.squads.length})</span>
     </div>
-
-    <!-- CURRENT CANDIDATES -->
-    ${state.candidates.length > 0 ? `
-    <div class="card">
-      <div class="card-header">
-        <span>👥 Candidates (${state.candidates.length})</span>
+    <div class="card-body">
+      <div style="display:flex;gap:8px;margin-bottom:0.8rem">
+        <input class="field-input" id="s-squadname" placeholder="Squad name e.g. Squad 1" style="flex:1">
+        <button class="btn btn-navy btn-sm" style="white-space:nowrap" onclick="addSquad()">＋ Add</button>
       </div>
-      <div class="card-body" style="padding:0.5rem">
-        ${state.candidates.map(c => `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px solid var(--border);gap:8px">
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:600;font-size:13px">${c.name}</div>
-            ${c.agency ? `<div style="font-size:11px;color:var(--smoke)">${c.agency}</div>` : ''}
+      ${S.squads.length>0?`
+      <div>
+        ${S.squads.map(sq=>`
+        <div class="setup-item">
+          <div>
+            <div class="setup-item-name">${sq.name}</div>
+            <div class="setup-item-sub">${S.candidates.filter(c=>c.squad_id===sq.id).length} candidates</div>
           </div>
-          <div style="display:flex;gap:6px;flex-shrink:0">
-            <button onclick="openEditCandidate('${c.id}')"
-              style="background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--smoke);font-size:12px;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif">
-              Edit
-            </button>
-            <button onclick="confirmDeleteCandidate('${c.id}', '${c.name.replace(/'/g, "\\'")}')"
-              style="background:var(--fail-pale);border:1px solid rgba(198,40,40,0.2);border-radius:6px;color:var(--fail);font-size:12px;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif">
-              Remove
-            </button>
+          <div class="setup-item-actions">
+            <button class="action-btn danger" onclick="removeSquad('${sq.id}','${sq.name.replace(/'/g,"\\'")}')">Remove</button>
           </div>
         </div>`).join('')}
-      </div>
-    </div>` : ''}
+      </div>`:'<p style="font-size:12px;color:var(--smoke)">No squads yet.</p>'}
+    </div>
+  </div>
 
-    <!-- ACTIVE JPRS -->
-    <div class="card">
-      <div class="card-header">
-        <span>📋 Active JPRs</span>
-        <span style="font-weight:400;opacity:0.7;font-size:11px">${activeJprCodes.length} / ${JPRS.length} selected</span>
+  <!-- ADD CANDIDATE -->
+  <div class="card">
+    <div class="card-header">👤 Add Candidate</div>
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">Name <span class="req">*</span></label>
+        <input class="field-input" id="s-cname" placeholder="First Last">
       </div>
-      <div class="card-body" style="padding:0.75rem">
-        <div style="display:flex;gap:8px;margin-bottom:0.8rem;flex-wrap:wrap">
-          <button class="btn btn-sm btn-navy" onclick="selectAllJprs()">Select All</button>
-          <button class="btn btn-sm btn-outline" onclick="selectMandatory()">Mandatory Only</button>
-          <button class="btn btn-sm btn-outline" onclick="clearJprs()">Clear All</button>
-        </div>
-        <div>${jprChecklistHTML}</div>
+      <div class="field">
+        <label class="field-label">Agency (optional)</label>
+        <input class="field-input" id="s-cagency" placeholder="e.g. Westminster FD">
+      </div>
+      <div class="field">
+        <label class="field-label">Squad</label>
+        <select class="field-select" id="s-csquad">
+          <option value="">— No squad assigned —</option>
+          ${S.squads.map(sq=>`<option value="${sq.id}">${sq.name}</option>`).join('')}
+        </select>
+      </div>
+      <button class="btn btn-navy" style="margin-top:0.5rem" onclick="addCandidate()">＋ Add Candidate</button>
+    </div>
+  </div>
+
+  <!-- CANDIDATE LIST -->
+  ${S.candidates.length>0?`
+  <div class="card">
+    <div class="card-header"><span>Candidates (${S.candidates.length})</span></div>
+    <div style="padding:0.5rem">
+      ${S.candidates.map(c=>{
+        const sq = S.squads.find(s=>s.id===c.squad_id);
+        return `
+        <div class="setup-item">
+          <div style="flex:1;min-width:0">
+            <div class="setup-item-name">${c.name}</div>
+            <div class="setup-item-sub">${sq?sq.name+' · ':''}${c.agency||''}</div>
+          </div>
+          <div class="setup-item-actions">
+            <button class="action-btn" onclick="openReassignSquad('${c.id}','${c.name.replace(/'/g,"\\'")}')">Squad</button>
+            <button class="action-btn" onclick="openEditCandidate('${c.id}')">Edit</button>
+            <button class="action-btn danger" onclick="confirmRemoveCandidate('${c.id}','${c.name.replace(/'/g,"\\'")}');document.getElementById('modal-overlay').classList.add('open')">Remove</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`:''}
+
+  <!-- ACTIVE JPRS -->
+  <div class="card">
+    <div class="card-header">
+      <span>📋 Active JPRs for This Class</span>
+      <span style="font-weight:400;opacity:0.7;font-size:11px">${activeJprCodes.length}/${JPRS.length}</span>
+    </div>
+    <div class="card-body" style="padding:0.75rem">
+      <p style="font-size:12px;color:var(--smoke);margin-bottom:0.8rem">
+        Select which JPRs will appear in the Field and Grid tabs for this class. Deselect any that aren't being trained yet.
+      </p>
+      <div style="display:flex;gap:8px;margin-bottom:0.8rem;flex-wrap:wrap">
+        <button class="btn btn-sm btn-navy"    onclick="selectAllJprs()">Select All</button>
+        <button class="btn btn-sm btn-outline" onclick="selectMandatory()">Mandatory Only</button>
+        <button class="btn btn-sm btn-outline" onclick="clearAllJprs()">Clear All</button>
+      </div>
+      <div>${jprChecklistHTML}</div>
+    </div>
+  </div>
+
+  <!-- DANGER ZONE -->
+  <div class="card">
+    <div class="card-header" style="background:#7f0000">⚠️ Danger Zone</div>
+    <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">Clear all rep history. Candidates and squads remain.</p>
+        <button class="btn btn-danger" onclick="clearAllSessions()">Clear All Session History</button>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:10px">
+        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">Permanently delete this class, all squads, candidates, and history.</p>
+        <button class="btn btn-danger" onclick="deleteClass()">Delete Entire Class</button>
       </div>
     </div>
+  </div>` : ''}
 
-    <!-- DANGER ZONE -->
-    <div class="card">
-      <div class="card-header" style="background:#7f0000">⚠️ Danger Zone</div>
-      <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
-        <div>
-          <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">
-            Clear all attempt history for this class. Candidates remain.
-          </p>
-          <button class="btn btn-danger" onclick="clearAttempts()">Clear All Attempt History</button>
-        </div>
-        <div style="border-top:1px solid var(--border);padding-top:10px">
-          <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">
-            Permanently delete this class, all candidates, and all attempt history.
-          </p>
-          <button class="btn btn-danger" onclick="deleteClass()">Delete Entire Class</button>
-        </div>
-      </div>
-    </div>` : ''}
-
-    <div style="height:0.5rem"></div>`;
+  <div style="height:0.5rem"></div>`;
 }
 
 // ── Setup actions ──
@@ -942,196 +1041,249 @@ async function createClass() {
   const name      = document.getElementById('s-classname').value.trim();
   const startDate = document.getElementById('s-startdate').value;
   if (!name) { showToast('Class name is required'); return; }
-  if (!state.academyId) { showToast('Academy not found'); return; }
+  if (!S.academyId) { showToast('Academy not found — check Supabase'); return; }
   try {
     const result = await sb('classes', 'POST', {
-      academy_id: state.academyId,
-      name,
-      start_date: startDate || null,
+      academy_id: S.academyId, name,
+      start_date: startDate||null,
       certification_track: 'FF1',
-      active_jprs: JPRS.map(j => j.code),
+      active_jprs: JPRS.map(j=>j.code),
       active: true
     });
-    const newClass = Array.isArray(result) ? result[0] : result;
-    if (newClass) {
-      state.classes.unshift(newClass);
-      state.activeClass = newClass;
-      state.candidates  = [];
-      state.attempts    = [];
-      localStorage.setItem('nafa_active_class_id', newClass.id);
-      updateHeaderPill();
+    const cls = Array.isArray(result)?result[0]:result;
+    if (cls) {
+      S.classes.unshift(cls);
+      S.activeClass  = cls;
+      S.squads       = [];
+      S.candidates   = [];
+      S.attempts     = [];
+      S.lockedJpr    = null;
+      localStorage.setItem('nafa_class_id', cls.id);
+      updatePill();
       showToast('✅ Class created!');
       renderSetup();
     }
-  } catch(e) { showToast('⚠️ Error: ' + e.message); }
+  } catch(e) { showToast('⚠️ '+e.message); }
 }
 
 async function switchClass(id) {
   if (!id) return;
-  const found = state.classes.find(c => c.id === id);
+  const found = S.classes.find(c=>c.id===id);
   if (!found) return;
-  state.activeClass = found;
-  localStorage.setItem('nafa_active_class_id', id);
+  S.activeClass = found;
+  S.lockedJpr   = null;
+  localStorage.setItem('nafa_class_id', id);
   showSpinner('setup');
   await loadClassData();
-  updateHeaderPill();
+  updatePill();
   renderSetup();
 }
 
+async function addSquad() {
+  const name = document.getElementById('s-squadname').value.trim();
+  if (!name) { showToast('Enter a squad name'); return; }
+  try {
+    const result = await sb('squads', 'POST', { class_id: S.activeClass.id, name });
+    const sq = Array.isArray(result)?result[0]:result;
+    if (sq) { S.squads.push(sq); S.squads.sort((a,b)=>a.name.localeCompare(b.name)); }
+    document.getElementById('s-squadname').value = '';
+    showToast(`✅ ${name} added`);
+    renderSetup();
+  } catch(e) { showToast('⚠️ '+e.message); }
+}
+
+async function removeSquad(id, name) {
+  if (!confirm(`Remove squad "${name}"? Candidates will be unassigned but not deleted.`)) return;
+  try {
+    await sb(`squads?id=eq.${id}`, 'DELETE');
+    S.squads = S.squads.filter(s=>s.id!==id);
+    S.candidates.forEach(c=>{ if (c.squad_id===id) c.squad_id=null; });
+    showToast('Squad removed');
+    renderSetup();
+  } catch(e) { showToast('⚠️ '+e.message); }
+}
+
 async function addCandidate() {
-  const name   = document.getElementById('s-cname').value.trim();
-  const agency = document.getElementById('s-cagency').value.trim();
-  if (!name) { showToast('Enter a candidate name'); return; }
-  if (state.candidates.find(c => c.name.toLowerCase() === name.toLowerCase())) {
-    showToast('Candidate already exists'); return;
-  }
+  const name    = document.getElementById('s-cname').value.trim();
+  const agency  = document.getElementById('s-cagency').value.trim();
+  const squadId = document.getElementById('s-csquad').value||null;
+  if (!name) { showToast('Enter a name'); return; }
   try {
-    const result = await sb('candidates', 'POST', { class_id: state.activeClass.id, name, agency });
-    const newCand = Array.isArray(result) ? result[0] : result;
-    if (newCand) {
-      state.candidates.push(newCand);
-      state.candidates.sort((a,b) => a.name.localeCompare(b.name));
-      document.getElementById('s-cname').value   = '';
-      document.getElementById('s-cagency').value = '';
-      showToast(`✅ ${name} added`);
-      renderSetup();
+    const result = await sb('candidates', 'POST', {
+      class_id: S.activeClass.id, name,
+      agency: agency||null,
+      squad_id: squadId||null
+    });
+    const c = Array.isArray(result)?result[0]:result;
+    if (c) {
+      // Attach squad name for display
+      c.squads = S.squads.find(s=>s.id===c.squad_id) || null;
+      S.candidates.push(c);
+      S.candidates.sort((a,b)=>a.name.localeCompare(b.name));
     }
-  } catch(e) { showToast('⚠️ Error: ' + e.message); }
+    document.getElementById('s-cname').value   = '';
+    document.getElementById('s-cagency').value = '';
+    document.getElementById('s-csquad').value  = '';
+    showToast(`✅ ${name} added`);
+    renderSetup();
+  } catch(e) { showToast('⚠️ '+e.message); }
 }
 
-async function toggleJpr(code, checked) {
-  if (!state.activeClass) return;
-  const jprs = state.activeClass.active_jprs || JPRS.map(j => j.code);
-  const updated = checked ? [...jprs, code] : jprs.filter(c => c !== code);
-  await updateActiveJprs(updated);
-}
-
-async function selectAllJprs() {
-  await updateActiveJprs(JPRS.map(j => j.code)); renderSetup();
-}
-async function selectMandatory() {
-  await updateActiveJprs(JPRS.filter(j => j.mandatory).map(j => j.code)); renderSetup();
-}
-async function clearJprs() {
-  if (!confirm('Clear all active JPRs?')) return;
-  await updateActiveJprs([]); renderSetup();
-}
-
-async function updateActiveJprs(jprs) {
-  if (!state.activeClass) return;
-  try {
-    await sb(`classes?id=eq.${state.activeClass.id}`, 'PATCH', { active_jprs: jprs });
-    state.activeClass.active_jprs = jprs;
-  } catch(e) { showToast('⚠️ Save failed'); }
-}
-
-function confirmDeleteCandidate(id, name) {
-  document.getElementById('modal-title').textContent = 'Remove Candidate';
+function openReassignSquad(cid, name) {
+  document.getElementById('modal-title').textContent = 'Reassign Squad';
   document.getElementById('modal-body').innerHTML = `
-    <p style="font-size:14px;color:var(--ash);margin-bottom:1rem;line-height:1.6">
-      Are you sure you want to remove <strong>${name}</strong>?<br>
-      <span style="color:var(--fail);font-size:13px">All their attempt history will also be permanently deleted.</span>
-    </p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <p style="font-size:14px;margin-bottom:1rem">Move <strong>${name}</strong> to a different squad.</p>
+    <div class="field">
+      <label class="field-label">Squad</label>
+      <select class="field-select" id="reassign-squad">
+        <option value="">— No squad —</option>
+        ${S.squads.map(sq=>`<option value="${sq.id}">${sq.name}</option>`).join('')}
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.5rem">
       <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn" style="background:var(--fail);color:var(--white);border:none"
-        onclick="deleteCandidate('${id}')">Yes, Remove</button>
+      <button class="btn btn-navy" onclick="saveReassignSquad('${cid}')">Save</button>
     </div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
 
+async function saveReassignSquad(cid) {
+  const squadId = document.getElementById('reassign-squad').value || null;
+  try {
+    await sb(`candidates?id=eq.${cid}`, 'PATCH', { squad_id: squadId });
+    const idx = S.candidates.findIndex(c=>c.id===cid);
+    if (idx!==-1) {
+      S.candidates[idx].squad_id = squadId;
+      S.candidates[idx].squads   = S.squads.find(s=>s.id===squadId)||null;
+    }
+    closeModal();
+    showToast('✅ Squad updated');
+    renderSetup();
+  } catch(e) { showToast('⚠️ '+e.message); }
+}
+
 function openEditCandidate(id) {
-  const c = state.candidates.find(x => x.id === id);
+  const c = S.candidates.find(x=>x.id===id);
   if (!c) return;
   document.getElementById('modal-title').textContent = 'Edit Candidate';
   document.getElementById('modal-body').innerHTML = `
     <div class="field">
       <label class="field-label">Name <span class="req">*</span></label>
-      <input class="field-input" id="edit-cname" value="${c.name}" placeholder="Full name">
+      <input class="field-input" id="edit-name" value="${c.name}">
     </div>
     <div class="field">
       <label class="field-label">Agency</label>
-      <input class="field-input" id="edit-cagency" value="${c.agency || ''}" placeholder="e.g. Westminster FD">
+      <input class="field-input" id="edit-agency" value="${c.agency||''}">
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.5rem">
       <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-navy" onclick="saveEditCandidate('${id}')">Save Changes</button>
+      <button class="btn btn-navy" onclick="saveEditCandidate('${id}')">Save</button>
     </div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
 
 async function saveEditCandidate(id) {
-  const name   = document.getElementById('edit-cname').value.trim();
-  const agency = document.getElementById('edit-cagency').value.trim();
-  if (!name) { showToast('Name is required'); return; }
+  const name   = document.getElementById('edit-name').value.trim();
+  const agency = document.getElementById('edit-agency').value.trim();
+  if (!name) { showToast('Name required'); return; }
   try {
-    await sb(`candidates?id=eq.${id}`, 'PATCH', { name, agency });
-    const idx = state.candidates.findIndex(c => c.id === id);
-    if (idx !== -1) { state.candidates[idx].name = name; state.candidates[idx].agency = agency; }
-    state.candidates.sort((a,b) => a.name.localeCompare(b.name));
+    await sb(`candidates?id=eq.${id}`, 'PATCH', {name, agency:agency||null});
+    const idx = S.candidates.findIndex(c=>c.id===id);
+    if (idx!==-1) { S.candidates[idx].name=name; S.candidates[idx].agency=agency||null; }
+    S.candidates.sort((a,b)=>a.name.localeCompare(b.name));
     closeModal();
-    showToast('✅ Candidate updated');
+    showToast('✅ Updated');
     renderSetup();
-  } catch(e) { showToast('⚠️ Save failed: ' + e.message); }
+  } catch(e) { showToast('⚠️ '+e.message); }
+}
+
+async function toggleJpr(code, checked) {
+  if (!S.activeClass) return;
+  const cur = S.activeClass.active_jprs || JPRS.map(j=>j.code);
+  const upd = checked ? [...cur,code] : cur.filter(c=>c!==code);
+  try {
+    await sb(`classes?id=eq.${S.activeClass.id}`, 'PATCH', {active_jprs: upd});
+    S.activeClass.active_jprs = upd;
+  } catch(e) { showToast('⚠️ Save failed'); }
+}
+
+async function selectAllJprs() {
+  await setActiveJprs(JPRS.map(j=>j.code)); renderSetup();
+}
+async function selectMandatory() {
+  await setActiveJprs(JPRS.filter(j=>j.mandatory).map(j=>j.code)); renderSetup();
+}
+async function clearAllJprs() {
+  if (!confirm('Clear all active JPRs?')) return;
+  await setActiveJprs([]); renderSetup();
+}
+async function setActiveJprs(jprs) {
+  if (!S.activeClass) return;
+  try {
+    await sb(`classes?id=eq.${S.activeClass.id}`, 'PATCH', {active_jprs: jprs});
+    S.activeClass.active_jprs = jprs;
+  } catch(e) { showToast('⚠️ Save failed'); }
+}
+
+async function clearAllSessions() {
+  if (!confirm('Clear ALL session history? Candidates remain but all rep data will be deleted.')) return;
+  try {
+    if (S.candidates.length) {
+      await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})`, 'DELETE');
+    }
+    S.attempts = [];
+    showToast('Session history cleared');
+  } catch(e) { showToast('⚠️ '+e.message); }
 }
 
 async function deleteClass() {
-  if (!state.activeClass) return;
-  const className = state.activeClass.name;
-  if (!confirm(`Delete "${className}"?\n\nThis will permanently delete the class, all candidates, and all attempt history. This cannot be undone.`)) return;
-  if (!confirm(`Are you absolutely sure? "${className}" and everything in it will be gone.`)) return;
+  if (!S.activeClass) return;
+  const name = S.activeClass.name;
+  if (!confirm(`Delete "${name}"?\n\nThis permanently deletes the class, all squads, candidates, and rep history.`)) return;
+  if (!confirm(`Are you absolutely sure? This cannot be undone.`)) return;
   try {
-    const cid = state.activeClass.id;
-    if (state.candidates.length) {
-      await sb(`attempts?candidate_id=in.(${state.candidates.map(c=>c.id).join(',')})`, 'DELETE');
-      await sb(`candidates?class_id=eq.${cid}`, 'DELETE');
-    }
+    const cid = S.activeClass.id;
+    if (S.candidates.length)
+      await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})`, 'DELETE');
+    await sb(`candidates?class_id=eq.${cid}`, 'DELETE');
+    await sb(`squads?class_id=eq.${cid}`, 'DELETE');
     await sb(`classes?id=eq.${cid}`, 'DELETE');
-    state.classes     = state.classes.filter(c => c.id !== cid);
-    state.activeClass = null;
-    state.candidates  = [];
-    state.attempts    = [];
-    localStorage.removeItem('nafa_active_class_id');
-    updateHeaderPill();
-    showToast(`"${className}" deleted`);
+    S.classes      = S.classes.filter(c=>c.id!==cid);
+    S.activeClass  = null;
+    S.squads       = [];
+    S.candidates   = [];
+    S.attempts     = [];
+    S.lockedJpr    = null;
+    localStorage.removeItem('nafa_class_id');
+    updatePill();
+    showToast(`"${name}" deleted`);
     renderSetup();
-  } catch(e) { showToast('⚠️ Delete failed: ' + e.message); }
-}
-
-async function clearAttempts() {
-  if (!confirm('Clear ALL attempt history? This cannot be undone.')) return;
-  try {
-    if (state.candidates.length) {
-      await sb(`attempts?candidate_id=in.(${state.candidates.map(c=>c.id).join(',')})`, 'DELETE');
-    }
-    state.attempts = [];
-    showToast('Attempt history cleared');
-    renderSetup();
-  } catch(e) { showToast('⚠️ Error: ' + e.message); }
+  } catch(e) { showToast('⚠️ '+e.message); }
 }
 
 // ══════════════════════════════════════════════
-// MODAL HELPERS
+// HELPERS
 // ══════════════════════════════════════════════
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+function getActiveJprs() {
+  const codes = S.activeClass?.active_jprs || JPRS.map(j=>j.code);
+  return JPRS.filter(j=>codes.includes(j.code));
+}
 
-// ══════════════════════════════════════════════
-// UTILITIES
-// ══════════════════════════════════════════════
-function noClassHTML() {
-  return `<div class="no-class"><div class="no-class-icon">🏫</div>
-    <div class="no-class-text">No active class selected.</div>
-    <button class="btn btn-gold" onclick="showTab('setup')">Go to Setup</button></div>`;
+function noClassHTML(msg='No class selected.', tab='setup') {
+  return `<div class="no-class">
+    <div class="no-class-icon">🏫</div>
+    <div class="no-class-text">${msg}</div>
+    <button class="btn btn-gold" onclick="showTab('${tab}')">Go to Setup</button>
+  </div>`;
 }
 
 function showSpinner(tab) {
-  document.getElementById(tab + '-content').innerHTML =
+  document.getElementById(tab+'-content').innerHTML =
     `<div class="spinner-wrap"><div class="spinner"></div></div>`;
 }
 
 function showError(tab, msg) {
-  document.getElementById(tab + '-content').innerHTML =
+  document.getElementById(tab+'-content').innerHTML =
     `<div class="empty-state"><div class="empty-icon">⚠️</div><div>${msg}</div></div>`;
 }
 
@@ -1139,8 +1291,11 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(()=>t.classList.remove('show'), 2500);
 }
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
 
 // ══════════════════════════════════════════════
 // START
