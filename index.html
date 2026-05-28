@@ -257,19 +257,27 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modal-inner">
     <div class="modal-handle"></div>
-    <div class="modal-header">
-      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-        <button class="modal-close" onclick="closeModal()" title="Close">✕</button>
-        <div class="modal-title" id="modal-title" style="font-size:1.2rem">Detail</div>
+    <!-- NAV ROW -->
+    <div style="display:flex;align-items:center;justify-content:space-between;
+      padding:0.8rem 1.2rem 0.4rem;gap:10px;border-bottom:1px solid var(--border)">
+      <button onclick="closeModal()"
+        style="background:var(--paper);border:1px solid var(--border);border-radius:8px;
+        font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--smoke);
+        padding:8px 14px;cursor:pointer;white-space:nowrap">
+        ✕ Close
+      </button>
+      <div class="modal-title" id="modal-title"
+        style="font-size:1.1rem;text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        Detail
       </div>
       <button onclick="closeModal();showTab('roster')"
-        style="background:rgba(26,26,46,0.08);border:1px solid var(--border);border-radius:6px;
-        font-size:12px;font-weight:600;padding:5px 10px;cursor:pointer;color:var(--navy);
-        font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0">
+        style="background:var(--navy);border:none;border-radius:8px;
+        font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--white);
+        padding:8px 14px;cursor:pointer;white-space:nowrap">
         🏠 Home
       </button>
     </div>
-    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-body" style="padding:1rem 1.2rem 1.2rem" id="modal-body"></div>
   </div>
 </div>
 
@@ -743,10 +751,11 @@ function openJprHistory(cid, jprCode) {
 
   document.getElementById('modal-title').textContent = jprCode;
   document.getElementById('modal-body').innerHTML = `
-    <button class="back-btn" onclick="openCandidateModal('${cid}')"
-      style="background:var(--paper);border:1px solid var(--border);border-radius:8px;
-      padding:8px 14px;margin-bottom:1rem;font-size:13px;font-weight:600;
-      color:var(--navy);display:flex;align-items:center;gap:6px">
+    <button onclick="openCandidateModal('${cid}')"
+      style="width:100%;background:var(--paper);border:1px solid var(--border);border-radius:8px;
+      padding:12px;margin-bottom:1rem;font-size:14px;font-weight:600;
+      color:var(--navy);display:flex;align-items:center;justify-content:center;gap:6px;
+      font-family:'DM Sans',sans-serif;cursor:pointer">
       ‹ Back to ${c.name}
     </button>
 
