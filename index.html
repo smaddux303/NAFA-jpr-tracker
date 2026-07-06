@@ -236,7 +236,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ash);
   <div class="header-row1">
     <div>
       <div class="app-title">NAFA <span>JPR</span></div>
-      <div class="app-sub">North Area Fire Academy · FF I · Colorado DFPC</div>
+      <div class="app-sub">Colorado DFPC · FF I</div>
     </div>
     <button class="squad-selector" onclick="openSquadSwitcher()">
       <div>
@@ -245,6 +245,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ash);
       </div>
       <span style="color:var(--gold);margin-left:4px">▾</span>
     </button>
+  </div>
+  <div style="display:flex;gap:6px;padding-bottom:7px">
+    <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.07);
+      border-radius:6px;padding:3px 8px;flex-shrink:0">
+      <span style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.07em">Class</span>
+      <span style="font-size:11px;font-weight:600;color:var(--gold)" id="class-pill">None selected</span>
+    </div>
   </div>
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-log"       onclick="showTab('log')">📋 Log</button>
@@ -500,7 +507,7 @@ const DEFAULT_CUSTOM_SKILLS=[
 function jprByCode(c){return JPRS.find(j=>j.code===c)}
 
 let S={
-  academyId:null,activeClass:null,classes:[],
+  academyId:null,academyName:null,activeClass:null,classes:[],
   squads:[],candidates:[],attempts:[],customSkills:[],
   selectedSquadId:'all',
   lockedSkill:null,lockedSkillType:null,
@@ -515,8 +522,8 @@ let S={
 async function init(){
   showSpinner('log');
   try{
-    const acs=await sb('academies?name=eq.North%20Area%20Fire%20Academy&select=id');
-    if(acs?.length) S.academyId=acs[0].id;
+    const acs=await sb('academies?name=eq.North%20Area%20Fire%20Academy&select=id,name');
+    if(acs?.length){S.academyId=acs[0].id;S.academyName=acs[0].name;}
     await loadClasses();
     const stored=localStorage.getItem('nafa_class_id');
     if(stored){const f=S.classes.find(c=>c.id===stored);if(f){S.activeClass=f;await loadClassData();}}
@@ -562,6 +569,12 @@ function showTab(name){
 function updateSquadPill(){
   const sq=S.squads.find(s=>s.id===S.selectedSquadId);
   document.getElementById('squad-pill').textContent=sq?sq.name:S.selectedSquadId==='all'?'All Squads':'None';
+  // Academy pill — pull name from academy record if available, fallback to hardcoded
+  const academyEl=document.getElementById('academy-pill');
+  if(academyEl) academyEl.textContent=S.academyName||'North Area Fire Academy';
+  // Class pill
+  const classEl=document.getElementById('class-pill');
+  if(classEl) classEl.textContent=S.activeClass?S.activeClass.name:'None selected';
 }
 
 function openSquadSwitcher(){
