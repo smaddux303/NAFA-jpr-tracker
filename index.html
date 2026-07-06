@@ -13,987 +13,1433 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ash: #2C2C2A; --smoke: #5F5E5A; --mist: #B4B2A9;
-  --paper: #F4F3EF; --white: #FFFFFF; --border: rgba(44,44,42,0.12); --radius: 12px;
-  --navy: #1A1A2E; --gold: #E8B84B;
-  --good: #2E7D32; --good-pale: #E8F5E9;
-  --warn: #C62828; --warn-pale: #FFEBEE;
-  --info: #1565C0; --info-pale: #E3F2FD;
+:root{
+  --ash:#2C2C2A;--smoke:#5F5E5A;--mist:#B4B2A9;
+  --paper:#F4F3EF;--white:#FFFFFF;--border:rgba(44,44,42,0.12);--radius:12px;
+  --navy:#1A1A2E;--gold:#E8B84B;
+  --good:#2E7D32;--good-pale:#E8F5E9;
+  --warn:#C62828;--warn-pale:#FFEBEE;
+  --info:#1565C0;--info-pale:#E3F2FD;
+  --custom:#6A1B9A;--custom-pale:#F3E5F5;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; }
-body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ash);
-  padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
-
-/* ── HEADER ── */
-.app-header { background: var(--navy); padding: calc(env(safe-area-inset-top) + 0.9rem) 1.2rem 0;
-  position: sticky; top: 0; z-index: 100; }
-.app-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin-bottom: 0.7rem; }
-.app-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.05em; color: var(--white); line-height: 1; }
-.app-title span { color: var(--gold); }
-.app-sub { font-size: 10px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; }
-.class-pill { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 4px 12px;
-  font-size: 11px; font-weight: 600; color: var(--gold); cursor: pointer;
-  white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; border: none; }
-.tab-bar { display: flex; border-top: 1px solid rgba(255,255,255,0.08); }
-.tab-btn { flex: 1; padding: 9px 0; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.4);
-  background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
-.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
-
-/* ── SCREENS ── */
-.screen { display: none; padding: 1rem; max-width: 680px; margin: 0 auto; }
-.screen.active { display: block; }
-
-/* ── CARDS ── */
-.card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 1rem; overflow: hidden; }
-.card-header { padding: 0.7rem 1rem; background: var(--navy); color: var(--white);
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  display: flex; align-items: center; justify-content: space-between; }
-.card-body { padding: 1rem; }
-
-/* ── FORM ── */
-.field { margin-bottom: 0.85rem; }
-.field:last-child { margin-bottom: 0; }
-.field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
-  color: var(--smoke); margin-bottom: 5px; display: block; }
-.req { color: var(--warn); }
-.field-input, .field-select, .field-textarea {
-  width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
-  background: var(--paper); color: var(--ash); font-family: 'DM Sans', sans-serif; font-size: 15px;
-  -webkit-appearance: none; transition: border-color 0.15s; }
-.field-input:focus, .field-select:focus, .field-textarea:focus {
-  outline: none; border-color: var(--gold); background: var(--white); }
-.field-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235F5E5A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-.field-textarea { resize: none; min-height: 70px; font-size: 14px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-/* ── BUTTONS ── */
-.btn { width: 100%; padding: 13px; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
-.btn:active { opacity: 0.8; }
-.btn-navy   { background: var(--navy); color: var(--white); }
-.btn-gold   { background: var(--gold); color: var(--navy); }
-.btn-good   { background: var(--good); color: var(--white); }
-.btn-danger { background: none; border: 1px solid rgba(198,40,40,0.3); color: var(--warn); font-size: 13px; padding: 10px; }
-.btn-sm     { padding: 7px 14px; font-size: 12px; width: auto; border-radius: 8px; }
-.btn-outline { background: none; border: 1px solid var(--border); color: var(--smoke); font-size: 13px; padding: 8px 14px; width: auto; border-radius: 8px; }
-
-/* ── LOCKED JPR BANNER ── */
-.locked-jpr { background: var(--navy); border-radius: var(--radius); padding: 0.9rem 1rem;
-  margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.locked-jpr-left {}
-.locked-jpr-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
-.locked-jpr-code  { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--gold); line-height: 1; }
-.locked-jpr-name  { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
-.locked-jpr-change { background: rgba(255,255,255,0.1); border: none; border-radius: 8px;
-  color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
-  padding: 6px 12px; cursor: pointer; flex-shrink: 0; }
-
-/* ── REP COUNTER ── */
-.rep-counter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
-.rep-box { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
-  padding: 0.8rem; text-align: center; }
-.rep-box-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--smoke); margin-bottom: 8px; }
-.rep-box-controls { display: flex; align-items: center; justify-content: center; gap: 12px; }
-.rep-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border);
-  background: var(--paper); font-size: 20px; font-weight: 700; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; line-height: 1;
-  color: var(--ash); transition: all 0.15s; }
-.rep-btn:active { background: var(--navy); color: var(--white); border-color: var(--navy); }
-.rep-value { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--ash); line-height: 1; min-width: 40px; }
-.rep-box.success .rep-btn:active { background: var(--good); border-color: var(--good); }
-.rep-box.success .rep-value { color: var(--good); }
-
-/* ── LOG BTN ── */
-.log-session-btn { width: 100%; padding: 16px; background: var(--good); color: var(--white);
-  border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
-  font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
-  display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1rem; }
-.log-session-btn:active { opacity: 0.8; }
-
-/* ── RECENT LOG ── */
-.section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--smoke); font-weight: 600; margin-bottom: 0.7rem; }
-.log-list { display: flex; flex-direction: column; gap: 8px; }
-.log-item { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
-  padding: 0.75rem 1rem; display: flex; align-items: center; gap: 10px; }
-.log-bar { width: 4px; border-radius: 2px; align-self: stretch; flex-shrink: 0; }
-.log-text { flex: 1; font-size: 13px; line-height: 1.5; min-width: 0; }
-.log-time { font-size: 11px; color: var(--smoke); flex-shrink: 0; }
-.log-del  { background: none; border: none; font-size: 16px; color: var(--mist); cursor: pointer; padding: 2px 4px; flex-shrink: 0; }
-.log-del:active { color: var(--warn); }
-
-/* ── STAT CHIPS ── */
-.stat-chip { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; display: inline-block; }
-.chip-good { background: var(--good-pale); color: var(--good); }
-.chip-warn { background: var(--warn-pale); color: var(--warn); }
-.chip-info { background: var(--info-pale); color: var(--info); }
-.chip-mist { background: #F0EFE9; color: var(--smoke); }
-
-/* ── CANDIDATE LIST ── */
-.candidate-list { display: flex; flex-direction: column; gap: 8px; }
-.candidate-row { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
-  padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between;
-  gap: 10px; cursor: pointer; transition: border-color 0.15s; }
-.candidate-row:active { border-color: var(--gold); }
-.candidate-name   { font-weight: 700; font-size: 14px; }
-.candidate-meta   { font-size: 11px; color: var(--smoke); margin-top: 2px; }
-.candidate-stats  { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
-
-/* ── GRID ── */
-.grid-scroll { overflow-x: auto; margin-bottom: 1rem; border-radius: var(--radius); border: 1px solid var(--border); }
-.jpr-grid { border-collapse: collapse; font-size: 12px; min-width: 100%; background: var(--white); }
-.jpr-grid th { background: var(--navy); color: rgba(255,255,255,0.7); padding: 6px 8px;
-  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; white-space: nowrap; }
-.jpr-grid th.sticky-col { text-align: left; min-width: 120px; position: sticky; left: 0; z-index: 2; }
-.jpr-grid th.jpr-col { min-width: 60px; text-align: center; }
-.jpr-grid td { padding: 5px 4px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-.jpr-grid td.sticky-col { font-weight: 600; font-size: 12px; background: var(--white);
-  position: sticky; left: 0; z-index: 1; white-space: nowrap; padding: 5px 8px; }
-.jpr-grid tr:nth-child(even) td { background: #FAFAF8; }
-.jpr-grid tr:nth-child(even) td.sticky-col { background: #FAFAF8; }
-.jpr-cell-inner { display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 34px; padding: 2px; }
-.jpr-reps { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; line-height: 1; }
-.jpr-success { font-size: 9px; color: var(--smoke); }
-
-/* ── SETUP ITEMS ── */
-.setup-item { display: flex; align-items: center; justify-content: space-between;
-  padding: 9px 10px; border-bottom: 1px solid var(--border); gap: 8px; }
-.setup-item:last-child { border-bottom: none; }
-.setup-item-name { font-weight: 600; font-size: 13px; }
-.setup-item-sub  { font-size: 11px; color: var(--smoke); margin-top: 1px; }
-.setup-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.action-btn { background: var(--paper); border: 1px solid var(--border); border-radius: 6px;
-  color: var(--smoke); font-size: 12px; padding: 4px 10px; cursor: pointer;
-  font-family: 'DM Sans', sans-serif; white-space: nowrap; }
-.action-btn.danger { background: var(--warn-pale); border-color: rgba(198,40,40,0.2); color: var(--warn); }
-
-/* ── JPR CHECKLIST ── */
-.jpr-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--gold); background: var(--navy); padding: 5px 10px; border-radius: 4px; margin: 0.6rem 0 0.4rem; }
-.jpr-check-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 10px;
-  background: var(--paper); border-radius: 8px; cursor: pointer; margin-bottom: 4px; }
-.jpr-check-item input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--navy); flex-shrink: 0; margin-top: 1px; }
-.jpr-check-label { font-size: 13px; line-height: 1.3; }
-.jpr-code-badge { font-weight: 700; color: var(--navy); font-size: 11px; display: block; margin-bottom: 1px; }
-.mandatory-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  background: var(--warn-pale); color: var(--warn); padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
-
-/* ── MODAL ── */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200;
-  display: none; align-items: flex-end; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--white); border-radius: var(--radius) var(--radius) 0 0; width: 100%;
-  max-width: 680px; max-height: 75vh; overflow-y: auto;
-  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
-.modal-nav { display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding: 0.8rem 1.2rem 0.8rem; border-bottom: 1px solid var(--border);
-  background: var(--white); position: sticky; top: 0; z-index: 10; }
-.modal-nav-btn { background: var(--paper); border: 1px solid var(--border); border-radius: 8px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--smoke);
-  padding: 9px 16px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-.modal-nav-btn.primary { background: var(--navy); border-color: var(--navy); color: var(--white); }
-.modal-nav-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--ash);
-  text-align: center; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* ── BACK BUTTON ── */
-.back-btn { background: none; border: none; color: var(--smoke); font-size: 13px; font-weight: 600;
-  cursor: pointer; padding: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 4px;
-  font-family: 'DM Sans', sans-serif; }
-.back-btn:active { color: var(--navy); }
-
-/* ── NO CLASS / EMPTY ── */
-.no-class { background: var(--white); border-radius: var(--radius); border: 2px dashed var(--border);
-  padding: 2rem; text-align: center; margin: 0.5rem 0 1rem; }
-.no-class-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.no-class-text { font-size: 14px; color: var(--smoke); margin-bottom: 1rem; line-height: 1.5; }
-.empty-state { text-align: center; padding: 2rem 1rem; color: var(--smoke); font-size: 14px; }
-.empty-icon  { font-size: 2.5rem; margin-bottom: 0.5rem; }
-.spinner-wrap { text-align: center; padding: 2.5rem; }
-.spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--gold);
-  border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── TOAST ── */
-.toast { position: fixed; bottom: calc(84px + env(safe-area-inset-bottom)); left: 50%;
-  transform: translateX(-50%) translateY(20px); background: var(--ash); color: var(--white);
-  padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600;
-  opacity: 0; transition: all 0.3s; pointer-events: none; white-space: nowrap; z-index: 300; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ── INFO NOTE ── */
-.info-note { background: var(--info-pale); border: 1px solid rgba(21,101,192,0.2); border-radius: var(--radius);
-  padding: 0.8rem 1rem; font-size: 12px; color: #0D47A1; line-height: 1.5; margin-bottom: 1rem; }
-
-/* ── SQUAD BADGE ── */
-.squad-badge { display: inline-block; background: var(--navy); color: var(--gold);
-  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ash);
+  padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+.app-header{background:var(--navy);padding:calc(env(safe-area-inset-top) + 0.75rem) 1rem 0;
+  position:sticky;top:0;z-index:100}
+.header-row1{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.app-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.05em;color:var(--white);line-height:1}
+.app-title span{color:var(--gold)}
+.app-sub{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em}
+.squad-selector{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);
+  border-radius:20px;padding:5px 12px;cursor:pointer;border:none;max-width:200px}
+.squad-selector-label{font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap}
+.squad-selector-name{font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.tab-bar{display:flex;border-top:1px solid rgba(255,255,255,0.08)}
+.tab-btn{flex:1;padding:8px 0;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.04em;color:rgba(255,255,255,0.4);
+  background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.screen{display:none;padding:1rem;max-width:680px;margin:0 auto}
+.screen.active{display:block}
+.card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:1rem;overflow:hidden}
+.card-header{padding:0.6rem 1rem;background:var(--navy);color:var(--white);
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+  display:flex;align-items:center;justify-content:space-between}
+.card-body{padding:1rem}
+.field{margin-bottom:0.8rem}
+.field:last-child{margin-bottom:0}
+.field-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;
+  color:var(--smoke);margin-bottom:5px;display:block}
+.req{color:var(--warn)}
+.field-input,.field-select,.field-textarea{
+  width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--paper);color:var(--ash);font-family:'DM Sans',sans-serif;font-size:15px;
+  -webkit-appearance:none;transition:border-color 0.15s}
+.field-input:focus,.field-select:focus,.field-textarea:focus{outline:none;border-color:var(--gold);background:var(--white)}
+.field-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235F5E5A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.field-textarea{resize:none;min-height:60px;font-size:14px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;padding:13px;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.15s}
+.btn:active{opacity:0.8}
+.btn-navy{background:var(--navy);color:var(--white)}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-good{background:var(--good);color:var(--white)}
+.btn-custom{background:var(--custom);color:var(--white)}
+.btn-danger{background:none;border:1px solid rgba(198,40,40,0.3);color:var(--warn);font-size:13px;padding:10px}
+.btn-sm{padding:7px 14px;font-size:12px;width:auto;border-radius:8px}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--smoke);font-size:13px;padding:8px 14px;width:auto;border-radius:8px}
+.locked-banner{background:var(--navy);border-radius:var(--radius);padding:0.8rem 1rem;
+  margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.locked-banner.custom-skill{background:var(--custom)}
+.locked-code{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);line-height:1}
+.locked-name{font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px}
+.locked-label{font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.5);margin-bottom:2px}
+.locked-change{background:rgba(255,255,255,0.1);border:none;border-radius:8px;
+  color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  padding:6px 12px;cursor:pointer;flex-shrink:0}
+.candidate-check-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
+.candidate-check-row{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  background:var(--paper);border-radius:8px;cursor:pointer}
+.candidate-check-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--navy);flex-shrink:0}
+.candidate-check-name{font-size:14px;font-weight:600;flex:1}
+.candidate-check-meta{font-size:11px;color:var(--smoke)}
+.select-all-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem}
+.select-all-btn{background:none;border:1px solid var(--border);border-radius:6px;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--smoke);
+  padding:5px 12px;cursor:pointer}
+.select-all-btn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.rep-counter-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rep-box{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:0.75rem;text-align:center}
+.rep-box-label{font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke);margin-bottom:6px}
+.rep-controls{display:flex;align-items:center;justify-content:center;gap:10px}
+.rep-btn{width:34px;height:34px;border-radius:50%;border:2px solid var(--border);
+  background:var(--paper);font-size:20px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--ash);transition:all 0.15s}
+.rep-btn:active{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.rep-value{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:1;min-width:36px;color:var(--ash)}
+.rep-value.success{color:var(--good)}
+.individual-rep-row{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:0.75rem 1rem;margin-bottom:8px}
+.individual-rep-name{font-weight:700;font-size:13px;margin-bottom:8px;color:var(--navy)}
+.log-btn{width:100%;padding:15px;background:var(--good);color:var(--white);
+  border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;
+  font-size:16px;font-weight:700;cursor:pointer;margin-bottom:1rem}
+.log-btn:active{opacity:0.8}
+.sig-canvas{width:100%;height:120px;border:1px solid var(--border);border-radius:8px;
+  background:var(--white);touch-action:none;cursor:crosshair}
+.sig-controls{display:flex;gap:8px;margin-top:6px;align-items:center}
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--smoke);font-weight:600;margin-bottom:0.6rem}
+.log-list{display:flex;flex-direction:column;gap:8px}
+.log-item{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);
+  padding:0.75rem 1rem;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color 0.15s}
+.log-item:active{border-color:var(--gold)}
+.log-bar{width:4px;border-radius:2px;align-self:stretch;flex-shrink:0}
+.log-text{flex:1;font-size:13px;line-height:1.5;min-width:0}
+.log-meta{font-size:11px;color:var(--smoke);flex-shrink:0;text-align:right}
+.log-del{background:none;border:none;font-size:16px;color:var(--mist);cursor:pointer;padding:2px 4px;flex-shrink:0}
+.log-del:active{color:var(--warn)}
+.chip{font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;display:inline-block}
+.chip-good{background:var(--good-pale);color:var(--good)}
+.chip-warn{background:var(--warn-pale);color:var(--warn)}
+.chip-info{background:var(--info-pale);color:var(--info)}
+.chip-custom{background:var(--custom-pale);color:var(--custom)}
+.chip-mist{background:#F0EFE9;color:var(--smoke)}
+.candidate-list{display:flex;flex-direction:column;gap:8px}
+.candidate-row{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);
+  padding:0.85rem 1rem;display:flex;align-items:center;gap:10px;cursor:pointer}
+.candidate-row:active{border-color:var(--gold)}
+.candidate-name{font-weight:700;font-size:14px}
+.candidate-meta{font-size:11px;color:var(--smoke);margin-top:2px}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;transition:width 0.4s}
+.squad-badge{display:inline-block;background:var(--navy);color:var(--gold);
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+.grid-scroll{overflow-x:auto;margin-bottom:1rem;border-radius:var(--radius);border:1px solid var(--border)}
+.jpr-grid{border-collapse:collapse;font-size:11px;min-width:100%;background:var(--white)}
+.jpr-grid th{background:var(--navy);color:rgba(255,255,255,0.7);padding:5px 6px;
+  font-size:9px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;white-space:nowrap}
+.jpr-grid th.custom-th{background:var(--custom)}
+.jpr-grid th.sticky-col{text-align:left;min-width:110px;position:sticky;left:0;z-index:2}
+.jpr-grid th.jpr-col{min-width:52px;text-align:center}
+.jpr-grid td{padding:4px 3px;border-bottom:1px solid var(--border);vertical-align:middle}
+.jpr-grid td.sticky-col{font-weight:600;font-size:11px;background:var(--white);
+  position:sticky;left:0;z-index:1;white-space:nowrap;padding:4px 8px}
+.jpr-grid tr:nth-child(even) td{background:#FAFAF8}
+.jpr-grid tr:nth-child(even) td.sticky-col{background:#FAFAF8}
+.jpr-cell{text-align:center}
+.jpr-cell-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:30px;padding:2px}
+.jpr-reps{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;line-height:1}
+.jpr-pct{font-size:9px}
+.ref-jpr-item{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);
+  margin-bottom:8px;overflow:hidden;cursor:pointer}
+.ref-jpr-header{padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ref-jpr-code{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--navy);line-height:1}
+.ref-jpr-name{font-size:13px;color:var(--ash);flex:1}
+.ref-section-header{background:var(--navy);color:var(--gold);font-family:'Bebas Neue',sans-serif;
+  font-size:1rem;padding:8px 12px;letter-spacing:0.05em;margin-bottom:6px;border-radius:8px}
+.mandatory-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;
+  background:var(--warn-pale);color:var(--warn);padding:1px 5px;border-radius:3px;margin-left:4px}
+.ref-detail-row{margin-bottom:0.8rem}
+.ref-detail-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--smoke);font-weight:600;margin-bottom:3px}
+.ref-detail-value{font-size:13px;color:var(--ash);line-height:1.6}
+.task-step{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
+.task-step:last-child{border-bottom:none}
+.task-step-num{font-weight:700;color:var(--navy);flex-shrink:0;min-width:24px}
+.task-step-sub{font-size:11px;color:var(--smoke);padding-left:32px;margin-top:2px}
+.setup-item{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 10px;border-bottom:1px solid var(--border);gap:8px;cursor:pointer}
+.setup-item:last-child{border-bottom:none}
+.setup-item-name{font-weight:600;font-size:13px}
+.setup-item-sub{font-size:11px;color:var(--smoke);margin-top:1px}
+.action-btn{background:var(--paper);border:1px solid var(--border);border-radius:6px;
+  color:var(--smoke);font-size:12px;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.action-btn.danger{background:var(--warn-pale);border-color:rgba(198,40,40,0.2);color:var(--warn)}
+.jpr-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--gold);background:var(--navy);padding:4px 10px;border-radius:4px;margin:0.5rem 0 0.3rem}
+.jpr-check-item{display:flex;align-items:flex-start;gap:10px;padding:6px 10px;
+  background:var(--paper);border-radius:8px;cursor:pointer;margin-bottom:3px}
+.jpr-check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--navy);flex-shrink:0;margin-top:1px}
+.jpr-check-label{font-size:13px;line-height:1.3}
+.jpr-code-badge{font-weight:700;color:var(--navy);font-size:11px;display:block;margin-bottom:1px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;
+  display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:var(--radius) var(--radius) 0 0;width:100%;
+  max-width:680px;max-height:85vh;overflow-y:auto;
+  padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}
+.modal-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:0.75rem 1rem;border-bottom:1px solid var(--border);
+  background:var(--white);position:sticky;top:0;z-index:10}
+.modal-nav-btn{background:var(--paper);border:1px solid var(--border);border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--smoke);
+  padding:8px 14px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.modal-nav-btn.primary{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.modal-nav-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--ash);
+  text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modal-body{padding:1rem 1.2rem 1.2rem}
+.back-btn{width:100%;background:var(--paper);border:1px solid var(--border);border-radius:8px;
+  padding:10px;margin-bottom:1rem;font-size:13px;font-weight:600;color:var(--navy);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-family:'DM Sans',sans-serif;cursor:pointer}
+.detail-row{margin-bottom:0.75rem}
+.detail-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--smoke);font-weight:600;margin-bottom:2px}
+.detail-value{font-size:14px;color:var(--ash);line-height:1.5}
+.no-class{background:var(--white);border-radius:var(--radius);border:2px dashed var(--border);
+  padding:2rem;text-align:center;margin:0.5rem 0 1rem}
+.empty-state{text-align:center;padding:2rem 1rem;color:var(--smoke);font-size:14px}
+.empty-icon{font-size:2.5rem;margin-bottom:0.5rem}
+.spinner-wrap{text-align:center;padding:2.5rem}
+.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--gold);
+  border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:50%;
+  transform:translateX(-50%) translateY(20px);background:var(--ash);color:var(--white);
+  padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;
+  opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;z-index:300}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.filter-row{display:flex;gap:8px;margin-bottom:1rem;overflow-x:auto;padding-bottom:2px}
+.filter-btn{padding:7px 14px;border:1px solid var(--border);border-radius:8px;
+  background:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  color:var(--smoke);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.filter-btn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.stat-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:0.75rem;text-align:center}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;color:var(--navy)}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke);margin-top:2px}
 </style>
 </head>
 <body>
-
 <div class="app-header">
-  <div class="app-header-inner">
+  <div class="header-row1">
     <div>
-      <div class="app-title">NAFA <span>JPR</span> Tracker</div>
+      <div class="app-title">NAFA <span>JPR</span></div>
       <div class="app-sub">North Area Fire Academy · FF I · Colorado DFPC</div>
     </div>
-    <button class="class-pill" id="header-class-pill" onclick="showTab('setup')">No Class</button>
+    <button class="squad-selector" onclick="openSquadSwitcher()">
+      <div>
+        <div class="squad-selector-label">Active Squad</div>
+        <div class="squad-selector-name" id="squad-pill">None</div>
+      </div>
+      <span style="color:var(--gold);margin-left:4px">▾</span>
+    </button>
   </div>
   <div class="tab-bar">
-    <button class="tab-btn active" id="tab-field"    onclick="showTab('field')">📋 Field</button>
-    <button class="tab-btn"        id="tab-roster"   onclick="showTab('roster')">👤 Roster</button>
-    <button class="tab-btn"        id="tab-grid"     onclick="showTab('grid')">📊 Grid</button>
-    <button class="tab-btn"        id="tab-setup"    onclick="showTab('setup')">⚙️ Setup</button>
+    <button class="tab-btn active" id="tab-log"       onclick="showTab('log')">📋 Log</button>
+    <button class="tab-btn"        id="tab-roster"    onclick="showTab('roster')">👤 Roster</button>
+    <button class="tab-btn"        id="tab-grid"      onclick="showTab('grid')">📊 Grid</button>
+    <button class="tab-btn"        id="tab-reference" onclick="showTab('reference')">📖 Ref</button>
+    <button class="tab-btn"        id="tab-setup"     onclick="showTab('setup')">⚙️ Setup</button>
   </div>
 </div>
-
-<div class="screen active" id="screen-field" ><div style="height:0.8rem"></div><div id="field-content" ></div></div>
-<div class="screen"        id="screen-roster"><div style="height:0.8rem"></div><div id="roster-content"></div></div>
-<div class="screen"        id="screen-grid"  ><div style="height:0.8rem"></div><div id="grid-content"  ></div></div>
-<div class="screen"        id="screen-setup" ><div style="height:0.8rem"></div><div id="setup-content" ></div></div>
-
-<!-- MODAL -->
+<div class="screen active" id="screen-log"><div style="height:0.8rem"></div><div id="log-content"></div></div>
+<div class="screen" id="screen-roster"><div style="height:0.8rem"></div><div id="roster-content"></div></div>
+<div class="screen" id="screen-grid"><div style="height:0.8rem"></div><div id="grid-content"></div></div>
+<div class="screen" id="screen-reference"><div style="height:0.8rem"></div><div id="reference-content"></div></div>
+<div class="screen" id="screen-setup"><div style="height:0.8rem"></div><div id="setup-content"></div></div>
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal" id="modal-inner">
-    <div class="modal-nav" id="modal-nav">
+  <div class="modal">
+    <div class="modal-nav">
       <button class="modal-nav-btn" onclick="closeModal()">✕ Close</button>
       <div class="modal-nav-title" id="modal-title">Detail</div>
-      <button class="modal-nav-btn primary" onclick="closeModal();showTab('roster')">🏠 Home</button>
+      <button class="modal-nav-btn primary" id="modal-home-btn" onclick="closeModal();showTab('roster')">🏠 Home</button>
     </div>
-    <div style="padding:1rem 1.2rem 1.2rem" id="modal-body"></div>
+    <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-// ══════════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════════
-const SUPA_URL = 'https://gjtqxswaosbmsykqcmdf.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqdHF4c3dhb3NibXN5a3FjbWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NjYzNTcsImV4cCI6MjA5NTU0MjM1N30.yl7Yy0xxFibHCl-HA2VoZwXwJPeh6KJkeQjJ6Lui-ho';
-const HDR = { 'Content-Type':'application/json', 'apikey':SUPA_KEY, 'Authorization':`Bearer ${SUPA_KEY}` };
-
-async function sb(path, method='GET', body=null) {
-  const h = {...HDR};
-  if (method==='POST'||method==='PATCH') h['Prefer']='return=representation';
-  const opts = {method, headers:h};
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, opts);
-  if (!res.ok) throw new Error(await res.text());
-  if (res.status===204) return null;
+const SUPA_URL='https://gjtqxswaosbmsykqcmdf.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqdHF4c3dhb3NibXN5a3FjbWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NjYzNTcsImV4cCI6MjA5NTU0MjM1N30.yl7Yy0xxFibHCl-HA2VoZwXwJPeh6KJkeQjJ6Lui-ho';
+const HDR={'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':`Bearer ${SUPA_KEY}`};
+async function sb(path,method='GET',body=null){
+  const h={...HDR};
+  if(method==='POST'||method==='PATCH') h['Prefer']='return=representation';
+  const opts={method,headers:h};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(`${SUPA_URL}/rest/v1/${path}`,opts);
+  if(!res.ok) throw new Error(await res.text());
+  if(res.status===204) return null;
   return res.json();
 }
 
-// ══════════════════════════════════════════════
-// COLORADO DFPC FF1 JPRS (Revised 1/1/2025)
-// ══════════════════════════════════════════════
-const JPRS = [
-  {code:'FFI-1A',sec:'1',name:'Donning PPE',mandatory:true},
-  {code:'FFI-1B',sec:'1',name:'Ropes and Knots',mandatory:true},
-  {code:'FFI-1C',sec:'1',name:'Hoisting Tools',mandatory:false},
-  {code:'FFI-1D',sec:'1',name:'Documentation, Standard, or Code',mandatory:false},
-  {code:'FFI-1E',sec:'1',name:'Field Reduction and Doff PPE',mandatory:false},
-  {code:'FFI-2A',sec:'2',name:'Initiate a Response',mandatory:false},
-  {code:'FFI-2B',sec:'2',name:'Receive a Telephone Call',mandatory:false},
-  {code:'FFI-2C',sec:'2',name:'Transmit on Radio',mandatory:false},
-  {code:'FFI-2D',sec:'2',name:'Mayday Operations',mandatory:true},
-  {code:'FFI-3A',sec:'3',name:'Don SCBA and Emergency Procedures',mandatory:true},
-  {code:'FFI-3B',sec:'3',name:'Respond on Apparatus',mandatory:false},
-  {code:'FFI-3C',sec:'3',name:'Scene Safety',mandatory:false},
-  {code:'FFI-3D',sec:'3',name:'Forcible Entry',mandatory:true},
-  {code:'FFI-3E',sec:'3',name:'Exit Hazardous Environment',mandatory:false},
-  {code:'FFI-3F',sec:'3',name:'Ground Ladders',mandatory:true},
-  {code:'FFI-3G',sec:'3',name:'Vehicle Fire',mandatory:true},
-  {code:'FFI-3H',sec:'3',name:'Class A Fire — Stacked or Piled',mandatory:false},
-  {code:'FFI-3I',sec:'3',name:'Search and Rescue',mandatory:true},
-  {code:'FFI-3J',sec:'3',name:'Horizontal Ventilation',mandatory:true},
-  {code:'FFI-3K',sec:'3',name:'Vertical Ventilation',mandatory:false},
-  {code:'FFI-3L',sec:'3',name:'Overhaul a Fire Scene',mandatory:false},
-  {code:'FFI-3M',sec:'3',name:'Salvage',mandatory:false},
-  {code:'FFI-3N',sec:'3',name:'Water Supply',mandatory:true},
-  {code:'FFI-3O',sec:'3',name:'Extinguishers',mandatory:false},
-  {code:'FFI-3P',sec:'3',name:'Scene Lighting',mandatory:false},
-  {code:'FFI-3Q',sec:'3',name:'Control Utilities',mandatory:false},
-  {code:'FFI-3R',sec:'3',name:'Ground Fire',mandatory:false},
-  {code:'FFI-3S',sec:'3',name:'Air Monitoring',mandatory:false},
-  {code:'FFI-LFA',sec:'LF',name:'Live Fire A — Grade Level',mandatory:true},
-  {code:'FFI-LFB',sec:'LF',name:'Live Fire B — Above Grade',mandatory:false},
-  {code:'FFI-LFC',sec:'LF',name:'Live Fire C — Below Grade',mandatory:false},
-  {code:'FFI-5A',sec:'5',name:'Clean and Check Equipment',mandatory:false},
-  {code:'FFI-5B',sec:'5',name:'Clean and Inspect Hose',mandatory:true},
+const JPRS=[
+  {code:'FFI-1A',sec:'1',name:'Donning PPE',mandatory:true,standard:'4.1.2',
+    task:'Don personal protective clothing within one (1) minute.',
+    outcome:'The candidate shall be able to properly don personal protective clothing in one minute.',
+    equipment:'Bunker pants, coat, hood, gloves, and helmet.',
+    conditions:'Given personal protective clothing, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Don pants and boots properly including suspenders in place.'},{n:'2',t:'Don hood.'},{n:'3',t:'Don coat including storm flap closed and collar up and secured.'},{n:'4',t:'Don helmet (eye protection not required).'},{n:'5',t:'Don gloves.'},{n:'6',t:'Complete above correctly within one minute.'}]},
+  {code:'FFI-1B',sec:'1',name:'Ropes and Knots',mandatory:true,standard:'4.1.2; 4.3.20',
+    task:'Tie the approved knot(s) in preparation for hoisting tools and equipment.',
+    outcome:'The candidate shall demonstrate the ability to tie approved knot(s) within two minutes per knot.',
+    equipment:'Full PPE including structural gloves, and utility rope.',
+    conditions:'Given a simulated fire scenario, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Tie each knot:',subs:['a) figure 8','b) figure 8 on a bite','c) figure 8 follow through','d) bowline','e) sheet bend','f) clove hitch','g) over hand safety']}]},
+  {code:'FFI-1C',sec:'1',name:'Hoisting Tools',mandatory:false,standard:'4.1.2; 4.3.20',
+    task:'Hoist a tool and/or piece of equipment using the correct knot(s).',
+    outcome:'The candidate shall demonstrate the ability to hoist a tool or piece of equipment to a designated height.',
+    equipment:'Full PPE, utility rope, forcible entry tools, pike pole, roof ladder, hose line, fan, power saw and/or an appliance.',
+    conditions:'Given a simulated fire scenario, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Hoist a tool and/or piece of equipment to a designated height.'}]},
+  {code:'FFI-1D',sec:'1',name:'Documentation, Standard, or Code',mandatory:false,standard:'4.1.2',
+    task:'Locate information in departmental documents and standard or code materials.',
+    outcome:'The candidate shall demonstrate the ability to locate written documents, policies, procedures, and standard or code materials.',
+    equipment:'Department SOPs, NFPA Standards, EMS Protocol, Member handbook or Code Book.',
+    conditions:'Given department reference material, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Locate department SOP, NFPA standard, EMS Protocol, Member handbook or code (specific procedure, standard, or code determined by proctor).'}]},
+  {code:'FFI-1E',sec:'1',name:'Field Reduction and Doff PPE',mandatory:false,standard:'4.1.2',
+    task:'Perform field reduction of contaminants and doff personal protective clothing.',
+    outcome:'The candidate shall be able to properly perform field reduction, and doff personal protective clothing for reuse.',
+    equipment:'Bunker pants, coat, hood, gloves, and helmet.',
+    conditions:'Given personal protective clothing, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'FIELD REDUCTION: Perform field reduction of contaminants per AHJ standard practice.'},{n:'2',t:'DOFFING: Explain or demonstrate AHJ process for returning PPE in an operational state.'}]},
+  {code:'FFI-2A',sec:'2',name:'Initiate a Response',mandatory:false,standard:'4.2.1',
+    task:'Initiate a response to a reported emergency.',
+    outcome:'The candidate shall demonstrate the ability to operate fire department communications equipment, relay information, and record information.',
+    equipment:"Department SOPs, communication equipment, paper, and pencil.",
+    conditions:'Given a scenario of a reported alarm, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Verbalize how the alarm is received.'},{n:'2',t:'Write proper address and nature of the emergency.'},{n:'3',t:'Promptly contacts dispatch by radio indicating an alarm has been received.'},{n:'4',t:'Informs dispatch that they are responding to the emergency.'}]},
+  {code:'FFI-2B',sec:'2',name:'Receive a Telephone Call',mandatory:false,standard:'4.2.2',
+    task:'Receive a telephone call using procedures for answering the phone.',
+    outcome:'The candidate shall be able to operate fire station telephone and intercom equipment.',
+    equipment:'Telephone, paper, and pencil.',
+    conditions:'Given a real or simulated call, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Ensure paper and pencils (or pens) are available.'},{n:'2',t:'Answer the phone promptly.'},{n:'3',t:'Identify himself/herself and the department to the caller.'},{n:'4',t:"Take an appropriate message (date, time, caller, caller's phone number and person taking call)."},{n:'5',t:'Deliver a message or transfer the call to the appropriate person.'}]},
+  {code:'FFI-2C',sec:'2',name:'Transmit on Radio',mandatory:false,standard:'4.2.3',
+    task:'Transmit and receive messages via the fire department radio.',
+    outcome:'The candidate shall demonstrate the ability to operate radio equipment and discriminate between routine and emergency traffic.',
+    equipment:'Fire department mobile or portable radio.',
+    conditions:'Given a scenario, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Determine there is no other radio traffic before transmitting (unless emergency traffic).'},{n:'2',t:'Speak calmly, clearly, distinctly and at a medium speed.'},{n:'3',t:'Transmit a message that is brief, accurate and to the point.'},{n:'4',t:'Identify who the message is addressed to.'},{n:'5',t:'Identify the person or unit transmitting.'},{n:'6',t:'Acknowledges information back from command (if applicable).'}]},
+  {code:'FFI-2D',sec:'2',name:'Mayday Operations',mandatory:true,standard:'4.2.4',
+    task:'Activate an emergency call for assistance.',
+    outcome:"The candidate shall demonstrate the ability to initiate an emergency call for assistance in accordance with the AHJ's procedures.",
+    equipment:'Fire department mobile or portable radio, mayday props, personal light, and full protective clothing with SCBA.',
+    conditions:'Given a simulated fire scenario, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Use radio to call "Mayday, Mayday, Mayday".'},{n:'2',t:'Provide correct information during Mayday situation (as determined by AHJ).'},{n:'3',t:'Activate PASS device.'},{n:'4',t:'Attempt self-rescue.'},{n:'5',t:'Slow breathing to conserve air supply.'}]},
+  {code:'FFI-3A',sec:'3',name:'Don SCBA and Emergency Procedures',mandatory:true,standard:'4.3.1; 4.3.9',
+    task:'Use SCBA during emergency operations.',
+    outcome:'The candidate shall demonstrate the ability to Don SCBA within 1-minute, control breathing, replace SCBA air cylinders, use SCBA to exit through restricted passages, and initiate emergency procedures.',
+    equipment:'SCBA, prop for restricted passage, and full personal protective equipment.',
+    conditions:'Given a non-fire ground environment and with restricted passages, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'DON SCBA: Correctly don SCBA including checking amount of air in cylinder and operation of low air alarm and PASS device.'},{n:'2',t:'Correctly don face piece including checking seal and operating of exhalation.'},{n:'3',t:'Have all personal protective clothing correctly in place.'},{n:'4',t:'Correctly accomplished all of the above in one (1) minute.'},{n:'5',t:'CONSERVATION OF AIR: Controlled Breathing as taught/Instructed by AHJ.'},{n:'6',t:'SCBA FAILURE: Recognizes Air Delivery System Failure. Initiates actions to exit hazardous environment. Activates PASS Device.'},{n:'7',t:'CYLINDER REPLACEMENT: Properly demonstrates ability to change out empty cylinder with full cylinder.'},{n:'8',t:'RESTRICTED PASSAGE: Demonstrate ability to maneuver through a restricted passage while remaining on air.'}]},
+  {code:'FFI-3B',sec:'3',name:'Respond on Apparatus',mandatory:false,standard:'4.3.2',
+    task:'Respond on an apparatus to an emergency scene.',
+    outcome:'The candidate shall be able to respond safely in a fire department apparatus and to safely dismount at the emergency scene.',
+    equipment:'Fire apparatus, personal protective equipment, hearing protection, eye protection for those not in enclosed cabs.',
+    conditions:'Given a simulated fire scenario, the candidate shall demonstrate the ability to:',
+    steps:[{n:'MOUNT 1',t:'State that the vehicle is not in motion.'},{n:'MOUNT 2',t:'Mount fire apparatus using handrails.'},{n:'MOUNT 3',t:'Close door, safety bar, gate to cab or compartment.'},{n:'MOUNT 4',t:'Sit and fasten seat belt.'},{n:'MOUNT 5',t:'Correctly use any other PPE (hearing protection if present).'},{n:'DISMOUNT 1',t:'Wait for order(s) before leaving apparatus.'},{n:'DISMOUNT 2',t:'State that vehicle is completely stopped before leaving apparatus.'},{n:'DISMOUNT 3',t:'Candidate looks and verbalizes any hazards before stepping off vehicle.'},{n:'DISMOUNT 4',t:'Safely steps from vehicle using handrails.'}]},
+  {code:'FFI-3C',sec:'3',name:'Scene Safety',mandatory:false,standard:'4.3.3',
+    task:'Establish and operate in work areas at emergency scenes.',
+    outcome:'The candidate shall be able to use personal protective clothing, deploy traffic and scene control devices, dismount apparatus, and operate in the protected work areas as directed.',
+    equipment:'Full personal protective clothing, traffic control devices, and fire apparatus.',
+    conditions:'Given a simulated emergency scene, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Properly dismounts apparatus with PPE correctly worn.'},{n:'2',t:'Size-up emergency scene for hazards.'},{n:'3',t:'Identify potential hazards.'},{n:'4',t:'Deploy traffic and/or scene control devices.'},{n:'5',t:'Describe measures to ensure continued scene safety of those operating within the work area.'}]},
+  {code:'FFI-3D',sec:'3',name:'Forcible Entry',mandatory:true,standard:'4.3.4',
+    task:'Force entry into a structure through doors, windows, and walls.',
+    outcome:'The candidate shall demonstrate the ability to transport and operate hand and power tools and to force entry through doors, windows, and walls using assorted methods and tools.',
+    equipment:'PPE, appropriate hand or power tools, and forcible entry props (if available).',
+    conditions:'Given a Door, Window and Wall prop the candidate shall demonstrate the ability to:',
+    steps:[{n:'DOOR 1',t:'Select the appropriate tool(s).'},{n:'DOOR 2',t:'Safely carry the selected tool(s) to the door.'},{n:'DOOR 3',t:'Correctly size up the door and check to see if door is unlocked.'},{n:'DOOR 4',t:'Choose the appropriate technique and demonstrate or simulate forced entry.'},{n:'DOOR 5',t:'Control the door and clear opening of obstacles.'},{n:'WALL 1',t:'Select the appropriate tool(s).'},{n:'WALL 2',t:'Safely carry the selected tool(s) to the wall.'},{n:'WALL 3',t:'Sound for studs (if applicable).'},{n:'WALL 4',t:'Choose the appropriate technique and demonstrate or simulate forced entry.'},{n:'WIN 1',t:'Select the appropriate tool(s).'},{n:'WIN 2',t:'Safely carry the selected tool(s) to the window.'},{n:'WIN 3',t:'Correctly size up the window.'},{n:'WIN 4',t:'Choose the appropriate technique and demonstrate or simulate forced entry.'},{n:'WIN 5',t:'Clear opening of obstacles (Glass, Curtains, Blinds if applicable).'}]},
+  {code:'FFI-3E',sec:'3',name:'Exit Hazardous Environment',mandatory:false,standard:'4.3.5',
+    task:'Exit a hazardous area as a team given vision-obscured conditions.',
+    outcome:'The candidate shall demonstrate the ability to operate as a team member in vision-obscured conditions, locate and follow a guideline, conserve air supply, and identify a safe haven.',
+    equipment:'Personal protective equipment, SCBA, hand tools, and hose line/guideline.',
+    conditions:'Given a simulated or live fire scenario with vision-obscured conditions, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Determine air supply available prior to entering the hazardous atmosphere.'},{n:'2',t:'Monitor the air supply available while in the hazardous atmosphere.'},{n:'3',t:'Locate hose line or guideline and determine correct method of travel for egress.'},{n:'4',t:'Make decision to leave hazardous atmosphere before depletion of air supply while maintaining team integrity.'},{n:'5',t:'Exit hazardous atmosphere before depletion of air supply.'},{n:'6',t:'Verbalizes candidate has exited the hazardous area.'}]},
+  {code:'FFI-3F',sec:'3',name:'Ground Ladders',mandatory:true,standard:'4.3.6',
+    task:'Set up, mount, ascend, descend, dismount ground ladders.',
+    outcome:'The candidate shall be able to demonstrate carrying ladders, raising ladders, extending ladders and locking flies, and placing the ladder to avoid obvious hazards.',
+    equipment:'Straight ladder, various sizes of extension ladders, and full personal protective clothing.',
+    conditions:'Given a simulated fire scenario and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Select the proper length ladder for the designated task.'},{n:'2',t:'Lift/carry the ladder from the designated area or apparatus.'},{n:'3',t:'Visually check work area for hazards and state if area is safe or if hazards exist.'},{n:'4',t:'Raise the ladder upright.'},{n:'5',t:'Extend and secure fly section (if using an extension ladder).'},{n:'6',t:'Lower ladder against stable wall or surface.'},{n:'7',t:'Adjust for proper climbing angle.'},{n:'8',t:'Position ladder correctly for task given.'},{n:'9',t:'Mounts and Ascends Ladder Properly. SELECT ONE: Access roof / Window Ventilation / Rescue from window / Work with hose.'},{n:'10',t:'Dismounts and Descends Ladder Properly.'},{n:'11',t:'Lower ladder to ground (reversing raising procedures).'},{n:'12',t:'Lift/carry ladder to designated site or apparatus.'}]},
+  {code:'FFI-3G',sec:'3',name:'Vehicle Fire',mandatory:true,standard:'4.3.7',
+    task:'Attack a passenger vehicle fire operating as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to identify automobile fuel type, assess and control fuel leaks, operate nozzles, apply water for maximum effectiveness, advance attack lines, and expose hidden fires.',
+    equipment:'Hose lines, fire apparatus, PPE, SCBA, Auto/Truck/Van prop, hand tools, and dedicated safety line personnel.',
+    conditions:'Given a simulated fire scenario and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Properly wear full protective clothing and SCBA.'},{n:'2',t:'Identify possible fuel types and methods for controlling fuel leaks.'},{n:'3',t:'Attack from upwind and uphill (verbalize conditions were considered if not applicable).'},{n:'4',t:'Approach vehicle from side (never placing crew in front of bumpers until cooled).'},{n:'5',t:'Select at least one 1.5 inch hose line, bleed line, and adjust nozzle.'},{n:'6',t:'Extinguish fire around and under the vehicle, attack the remaining fire in the vehicle.'},{n:'7',t:'Perform overhaul on vehicle.'},{n:'8',t:'Describe steps to control any and all fuel leaks.'}]},
+  {code:'FFI-3H',sec:'3',name:'Class A Fire — Stacked or Piled',mandatory:false,standard:'4.3.8',
+    task:'Extinguish fires in exterior Class A materials.',
+    outcome:'The candidate shall demonstrate the ability to recognize inherent hazards, operate hand lines or master streams, evaluate and modify water application, and evaluate for complete extinguishment.',
+    equipment:'Stack of Class A material, hose lines, hand tools, dedicated safety line with personnel, fire apparatus, and full PPE with SCBA.',
+    conditions:'Given a simulated or live exterior Class A fire, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:"Describe inherent hazards related to the burning material's configuration."},{n:'2',t:'Properly bleed attack line and adjust nozzle.'},{n:'3',t:'Break up material using hand tools and water streams.'},{n:'4',t:'Operate hose lines and/or other water application devices.'},{n:'5',t:'Evaluate and modify water application for maximum penetration.'},{n:'6',t:'Extinguish the fire.'},{n:'7',t:'Overhaul fire scene while protecting and preserving signs of cause or origin if present.'},{n:'8',t:'Evaluate for complete extinguishment.'},{n:'9',t:'Verbalize exposure protection.'}]},
+  {code:'FFI-3I',sec:'3',name:'Search and Rescue',mandatory:true,standard:'4.3.9',
+    task:'Conduct a search and rescue in a structure operating as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to use SCBA through restricted passages, set up ladders for rescue operations, and rescue victims with and without respiratory protection.',
+    equipment:'Full PPE including SCBA, various size ladders, portable radio, flashlight, hose line, and hand tools.',
+    conditions:'Given a simulated scenario with obscured visibility and a team member, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Size up the problem and select the appropriate tool(s) and equipment.'},{n:'2',t:'Ladders are correctly placed for assignment (if chosen by candidate).'},{n:'3',t:'Search in a body position appropriate for conditions (crawling, walking).'},{n:'4',t:'Establish, maintain, and search in an effective pattern (left-hand or right-hand).'},{n:'5',t:'Maintain team integrity, safety, and communication.'},{n:'6',t:'Use hose line effectively (if chosen by candidate).'},{n:'7',t:'Find and remove victim (Circle victim): Person without respiratory protection / Firefighter with Non-Functioning SCBA / Firefighter with Functioning SCBA.'}]},
+  {code:'FFI-3J',sec:'3',name:'Horizontal Ventilation',mandatory:true,standard:'4.3.11',
+    task:'Perform horizontal ventilation on a structure operating as part of a team.',
+    outcome:'The candidate shall demonstrate the ability to transport and operate ventilation tools and equipment and ladders, and use safe procedures for breaking window and door glass and removing obstructions.',
+    equipment:'Full PPE with SCBA, hose line, hand tools, pike pole, ladder, positive pressure fan, and/or smoke ejector.',
+    conditions:'Given a simulated fire and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'GLASS 1',t:'BREAK GLASS: Properly place ladder (if necessary).'},{n:'GLASS 2',t:'Choose proper tool for task and carry tool safely.'},{n:'GLASS 3',t:'Assume proper position and break glass.'},{n:'GLASS 4',t:'Remove glass and any remaining window obstruction.'},{n:'PPV 1',t:'POSITIVE PRESSURE: Properly place fan so cone of air covers entry point.'},{n:'PPV 2',t:'Ensure exit point no larger than entry point or per fan manufacturer direction.'},{n:'PPV 3',t:'Ventilation properly performed and structure cleared of smoke.'},{n:'NEG 1',t:'NEGATIVE PRESSURE: Properly place fan in exhaust opening to pull smoke out.'},{n:'NEG 2',t:'Ventilation properly performed and structure cleared of smoke.'},{n:'HYD 1',t:'HYDRAULIC: Cover 85-90% of the ventilation opening.'},{n:'HYD 2',t:'Ventilation properly performed and room cleared of smoke.'}]},
+  {code:'FFI-3K',sec:'3',name:'Vertical Ventilation',mandatory:false,standard:'4.3.12',
+    task:'Perform vertical ventilation on a structure as part of a team.',
+    outcome:'The candidate shall demonstrate the ability to transport and operate ventilation tools, hoist tools to a roof, cut roofing materials, sound a roof for integrity, and carry tools while ascending and descending ladders.',
+    equipment:'Full PPE including SCBA, roof ladder, various size extension ladders, chainsaw, pike pole, and other hand tools.',
+    conditions:'Given a simulated fire scenario while operating as a member of a team, demonstrate the ability to:',
+    steps:[{n:'1',t:'Collect and organize necessary equipment and tools.'},{n:'2',t:'Determine location for ventilation opening.'},{n:'3',t:'Properly place ground ladder.'},{n:'4',t:'Correctly carry roof ladder while ascending ground ladder and place in position on roof making sure it is up-wind from intended ventilation.'},{n:'5',t:'Move tools to roof utilizing teamwork.'},{n:'6',t:'Sound roof for integrity and location of roof joists and rafters.'},{n:'7',t:'Make an appropriate size opening at highest point of the roof above the fire.'},{n:'8',t:'Remove appropriate roof materials after cuts have been completed.'},{n:'9',t:'Push ceiling through.'},{n:'10',t:'Have team exit roof immediately after performing ventilation.'}]},
+  {code:'FFI-3L',sec:'3',name:'Overhaul a Fire Scene',mandatory:false,standard:'4.3.13',
+    task:'Overhaul a fire scene.',
+    outcome:'The candidate shall demonstrate the ability to deploy and operate an attack line, remove flooring/ceiling/wall components to expose void spaces, apply water, expose and extinguish hidden fires, and evaluate for complete extinguishment.',
+    equipment:'Full PPE including SCBA, pike poles, hand tools, thermal imager (if available), attack line and/or portable water extinguisher.',
+    conditions:'Given a simulated fire scenario, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Properly wear full protective clothing and SCBA (on air).'},{n:'2',t:'Select proper equipment and extinguishing source for type of overhaul requested.'},{n:'3',t:'Demonstrate locating hidden fires by sight, touch, sound, or electronic sensor.'},{n:'4',t:'Expose hidden fires in ceilings, walls, and/or subfloor spaces without compromising structural integrity.'},{n:'5',t:'Remove or extinguish burning objects.'},{n:'6',t:'Preserve evidence or signs of cause and origin.'},{n:'7',t:'Ensure and evaluate debris piles or burning material is completely extinguished.'}]},
+  {code:'FFI-3M',sec:'3',name:'Salvage',mandatory:false,standard:'4.3.14',
+    task:'Conserve property as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to cluster furniture, deploy covering materials, roll and fold salvage covers, construct water chutes and catch-alls, cover building openings, and operate main control valves.',
+    equipment:'PPE, SCBA, pike poles, salvage covers, and sprinkler wedges or stoppers.',
+    conditions:'Given a simulated fire scenario and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Arrange furnishings in close piles and raised off the floor if possible while preserving evidence or signs of cause and origin.'},{n:'2',t:'Cover the pile with a salvage cover using two different spreads (One Firefighter Spread / Two Firefighter Spread / Two Firefighter Balloon Throw).'},{n:'3',t:'Construct or perform: Water Catch-All or Water Chute.'},{n:'4',t:'Verbalize OR demonstrate: Stop Activated Sprinkler Head or Operate Main Control Valve.'},{n:'5',t:'Verbalize OR demonstrate covering a building opening: Door / Window / Floor / Roof.'},{n:'6',t:'Roll and/or fold salvage cover for use.'}]},
+  {code:'FFI-3N',sec:'3',name:'Water Supply',mandatory:true,standard:'4.3.15',
+    task:'Connect a fire department pumper to a water supply as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to hand lay a supply hose, connect and place hard suction hose for drafting operations, deploy portable water tanks, and make hydrant-to-pumper hose connections for forward and reverse lays.',
+    equipment:'Full PPE, appropriate equipment for hydrant and static water supply.',
+    conditions:'Given a static water source and fire hydrant, the candidate shall demonstrate the ability to:',
+    steps:[{n:'HYD 1',t:'FIRE HYDRANT: Connect supply hose to hydrant.'},{n:'HYD 2',t:'Connect supply hose to pumper intake.'},{n:'HYD 3',t:'Fully open hydrant.'},{n:'HYD 4',t:'Fully close the hydrant.'},{n:'STA 1',t:'STATIC SOURCE: Deploy portable water tank.'},{n:'STA 2',t:'Check gaskets on the hard suction hose for dirt, gravel or defects.'},{n:'STA 3',t:'Connect strainer to hose.'},{n:'STA 4',t:'Connect hard suction hose to pumper.'},{n:'STA 5',t:'Lower hose and strainer into static water source.'}]},
+  {code:'FFI-3O',sec:'3',name:'Extinguishers',mandatory:false,standard:'4.3.16',
+    task:'Extinguish incipient Class A, Class B, and Class C fires.',
+    outcome:'The candidate shall demonstrate the ability to operate portable fire extinguishers, approach fire with portable fire extinguishers, and select an appropriate extinguisher based on the size and type of fire.',
+    equipment:'Full PPE if applicable, a variety of fire extinguishers, burn pan or prop.',
+    conditions:'Given a small Class A, Class B, or Class C fire, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Correctly identify the class of fire.'},{n:'2',t:'Select an extinguisher suitable for fire given.'},{n:'3',t:'Properly activate the extinguisher (pull pin and/or puncture cartridge).'},{n:'4',t:'Approach to an effective distance for discharge of the selected extinguisher.'},{n:'5',t:'Discharge extinguisher agent on the base of the fire and sweep over the fire area.'},{n:'6',t:'Advance on the remaining burning material while continuing to extinguish hot spots.'},{n:'7',t:'Extinguish the fire and check for remaining hot spots.'}]},
+  {code:'FFI-3P',sec:'3',name:'Scene Lighting',mandatory:false,standard:'4.3.17',
+    task:'Operate emergency scene lighting.',
+    outcome:'The candidate shall demonstrate the ability to operate department power supply and lighting equipment, deploy cords and connectors, reset GFI devices, and locate lights for best effect.',
+    equipment:'Portable or mounted power supply, lights, cords, connectors and ground fault interrupters, and full PPE.',
+    conditions:'Given illumination equipment, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Lift equipment using proper lifting techniques.'},{n:'2',t:'Locate power plant in a remote and well-vented location.'},{n:'3',t:'Start power plant.'},{n:'4',t:'Arrange power cords neatly to minimize trip hazards.'},{n:'5',t:'Organize lights in a useful position to illuminate the area sufficiently.'},{n:'6',t:'Plug cords into power unit or junction box and furnish illumination.'},{n:'7',t:"Shutdown equipment when told to do so (according to manufacturer's recommendation)."},{n:'8',t:'Reset ground-fault interrupter devices if tripped.'},{n:'9',t:'Allow equipment to cool down before returning to service or verbally explain the need to do so.'}]},
+  {code:'FFI-3Q',sec:'3',name:'Control Utilities',mandatory:false,standard:'4.3.18',
+    task:'Turn off building utilities.',
+    outcome:'The candidate shall demonstrate the ability to identify utility control devices, operate control valves or switches, and assess for related hazards.',
+    equipment:'Personal protective equipment, hand tools for controlling utilities, and utility service boxes.',
+    conditions:'Given a utility, the candidate shall demonstrate or verbalize the ability to:',
+    steps:[{n:'1',t:'Verbalize related hazards around building utilities.'},{n:'2',t:'LOCATE: Electrical-main panel.'},{n:'3',t:'Natural gas-meter or LPG/CNG-storage tank/cylinder.'},{n:'4',t:'Water-meter box or building water control valve.'},{n:'5',t:'SHUT OFF: Electrical-breaker to off.'},{n:'6',t:'Natural gas-gas cock to off or LPG/CNG-turn valve clockwise to close.'},{n:'7',t:'Water-turn valve clockwise to close or water valve cross way to direction of flow.'}]},
+  {code:'FFI-3R',sec:'3',name:'Ground Fire',mandatory:false,standard:'4.3.19',
+    task:'Combat a ground cover fire operating as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to determine exposure threats, protect exposures, construct a fire line or extinguish with hand tools, and suppress cover fires using water.',
+    equipment:'Wildland personal protective equipment, wildland hand tools, area of land and a map or drawing.',
+    conditions:'Given a simulated wildland fire scenario and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Don or describe what personal protective clothing should be worn and what tools and equipment should be used.'},{n:'2',t:'Perform an assessment of the incident with respect to type of fuel, topography, weather conditions, and exposures.'},{n:'3',t:'Describe the exposures presented and what protection is needed, or conduct the operation.'},{n:'4',t:'Describe a direct attack on the fire and where it would be made, or conduct the operation.'},{n:'5',t:'Describe an indirect attack and where it could be made, or conduct the operation.'},{n:'6',t:'Identify escape routes and Safety zones.'},{n:'7',t:'Re-evaluate integrity of fireline.'}]},
+  {code:'FFI-3S',sec:'3',name:'Air Monitoring',mandatory:false,standard:'4.3.21',
+    task:'Operate an air-monitoring instrument.',
+    outcome:'The candidate shall demonstrate the ability to operate the air monitor, recognize the alarms, and react to the alarms of the air monitor.',
+    equipment:'Appropriate PPE, Air Monitor.',
+    conditions:'Given a simulated incident/scenario and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Describe operation of meter or instrument.'},{n:'2',t:'Describe what alarm activation indicates.'},{n:'3',t:'Describe at what point the instrument will alarm.'},{n:'4',t:'Describes the actions taken when an alarm sounds.'},{n:'5',t:"When monitoring has been completed, turn off instrument, decontaminate the monitor and return to service per manufacturer's instructions."}]},
+  {code:'FFI-LFA',sec:'LF',name:'Live Fire A — Grade Level',mandatory:true,standard:'4.3.10',
+    task:'Attack an interior grade level structure fire operating as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to prevent water hammers, open/close/adjust nozzle flow and patterns, apply water using direct/indirect/combination attacks, advance charged and uncharged hose lines, and locate and suppress interior wall and subfloor fires.',
+    equipment:'NFPA 1403 documentation, full PPE with SCBA, hose line, hand tools, flashlight, various size ladders, and fire apparatus.',
+    conditions:'Given an interior grade level live fire and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Describe hose line replacement method should hose line burst prior to entry.'},{n:'2',t:'Properly wear full protective clothing and SCBA.'},{n:'3',t:'Properly deploy attack line for advancement to fire.'},{n:'4',t:'Properly bleed attack line and adjust nozzle while preventing water hammer.'},{n:'5',t:'Check door before entering and sound floor for stability.'},{n:'6',t:'Use appropriate body posture for conditions.'},{n:'7',t:'Correctly extinguish the fire using pattern selected by proctor: DIRECT / INDIRECT / COMBINATION.'},{n:'8',t:'Overhaul fire scene while protecting and preserving signs of cause or origin (if present).'}]},
+  {code:'FFI-LFB',sec:'LF',name:'Live Fire B — Above Grade',mandatory:false,standard:'4.3.10',
+    task:'Attack an interior above grade level structure fire operating as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to prevent water hammer, open/close/adjust nozzle flow and patterns, apply water using direct/indirect/combination attacks, advance charged and uncharged hose line, and attack fire at above grade level.',
+    equipment:'NFPA 1403 documentation, full PPE with SCBA, hose line, hand tools, flashlight, various size ladders, and fire apparatus.',
+    conditions:'Given an interior above grade level live fire and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Describe hose line replacement method should hose line burst prior to entry.'},{n:'2',t:'Properly wear full protective clothing and SCBA.'},{n:'3',t:'Properly deploy attack line for advancement to fire.'},{n:'4',t:'Properly bleed attack line and adjust nozzle while preventing water hammer.'},{n:'5',t:'Check door before entering and sound floor for stability.'},{n:'6',t:'Use appropriate body posture for conditions.'},{n:'7',t:'Properly ascend stairs.'},{n:'8',t:'Correctly extinguish the fire using pattern selected by proctor: DIRECT / INDIRECT / COMBINATION.'},{n:'9',t:'Overhaul fire scene while protecting and preserving signs of cause or origin (if present).'}]},
+  {code:'FFI-LFC',sec:'LF',name:'Live Fire C — Below Grade',mandatory:false,standard:'4.3.10',
+    task:'Attack an interior below grade level structure fire operating as a member of a team.',
+    outcome:'The candidate shall demonstrate the ability to prevent water hammer, open/close/adjust nozzle flow and patterns, apply water using direct/indirect/combination attacks, advance charged and uncharged hose line, and attack fire at below grade level.',
+    equipment:'NFPA 1403 documentation, full PPE with SCBA, hose line, hand tools, flashlight, various size ladders, and fire apparatus.',
+    conditions:'Given an interior below grade level live fire and a team, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'Describe hose line replacement method should hose line burst prior to entry.'},{n:'2',t:'Properly wear full protective clothing and SCBA.'},{n:'3',t:'Properly deploy attack line for advancement to fire.'},{n:'4',t:'Properly bleed attack line and adjust nozzle while preventing water hammer.'},{n:'5',t:'Check door before entering and sound floor for stability.'},{n:'6',t:'Descend stairs safely and quickly using appropriate body posture.'},{n:'7',t:'At bottom of stairs search for and correctly extinguish the fire using pattern selected by proctor: DIRECT / INDIRECT / COMBINATION.'},{n:'8',t:'Overhaul fire scene while protecting and preserving signs of cause or origin (if present).'}]},
+  {code:'FFI-5A',sec:'5',name:'Clean and Check Equipment',mandatory:false,standard:'4.5.1',
+    task:'Clean and check ladders, ventilation equipment, SCBA, ropes, salvage equipment, and hand tools.',
+    outcome:'The candidate shall demonstrate the ability to select correct tools for various parts and pieces of equipment, follow guidelines, and complete recording and reporting procedures.',
+    equipment:'Ladders, rope, salvage equipment, ventilation equipment, hand tools, SCBA, service tags, and cleaning supplies.',
+    conditions:'Given firefighting equipment, the candidate shall demonstrate the ability to: (SCBA and Ladder Mandatory & Circle One Other)',
+    steps:[{n:'SCBA 1',t:'Inspect/Clean face piece according to department policies.'},{n:'SCBA 2',t:'Inspect/Clean back plate/frame/harness assembly according to department policies.'},{n:'SCBA 3',t:'Inspect/Clean cylinder.'},{n:'SCBA 4',t:'Place in ready state or report any deficiencies.'},{n:'TOOL 1',t:'HAND TOOLS: Inspect Handle.'},{n:'TOOL 2',t:'Inspect Head/Cutting edge/Surface.'},{n:'TOOL 3',t:'Clean Tool.'},{n:'TOOL 4',t:'Place in ready state or report any deficiencies.'},{n:'LAD 1',t:'LADDERS: Clean Ladder.'},{n:'LAD 2',t:'Examine all beams, guides, halyard, cable, pawls, pulleys, rails, rungs, bolts, rivets, welds, heat indicator, and movable parts.'},{n:'LAD 3',t:'Place in ready state or report any deficiencies.'},{n:'ROPE 1',t:'ROPE: Clean rope.'},{n:'ROPE 2',t:'Visually and physically inspect rope for damage.'},{n:'ROPE 3',t:'Place in ready state or report any deficiencies.'}]},
+  {code:'FFI-5B',sec:'5',name:'Clean and Inspect Hose',mandatory:true,standard:'4.5.2; 4.3.10',
+    task:'Clean, inspect, and return fire hose to service.',
+    outcome:'The candidate shall demonstrate the ability to clean different types of hose, operate hose washing and drying equipment, mark defective hose, replace coupling gaskets, roll hose, and reload hose.',
+    equipment:'Fire apparatus, scrub brush, hose, cleaning supplies, replacement gaskets, hose washer and dryer (if available), log book or tags for reporting repair needs.',
+    conditions:'Given Fire Department hose and apparatus, the candidate shall demonstrate the ability to:',
+    steps:[{n:'1',t:'INSPECT/CLEAN: Inspect/Clean hose.'},{n:'2',t:'Uncouple, inspect, clean couplings according to department guidelines.'},{n:'3',t:'Dry hose.'},{n:'4',t:'Place in ready state and report any deficiencies.'},{n:'5',t:'RETURNING TO SERVICE: Roll hose as selected by proctor (Straight / Donut / Twin Donut / Self-Locking Twin Donut) and carry to appropriate storage.'},{n:'6',t:'Recouple and reload hose on apparatus using a hose load specific to apparatus or department (Pre-connect / Supply Line).'}]}
 ];
-const SEC_LABELS = {'1':'Section 1 — General Requirements','2':'Section 2 — Communications',
+
+const SEC_LABELS={'1':'Section 1 — General Requirements','2':'Section 2 — Communications',
   '3':'Section 3 — Fire Ground Operations','LF':'Live Fire','5':'Section 5 — Maintenance'};
 
-function jprByCode(code){ return JPRS.find(j=>j.code===code); }
+const DEFAULT_CUSTOM_SKILLS=[
+  {name:'Master Stream Operations',description:'Setting up and operating master stream devices including deck guns and portable monitors.'},
+  {name:'Pump Operations',description:'Operating fire apparatus pump for various supply and attack scenarios.'},
+  {name:'Hose Lays',description:'Forward and reverse hose lays from apparatus to hydrant or fire.'},
+  {name:'Aerial Ladder Operations',description:'Setup and operation of aerial ladder device for access and rescue.'},
+  {name:'Rope Rescue',description:'Basic rope rescue techniques and patient packaging.'},
+];
 
-// ══════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════
-let S = {
-  academyId: null,
-  activeClass: null,
-  classes: [],
-  squads: [],
-  candidates: [],
-  attempts: [],
-  // Field screen state
-  lockedJpr: null,
-  reps: 1,
-  successReps: 0,
-  selectedSquadFilter: 'all',
+function jprByCode(c){return JPRS.find(j=>j.code===c)}
+
+let S={
+  academyId:null,activeClass:null,classes:[],
+  squads:[],candidates:[],attempts:[],customSkills:[],
+  selectedSquadId:'all',
+  lockedSkill:null,lockedSkillType:null,
+  selectedCandidateIds:[],
+  logMode:'group',
+  groupReps:1,groupSuccReps:0,
+  individualReps:{},
+  sigData:null,
+  refFilter:'all',
 };
 
-// ══════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════
-async function init() {
-  showSpinner('field');
-  try {
-    const academies = await sb('academies?name=eq.North%20Area%20Fire%20Academy&select=id');
-    if (academies?.length) S.academyId = academies[0].id;
+async function init(){
+  showSpinner('log');
+  try{
+    const acs=await sb('academies?name=eq.North%20Area%20Fire%20Academy&select=id');
+    if(acs?.length) S.academyId=acs[0].id;
     await loadClasses();
-    const stored = localStorage.getItem('nafa_class_id');
-    if (stored) {
-      const found = S.classes.find(c=>c.id===stored);
-      if (found) { S.activeClass = found; await loadClassData(); }
-    }
-    updatePill();
-    renderField();
-  } catch(e) { showError('field', e.message); }
+    const stored=localStorage.getItem('nafa_class_id');
+    if(stored){const f=S.classes.find(c=>c.id===stored);if(f){S.activeClass=f;await loadClassData();}}
+    const storedSquad=localStorage.getItem('nafa_squad_id');
+    if(storedSquad) S.selectedSquadId=storedSquad;
+    updateSquadPill();renderLog();
+  }catch(e){showError('log',e.message);}
 }
 
-async function loadClasses() {
-  if (!S.academyId) return;
-  S.classes = await sb(`classes?academy_id=eq.${S.academyId}&order=created_at.desc`) || [];
+async function loadClasses(){
+  if(!S.academyId) return;
+  S.classes=await sb(`classes?academy_id=eq.${S.academyId}&order=created_at.desc`)||[];
 }
 
-async function loadClassData() {
-  if (!S.activeClass) return;
-  const cid = S.activeClass.id;
-  S.squads     = await sb(`squads?class_id=eq.${cid}&order=name.asc`) || [];
-  S.candidates = await sb(`candidates?class_id=eq.${cid}&order=name.asc&select=*,squads(name)`) || [];
-  if (S.candidates.length) {
-    S.attempts = await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})&order=attempted_at.desc`) || [];
-  } else {
-    S.attempts = [];
-  }
+async function loadClassData(){
+  if(!S.activeClass) return;
+  const cid=S.activeClass.id;
+  S.squads=await sb(`squads?class_id=eq.${cid}&order=name.asc`)||[];
+  S.candidates=await sb(`candidates?class_id=eq.${cid}&order=name.asc&select=*,squads(name)`)||[];
+  S.customSkills=await sb(`custom_skills?class_id=eq.${cid}&order=name.asc`)||[];
+  if(S.candidates.length){
+    S.attempts=await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})&order=attempted_at.desc`)||[];
+  }else{S.attempts=[];}
 }
 
-// ══════════════════════════════════════════════
-// TABS
-// ══════════════════════════════════════════════
-function showTab(name) {
+async function refreshAttempts(){
+  if(!S.candidates.length){S.attempts=[];return;}
+  S.attempts=await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})&order=attempted_at.desc`)||[];
+}
+
+function showTab(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-  if (name==='field')  renderField();
-  if (name==='roster') renderRoster();
-  if (name==='grid')   renderGrid();
-  if (name==='setup')  renderSetup();
+  if(name==='log') renderLog();
+  if(name==='roster') renderRoster();
+  if(name==='grid') renderGrid();
+  if(name==='reference') renderReference();
+  if(name==='setup') renderSetup();
 }
 
-function updatePill() {
-  document.getElementById('header-class-pill').textContent = S.activeClass?.name || 'No Class';
+function updateSquadPill(){
+  const sq=S.squads.find(s=>s.id===S.selectedSquadId);
+  document.getElementById('squad-pill').textContent=sq?sq.name:S.selectedSquadId==='all'?'All Squads':'None';
 }
 
-// ══════════════════════════════════════════════
-// FIELD SCREEN
-// ══════════════════════════════════════════════
-function renderField() {
-  const el = document.getElementById('field-content');
-  if (!S.activeClass) {
-    el.innerHTML = noClassHTML('Go to Setup to create or select a class.');
-    return;
-  }
-  if (!S.candidates.length) {
-    el.innerHTML = noClassHTML('No candidates yet. Add them in Setup.', 'setup');
-    return;
-  }
-
-  const activeJprs = getActiveJprs();
-  const jpr = S.lockedJpr ? jprByCode(S.lockedJpr) : null;
-
-  // Filter candidates by squad
-  const visibleCandidates = S.selectedSquadFilter === 'all'
-    ? S.candidates
-    : S.candidates.filter(c => c.squad_id === S.selectedSquadFilter);
-
-  el.innerHTML = `
-    <!-- JPR LOCK BANNER -->
-    ${jpr ? `
-    <div class="locked-jpr">
-      <div class="locked-jpr-left">
-        <div class="locked-jpr-label">Active JPR — Tap to change</div>
-        <div class="locked-jpr-code">${jpr.code}</div>
-        <div class="locked-jpr-name">${jpr.name}</div>
-      </div>
-      <button class="locked-jpr-change" onclick="clearLockedJpr()">Change JPR</button>
-    </div>` : `
-    <div class="card">
-      <div class="card-header">📋 Select JPR</div>
-      <div class="card-body">
-        <div class="field">
-          <label class="field-label">JPR — stays locked after selection <span class="req">*</span></label>
-          <select class="field-select" id="f-jpr-select" onchange="lockJpr(this.value)">
-            <option value="">— Select JPR to lock —</option>
-            ${Object.keys(SEC_LABELS).map(sec => {
-              const jprs = activeJprs.filter(j=>j.sec===sec);
-              if (!jprs.length) return '';
-              return `<optgroup label="${SEC_LABELS[sec]}">
-                ${jprs.map(j=>`<option value="${j.code}">${j.code} — ${j.name}${j.mandatory?' ★':''}</option>`).join('')}
-              </optgroup>`;
-            }).join('')}
-          </select>
-        </div>
-      </div>
-    </div>`}
-
-    ${jpr ? `
-    <!-- SQUAD FILTER -->
-    ${S.squads.length > 0 ? `
-    <div style="display:flex;gap:8px;margin-bottom:1rem;overflow-x:auto;padding-bottom:2px">
-      <button onclick="setSquadFilter('all')" class="btn btn-sm ${S.selectedSquadFilter==='all'?'btn-navy':'btn-outline'}">All</button>
+function openSquadSwitcher(){
+  if(!S.activeClass){showToast('Create a class first');return;}
+  setModal('Switch Squad',`
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button onclick="setSquad('all');closeModal()"
+        class="btn ${S.selectedSquadId==='all'?'btn-navy':'btn-outline'}" style="text-align:left;padding:12px 16px">
+        All Squads
+      </button>
       ${S.squads.map(sq=>`
-        <button onclick="setSquadFilter('${sq.id}')"
-          class="btn btn-sm ${S.selectedSquadFilter===sq.id?'btn-navy':'btn-outline'}"
-          style="white-space:nowrap">${sq.name}</button>`).join('')}
-    </div>` : ''}
+      <button onclick="setSquad('${sq.id}');closeModal()"
+        class="btn ${S.selectedSquadId===sq.id?'btn-navy':'btn-outline'}" style="text-align:left;padding:12px 16px">
+        ${sq.name} <span style="font-size:11px;opacity:0.6">(${S.candidates.filter(c=>c.squad_id===sq.id).length} candidates)</span>
+      </button>`).join('')}
+      ${S.squads.length===0?'<p style="font-size:13px;color:var(--smoke);text-align:center">No squads yet. Create them in Setup.</p>':''}
+    </div>`,'roster');
+  openModal();
+}
 
-    <!-- CANDIDATE SELECT -->
-    <div class="card">
-      <div class="card-header">👤 Candidate & Reps</div>
-      <div class="card-body">
-        <div class="field">
-          <label class="field-label">Candidate <span class="req">*</span></label>
-          <select class="field-select" id="f-candidate">
-            <option value="">— Select candidate —</option>
-            ${visibleCandidates.map(c=>`<option value="${c.id}">${c.name}${c.squads?.name?' — '+c.squads.name:''}</option>`).join('')}
-          </select>
-        </div>
+function setSquad(id){
+  S.selectedSquadId=id;
+  localStorage.setItem('nafa_squad_id',id);
+  S.selectedCandidateIds=[];
+  updateSquadPill();
+  renderLog();renderRoster();
+}
 
-        <!-- REP COUNTERS -->
-        <div class="rep-counter">
-          <div class="rep-box">
-            <div class="rep-box-label">Reps Attempted</div>
-            <div class="rep-box-controls">
-              <button class="rep-btn" onclick="adjustReps('reps',-1)">−</button>
-              <div class="rep-value" id="rep-count">${S.reps}</div>
-              <button class="rep-btn" onclick="adjustReps('reps',1)">+</button>
+function getSquadCandidates(){
+  if(S.selectedSquadId==='all') return S.candidates;
+  return S.candidates.filter(c=>c.squad_id===S.selectedSquadId);
+}
+
+function getActiveJprs(){
+  const codes=S.activeClass?.active_jprs||JPRS.map(j=>j.code);
+  return JPRS.filter(j=>codes.includes(j.code));
+}
+
+// ══ LOG SESSION ══
+function renderLog(){
+  const el=document.getElementById('log-content');
+  if(!S.activeClass){el.innerHTML=noClassHTML();return;}
+  const sqC=getSquadCandidates();
+  const skill=S.lockedSkill;
+  const activeJprs=getActiveJprs();
+  el.innerHTML=`
+  ${skill?`
+  <div class="locked-banner ${S.lockedSkillType==='custom'?'custom-skill':''}">
+    <div>
+      <div class="locked-label">${S.lockedSkillType==='custom'?'Custom Skill':'JPR'} — tap to change</div>
+      <div class="locked-code">${skill.code||skill.name}</div>
+      <div class="locked-name">${skill.code?skill.name:skill.description||''}</div>
+    </div>
+    <button class="locked-change" onclick="clearLockedSkill()">Change</button>
+  </div>
+  <div class="card">
+    <div class="card-header"><span>👤 Candidates</span>
+      <span style="font-size:10px;opacity:0.7">${S.selectedSquadId==='all'?'All Squads':S.squads.find(s=>s.id===S.selectedSquadId)?.name||''}</span>
+    </div>
+    <div class="card-body">
+      <div class="select-all-row">
+        <span style="font-size:12px;color:var(--smoke)">${sqC.length} candidates</span>
+        <button class="select-all-btn ${S.selectedCandidateIds.length===sqC.length&&sqC.length>0?'active':''}"
+          onclick="toggleSelectAll()">
+          ${S.selectedCandidateIds.length===sqC.length&&sqC.length>0?'✓ All Selected':'Select All'}
+        </button>
+      </div>
+      <div class="candidate-check-list">
+        ${sqC.length===0?'<p style="font-size:13px;color:var(--smoke)">No candidates in this squad.</p>':''}
+        ${sqC.map(c=>`
+        <label class="candidate-check-row">
+          <input type="checkbox" value="${c.id}" ${S.selectedCandidateIds.includes(c.id)?'checked':''}
+            onchange="toggleCandidate('${c.id}',this.checked)">
+          <div style="flex:1"><div class="candidate-check-name">${c.name}</div>
+            ${c.agency?`<div class="candidate-check-meta">${c.agency}</div>`:''}
+          </div>
+          ${getCandidateSkillChip(c.id,skill)}
+        </label>`).join('')}
+      </div>
+    </div>
+  </div>
+  ${S.selectedCandidateIds.length>0?`
+  <div style="display:flex;gap:8px;margin-bottom:1rem">
+    <button onclick="setLogMode('group')" class="btn btn-sm ${S.logMode==='group'?'btn-navy':'btn-outline'}" style="flex:1">Same Reps for All</button>
+    <button onclick="setLogMode('individual')" class="btn btn-sm ${S.logMode==='individual'?'btn-navy':'btn-outline'}" style="flex:1">Individual Reps</button>
+  </div>
+  ${S.logMode==='group'?`
+  <div class="rep-counter-grid" style="margin-bottom:1rem">
+    <div class="rep-box"><div class="rep-box-label">Reps Attempted</div>
+      <div class="rep-controls">
+        <button class="rep-btn" onclick="adjustGroup('reps',-1)">−</button>
+        <div class="rep-value" id="grep-count">${S.groupReps}</div>
+        <button class="rep-btn" onclick="adjustGroup('reps',1)">+</button>
+      </div>
+    </div>
+    <div class="rep-box"><div class="rep-box-label">Successful</div>
+      <div class="rep-controls">
+        <button class="rep-btn" onclick="adjustGroup('succ',-1)">−</button>
+        <div class="rep-value success" id="gsucc-count">${S.groupSuccReps}</div>
+        <button class="rep-btn" onclick="adjustGroup('succ',1)">+</button>
+      </div>
+    </div>
+  </div>`:`
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1rem">
+    ${S.selectedCandidateIds.map(cid=>{
+      const c=S.candidates.find(x=>x.id===cid);
+      const ir=S.individualReps[cid]||{reps:1,succ:0};
+      return `<div class="individual-rep-row">
+        <div class="individual-rep-name">${c?.name||'—'}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="rep-box"><div class="rep-box-label">Attempted</div>
+            <div class="rep-controls">
+              <button class="rep-btn" onclick="adjustIndiv('${cid}','reps',-1)">−</button>
+              <div class="rep-value" id="irep-${cid}">${ir.reps}</div>
+              <button class="rep-btn" onclick="adjustIndiv('${cid}','reps',1)">+</button>
             </div>
           </div>
-          <div class="rep-box success">
-            <div class="rep-box-label">Successful</div>
-            <div class="rep-box-controls">
-              <button class="rep-btn" onclick="adjustReps('success',-1)">−</button>
-              <div class="rep-value" id="success-count" style="color:var(--good)">${S.successReps}</div>
-              <button class="rep-btn" onclick="adjustReps('success',1)">+</button>
+          <div class="rep-box"><div class="rep-box-label">Successful</div>
+            <div class="rep-controls">
+              <button class="rep-btn" onclick="adjustIndiv('${cid}','succ',-1)">−</button>
+              <div class="rep-value success" id="isucc-${cid}">${ir.succ}</div>
+              <button class="rep-btn" onclick="adjustIndiv('${cid}','succ',1)">+</button>
             </div>
           </div>
         </div>
-
-        <div class="field">
-          <label class="field-label">Instructor</label>
-          <input class="field-input" id="f-instructor" placeholder="Your name"
+      </div>`;
+    }).join('')}
+  </div>`}
+  <div class="card">
+    <div class="card-header">📝 Session Details</div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field"><label class="field-label">Date</label>
+          <input class="field-input" type="date" id="f-date" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+        <div class="field"><label class="field-label">Instructor</label>
+          <input class="field-input" type="text" id="f-instructor" placeholder="Your name"
             value="${localStorage.getItem('nafa_instructor')||''}">
         </div>
-        <div class="field">
-          <label class="field-label">Notes (optional)</label>
-          <textarea class="field-textarea" id="f-notes" placeholder="Observations, coaching points…"></textarea>
+      </div>
+      <div class="field"><label class="field-label">Notes (optional)</label>
+        <textarea class="field-textarea" id="f-notes" placeholder="Observations, coaching points…"></textarea>
+      </div>
+      <div class="field"><label class="field-label">Instructor Signature</label>
+        <canvas class="sig-canvas" id="sig-canvas" width="600" height="120"></canvas>
+        <div class="sig-controls">
+          <button class="btn-outline btn-sm" onclick="clearSig()">Clear</button>
+          <span style="font-size:11px;color:var(--smoke);margin-left:6px">Sign above with your finger</span>
         </div>
       </div>
     </div>
-
-    <button class="log-session-btn" onclick="logSession()">
-      ✅ Log Session
-    </button>` : ''}
-
-    <!-- RECENT LOG -->
-    <div class="section-label">Recent Sessions</div>
-    <div id="recent-log">${renderRecentHTML()}</div>`;
+  </div>
+  <button class="log-btn" onclick="logSession()">
+    ✅ Log Session — ${S.selectedCandidateIds.length} Candidate${S.selectedCandidateIds.length>1?'s':''}
+  </button>`:''}`:
+  `<div class="card">
+    <div class="card-header">📋 Select Skill to Log</div>
+    <div class="card-body">
+      ${activeJprs.length>0||S.customSkills.length>0?`
+      <div class="field">
+        <label class="field-label">JPR <span style="font-size:10px;color:var(--smoke)">(locks after selection)</span></label>
+        <select class="field-select" onchange="lockSkill('jpr',this.value)">
+          <option value="">— Select JPR —</option>
+          ${Object.keys(SEC_LABELS).map(sec=>{
+            const jprs=activeJprs.filter(j=>j.sec===sec);
+            if(!jprs.length) return '';
+            return `<optgroup label="${SEC_LABELS[sec]}">
+              ${jprs.map(j=>`<option value="${j.code}">${j.code} — ${j.name}${j.mandatory?' ★':''}</option>`).join('')}
+            </optgroup>`;
+          }).join('')}
+        </select>
+      </div>
+      ${S.customSkills.length>0?`
+      <div class="field">
+        <label class="field-label" style="color:var(--custom)">Custom Skill</label>
+        <select class="field-select" onchange="lockSkill('custom',this.value)" style="border-color:rgba(106,27,154,0.3)">
+          <option value="">— Select Custom Skill —</option>
+          ${S.customSkills.map(sk=>`<option value="${sk.id}">${sk.name}</option>`).join('')}
+        </select>
+      </div>`:''}
+      <button class="btn btn-outline" style="margin-top:0.5rem;width:auto;padding:8px 14px;font-size:12px"
+        onclick="openAddCustomSkillQuick()">＋ Add Custom Skill on the fly</button>`
+      :`<p style="font-size:13px;color:var(--smoke)">No active class. Go to Setup first.</p>`}
+    </div>
+  </div>`}
+  <div class="section-label" style="margin-top:0.5rem">Recent Sessions</div>
+  <div id="recent-log">${renderRecentHTML()}</div>`;
+  if(skill&&S.selectedCandidateIds.length>0) setTimeout(initSigCanvas,100);
 }
 
-function lockJpr(code) {
-  if (!code) return;
-  S.lockedJpr = code;
-  S.reps = 1;
-  S.successReps = 0;
-  renderField();
+function getCandidateSkillChip(cid,skill){
+  if(!skill) return '';
+  const mine=S.attempts.filter(a=>a.candidate_id===cid&&
+    (skill.code?a.jpr_code===skill.code:a.custom_skill_id===skill.id));
+  if(!mine.length) return '<span style="font-size:11px;color:var(--mist)">No reps yet</span>';
+  const r=mine.reduce((s,a)=>s+a.reps,0);
+  const sc=mine.reduce((s,a)=>s+a.successful_reps,0);
+  const pct=r>0?Math.round((sc/r)*100):0;
+  return `<span class="chip ${pct>=80?'chip-good':pct>=50?'chip-info':'chip-warn'}">${sc}/${r} (${pct}%)</span>`;
 }
 
-function clearLockedJpr() {
-  S.lockedJpr = null;
-  renderField();
+function lockSkill(type,val){
+  if(!val) return;
+  if(type==='jpr'){S.lockedSkill=jprByCode(val);S.lockedSkillType='jpr';}
+  else{S.lockedSkill=S.customSkills.find(s=>s.id===val);S.lockedSkillType='custom';}
+  S.selectedCandidateIds=[];S.groupReps=1;S.groupSuccReps=0;S.individualReps={};S.sigData=null;
+  renderLog();
 }
 
-function setSquadFilter(id) {
-  S.selectedSquadFilter = id;
-  renderField();
+function clearLockedSkill(){S.lockedSkill=null;S.lockedSkillType=null;S.selectedCandidateIds=[];renderLog();}
+
+function toggleSelectAll(){
+  const sqC=getSquadCandidates();
+  if(S.selectedCandidateIds.length===sqC.length){S.selectedCandidateIds=[];}
+  else{S.selectedCandidateIds=sqC.map(c=>c.id);sqC.forEach(c=>{if(!S.individualReps[c.id]) S.individualReps[c.id]={reps:1,succ:0};});}
+  renderLog();
 }
 
-function adjustReps(type, delta) {
-  if (type === 'reps') {
-    S.reps = Math.max(1, S.reps + delta);
-    if (S.successReps > S.reps) S.successReps = S.reps;
-    document.getElementById('rep-count').textContent = S.reps;
-    document.getElementById('success-count').textContent = S.successReps;
-  } else {
-    S.successReps = Math.max(0, Math.min(S.reps, S.successReps + delta));
-    document.getElementById('success-count').textContent = S.successReps;
-  }
+function toggleCandidate(id,checked){
+  if(checked){if(!S.selectedCandidateIds.includes(id)) S.selectedCandidateIds.push(id);if(!S.individualReps[id]) S.individualReps[id]={reps:1,succ:0};}
+  else{S.selectedCandidateIds=S.selectedCandidateIds.filter(x=>x!==id);}
+  renderLog();
 }
 
-function renderRecentHTML() {
-  const recent = S.attempts.slice(0, 20);
-  if (!recent.length) return `<div style="color:var(--smoke);font-size:13px;padding:0.5rem 0">No sessions logged yet.</div>`;
-  return `<div class="log-list">` + recent.map(a => {
-    const cand = S.candidates.find(c=>c.id===a.candidate_id);
-    const jpr  = jprByCode(a.jpr_code);
-    const pct  = a.reps > 0 ? Math.round((a.successful_reps/a.reps)*100) : 0;
-    const col  = pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
-    const dt   = new Date(a.attempted_at);
-    const time = dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+function setLogMode(mode){S.logMode=mode;renderLog();}
+
+function adjustGroup(type,delta){
+  if(type==='reps'){S.groupReps=Math.max(1,S.groupReps+delta);if(S.groupSuccReps>S.groupReps) S.groupSuccReps=S.groupReps;
+    const a=document.getElementById('grep-count');const b=document.getElementById('gsucc-count');
+    if(a) a.textContent=S.groupReps;if(b) b.textContent=S.groupSuccReps;}
+  else{S.groupSuccReps=Math.max(0,Math.min(S.groupReps,S.groupSuccReps+delta));
+    const b=document.getElementById('gsucc-count');if(b) b.textContent=S.groupSuccReps;}
+}
+
+function adjustIndiv(cid,type,delta){
+  if(!S.individualReps[cid]) S.individualReps[cid]={reps:1,succ:0};
+  const ir=S.individualReps[cid];
+  if(type==='reps'){ir.reps=Math.max(1,ir.reps+delta);if(ir.succ>ir.reps) ir.succ=ir.reps;
+    const a=document.getElementById(`irep-${cid}`);const b=document.getElementById(`isucc-${cid}`);
+    if(a) a.textContent=ir.reps;if(b) b.textContent=ir.succ;}
+  else{ir.succ=Math.max(0,Math.min(ir.reps,ir.succ+delta));
+    const b=document.getElementById(`isucc-${cid}`);if(b) b.textContent=ir.succ;}
+}
+
+let sigCanvas,sigCtx,sigDrawing=false,sigLastX=0,sigLastY=0;
+function initSigCanvas(){
+  sigCanvas=document.getElementById('sig-canvas');if(!sigCanvas) return;
+  sigCtx=sigCanvas.getContext('2d');
+  sigCtx.strokeStyle='#1A1A2E';sigCtx.lineWidth=2;sigCtx.lineCap='round';sigCtx.lineJoin='round';
+  if(S.sigData){const img=new Image();img.onload=()=>sigCtx.drawImage(img,0,0);img.src=S.sigData;}
+  const getPos=(e)=>{
+    const r=sigCanvas.getBoundingClientRect();
+    const scaleX=sigCanvas.width/r.width;const scaleY=sigCanvas.height/r.height;
+    const src=e.touches?e.touches[0]:e;
+    return{x:(src.clientX-r.left)*scaleX,y:(src.clientY-r.top)*scaleY};
+  };
+  sigCanvas.onmousedown=sigCanvas.ontouchstart=(e)=>{e.preventDefault();sigDrawing=true;const p=getPos(e);sigLastX=p.x;sigLastY=p.y;};
+  sigCanvas.onmousemove=sigCanvas.ontouchmove=(e)=>{e.preventDefault();if(!sigDrawing) return;const p=getPos(e);sigCtx.beginPath();sigCtx.moveTo(sigLastX,sigLastY);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();sigLastX=p.x;sigLastY=p.y;};
+  sigCanvas.onmouseup=sigCanvas.ontouchend=(e)=>{e.preventDefault();sigDrawing=false;S.sigData=sigCanvas.toDataURL();};
+}
+function clearSig(){if(sigCtx) sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);S.sigData=null;}
+
+async function logSession(){
+  if(!S.lockedSkill||!S.selectedCandidateIds.length){showToast('Select skill and candidates');return;}
+  const instructor=document.getElementById('f-instructor')?.value.trim()||'';
+  const notes=document.getElementById('f-notes')?.value.trim()||'';
+  const sessionDate=document.getElementById('f-date')?.value||new Date().toISOString().split('T')[0];
+  if(instructor) localStorage.setItem('nafa_instructor',instructor);
+  S.sigData=sigCanvas?sigCanvas.toDataURL():null;
+  try{
+    const isGroup=S.logMode==='group';
+    const isJpr=S.lockedSkillType==='jpr';
+    const promises=S.selectedCandidateIds.map(cid=>{
+      const reps=isGroup?S.groupReps:S.individualReps[cid]?.reps||1;
+      const succ=isGroup?S.groupSuccReps:S.individualReps[cid]?.succ||0;
+      return sb('attempts','POST',{
+        candidate_id:cid,
+        jpr_code:isJpr?S.lockedSkill.code:null,
+        custom_skill_id:!isJpr?S.lockedSkill.id:null,
+        skill_type:S.lockedSkillType,
+        reps,successful_reps:succ,
+        instructor,notes,
+        session_date:sessionDate,
+        signature:S.sigData,
+        group_session:isGroup&&S.selectedCandidateIds.length>1,
+      });
+    });
+    const results=await Promise.all(promises);
+    results.forEach(r=>{const a=Array.isArray(r)?r[0]:r;if(a) S.attempts.unshift(a);});
+    showToast(`✅ Logged for ${S.selectedCandidateIds.length} candidate${S.selectedCandidateIds.length>1?'s':''}`);
+    S.groupReps=1;S.groupSuccReps=0;S.individualReps={};S.selectedCandidateIds=[];S.sigData=null;
+    renderLog();
+  }catch(e){showToast('⚠️ Save failed: '+e.message);}
+}
+
+function renderRecentHTML(){
+  const recent=S.attempts.slice(0,20);
+  if(!recent.length) return '<div style="color:var(--smoke);font-size:13px;padding:0.5rem 0">No sessions logged yet.</div>';
+  return '<div class="log-list">'+recent.map(a=>{
+    const cand=S.candidates.find(c=>c.id===a.candidate_id);
+    const isCustom=a.skill_type==='custom';
+    const skillName=isCustom?(S.customSkills.find(s=>s.id===a.custom_skill_id)?.name||'Custom Skill'):(jprByCode(a.jpr_code)?.name||a.jpr_code);
+    const skillCode=isCustom?'Custom':(a.jpr_code||'');
+    const pct=a.reps>0?Math.round((a.successful_reps/a.reps)*100):0;
+    const col=pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+    const dt=new Date(a.session_date||a.attempted_at);
+    const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const timeStr=new Date(a.attempted_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     return `
-    <div class="log-item">
-      <div class="log-bar" style="background:${col}"></div>
+    <div class="log-item" onclick="openSessionDetail('${a.id}')">
+      <div class="log-bar" style="background:${isCustom?'var(--custom)':col}"></div>
       <div class="log-text">
-        <strong>${cand?.name||'—'}</strong> · ${a.jpr_code}<br>
-        <span style="font-size:11px;color:var(--smoke)">${a.successful_reps}/${a.reps} reps (${pct}%)${a.instructor?' · '+a.instructor:''}</span>
+        <strong>${cand?.name||'—'}</strong> · <span style="color:${isCustom?'var(--custom)':'var(--navy)'}">${skillCode}</span><br>
+        <span style="font-size:11px;color:var(--smoke)">${skillName} · ${a.successful_reps}/${a.reps} reps (${pct}%)</span>
         ${a.notes?`<br><span style="font-size:11px;color:var(--smoke);font-style:italic">${a.notes}</span>`:''}
       </div>
-      <div class="log-time">${time}</div>
-      <button class="log-del" onclick="deleteSession('${a.id}')">✕</button>
+      <div class="log-meta"><div>${dateStr}</div><div>${timeStr}</div></div>
+      <button class="log-del" onclick="event.stopPropagation();deleteSession('${a.id}')">✕</button>
     </div>`;
-  }).join('') + `</div>`;
+  }).join('')+'</div>';
 }
 
-async function logSession() {
-  const candidateId = document.getElementById('f-candidate')?.value;
-  const instructor  = document.getElementById('f-instructor')?.value.trim()||'';
-  const notes       = document.getElementById('f-notes')?.value.trim()||'';
-
-  if (!S.lockedJpr)    { showToast('Select a JPR first'); return; }
-  if (!candidateId)    { showToast('Select a candidate'); return; }
-
-  if (instructor) localStorage.setItem('nafa_instructor', instructor);
-
-  try {
-    const result = await sb('attempts', 'POST', {
-      candidate_id: candidateId,
-      jpr_code: S.lockedJpr,
-      reps: S.reps,
-      successful_reps: S.successReps,
-      instructor,
-      notes,
-    });
-    const newA = Array.isArray(result) ? result[0] : result;
-    if (newA) S.attempts.unshift(newA);
-
-    // Reset reps but keep JPR locked and candidate selected
-    S.reps = 1;
-    S.successReps = 0;
-    showToast(`✅ Logged — ${S.successReps}/${S.reps} reps`);
-
-    // Just update the counters and recent log without full re-render
-    if (document.getElementById('rep-count')) {
-      document.getElementById('rep-count').textContent = 1;
-      document.getElementById('success-count').textContent = 0;
-    }
-    document.getElementById('f-notes').value = '';
-    document.getElementById('recent-log').innerHTML = renderRecentHTML();
-  } catch(e) { showToast('⚠️ Save failed: ' + e.message); }
-}
-
-async function deleteSession(id) {
-  try {
-    await sb(`attempts?id=eq.${id}`, 'DELETE');
-    S.attempts = S.attempts.filter(a=>a.id!==id);
-    document.getElementById('recent-log').innerHTML = renderRecentHTML();
-    showToast('Session removed');
-  } catch(e) { showToast('⚠️ Delete failed'); }
-}
-
-// ══════════════════════════════════════════════
-// ROSTER SCREEN
-// ══════════════════════════════════════════════
-function renderRoster() {
-  const el = document.getElementById('roster-content');
-  if (!S.activeClass) { el.innerHTML = noClassHTML(); return; }
-
-  const totalReps = S.attempts.reduce((s,a)=>s+a.reps, 0);
-  const totalSucc = S.attempts.reduce((s,a)=>s+a.successful_reps, 0);
-  const overallPct = totalReps > 0 ? Math.round((totalSucc/totalReps)*100) : 0;
-
-  let html = `
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
-      <div class="card" style="margin:0;text-align:center;padding:0.8rem">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--navy);line-height:1">${S.candidates.length}</div>
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke)">Candidates</div>
-      </div>
-      <div class="card" style="margin:0;text-align:center;padding:0.8rem">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--navy);line-height:1">${totalReps}</div>
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke)">Total Reps</div>
-      </div>
-      <div class="card" style="margin:0;text-align:center;padding:0.8rem">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--navy);line-height:1">${overallPct}%</div>
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.07em;color:var(--smoke)">Success Rate</div>
-      </div>
+function openSessionDetail(id){
+  const a=S.attempts.find(x=>x.id===id);if(!a) return;
+  const cand=S.candidates.find(c=>c.id===a.candidate_id);
+  const isCustom=a.skill_type==='custom';
+  const skillName=isCustom?(S.customSkills.find(s=>s.id===a.custom_skill_id)?.name||'Custom Skill'):(jprByCode(a.jpr_code)?.name||a.jpr_code);
+  const skillCode=isCustom?'Custom Skill':(a.jpr_code||'');
+  const pct=a.reps>0?Math.round((a.successful_reps/a.reps)*100):0;
+  const col=pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+  const dt=new Date(a.session_date||a.attempted_at);
+  const dateStr=dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const timeStr=new Date(a.attempted_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  setModal('Session Detail',`
+    <div class="detail-row"><div class="detail-label">Candidate</div><div class="detail-value">${cand?.name||'—'}</div></div>
+    <div class="detail-row"><div class="detail-label">Skill</div>
+      <div class="detail-value"><span style="font-weight:700;color:${isCustom?'var(--custom)':'var(--navy)'}">${skillCode}</span> — ${skillName}</div></div>
+    <div class="detail-row"><div class="detail-label">Date</div><div class="detail-value">${dateStr}</div></div>
+    <div class="detail-row"><div class="detail-label">Time Logged</div><div class="detail-value">${timeStr}</div></div>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+      <span class="chip chip-info" style="font-size:13px;padding:5px 12px">${a.reps} Reps</span>
+      <span class="chip chip-good" style="font-size:13px;padding:5px 12px">${a.successful_reps} Successful</span>
+      <span class="chip" style="background:${col}22;color:${col};font-size:13px;padding:5px 12px">${pct}%</span>
     </div>
-    <div class="candidate-list">`;
+    ${a.instructor?`<div class="detail-row"><div class="detail-label">Instructor</div><div class="detail-value">${a.instructor}</div></div>`:''}
+    ${a.notes?`<div class="detail-row"><div class="detail-label">Notes</div><div class="detail-value">${a.notes}</div></div>`:''}
+    ${a.group_session?`<div class="detail-row"><div class="detail-label">Session Type</div><div class="detail-value">Group session</div></div>`:''}
+    ${a.signature?`<div class="detail-row"><div class="detail-label">Instructor Signature</div>
+      <img src="${a.signature}" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:4px"></div>`:''}
+    <div style="margin-top:1rem">
+      <button class="btn btn-danger" onclick="deleteSession('${a.id}');closeModal()">🗑 Delete This Session</button>
+    </div>`,'log');
+  openModal();
+}
 
-  if (!S.candidates.length) {
-    html += `<div class="empty-state"><div class="empty-icon">👤</div>No candidates yet.</div>`;
-  } else {
-    S.candidates.forEach(c => {
-      const mine    = S.attempts.filter(a=>a.candidate_id===c.id);
-      const reps    = mine.reduce((s,a)=>s+a.reps,0);
-      const succ    = mine.reduce((s,a)=>s+a.successful_reps,0);
-      const pct     = reps>0?Math.round((succ/reps)*100):0;
-      const jprsHit = new Set(mine.map(a=>a.jpr_code)).size;
-      const squad   = S.squads.find(sq=>sq.id===c.squad_id);
-      html += `
+async function deleteSession(id){
+  try{
+    await sb(`attempts?id=eq.${id}`,'DELETE');
+    S.attempts=S.attempts.filter(a=>a.id!==id);
+    const el=document.getElementById('recent-log');
+    if(el) el.innerHTML=renderRecentHTML();
+    showToast('Session removed');
+  }catch(e){showToast('⚠️ Delete failed');}
+}
+
+function openAddCustomSkillQuick(){
+  setModal('Add Custom Skill',`
+    <p style="font-size:13px;color:var(--smoke);margin-bottom:1rem">Add a skill on the fly. It will also appear in Setup and the Grid.</p>
+    <div class="field"><label class="field-label">Skill Name <span class="req">*</span></label>
+      <input class="field-input" id="quick-skill-name" placeholder="e.g. Master Stream Operations">
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem">
+      ${DEFAULT_CUSTOM_SKILLS.map(sk=>`
+      <button onclick="document.getElementById('quick-skill-name').value='${sk.name}'"
+        style="background:var(--custom-pale);border:1px solid rgba(106,27,154,0.2);border-radius:6px;
+        font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--custom);
+        padding:4px 10px;cursor:pointer">${sk.name}</button>`).join('')}
+    </div>
+    <button class="btn btn-custom" onclick="saveQuickCustomSkill()">＋ Add Skill</button>`,'log');
+  openModal();
+}
+
+async function saveQuickCustomSkill(){
+  const name=document.getElementById('quick-skill-name')?.value.trim();
+  if(!name){showToast('Enter a skill name');return;}
+  if(!S.activeClass){showToast('No active class');return;}
+  try{
+    const result=await sb('custom_skills','POST',{class_id:S.activeClass.id,name});
+    const sk=Array.isArray(result)?result[0]:result;
+    if(sk){S.customSkills.push(sk);S.lockedSkill=sk;S.lockedSkillType='custom';}
+    closeModal();S.selectedCandidateIds=[];renderLog();showToast(`✅ ${name} added`);
+  }catch(e){showToast('⚠️ '+e.message);}
+}
+
+// ══ ROSTER ══
+function renderRoster(){
+  const el=document.getElementById('roster-content');
+  if(!S.activeClass){el.innerHTML=noClassHTML();return;}
+  const displayC=getSquadCandidates();
+  const totalReps=S.attempts.reduce((s,a)=>s+a.reps,0);
+  const totalSucc=S.attempts.reduce((s,a)=>s+a.successful_reps,0);
+  const overallPct=totalReps>0?Math.round((totalSucc/totalReps)*100):0;
+  el.innerHTML=`
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num">${displayC.length}</div><div class="stat-label">${S.selectedSquadId==='all'?'Total':'Squad'} Candidates</div></div>
+    <div class="stat-card"><div class="stat-num">${totalReps}</div><div class="stat-label">Total Reps</div></div>
+    <div class="stat-card"><div class="stat-num">${overallPct}%</div><div class="stat-label">Success Rate</div></div>
+  </div>
+  <div class="candidate-list">
+    ${displayC.length===0?'<div class="empty-state"><div class="empty-icon">👤</div>No candidates in this squad.</div>':''}
+    ${displayC.map(c=>{
+      const mine=S.attempts.filter(a=>a.candidate_id===c.id);
+      const reps=mine.reduce((s,a)=>s+a.reps,0);
+      const succ=mine.reduce((s,a)=>s+a.successful_reps,0);
+      const pct=reps>0?Math.round((succ/reps)*100):0;
+      const jprsHit=new Set(mine.filter(a=>a.skill_type==='jpr').map(a=>a.jpr_code)).size;
+      const customHit=new Set(mine.filter(a=>a.skill_type==='custom').map(a=>a.custom_skill_id)).size;
+      const squad=S.squads.find(sq=>sq.id===c.squad_id);
+      const col=pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+      return `
       <div class="candidate-row" onclick="openCandidateModal('${c.id}')">
         <div style="flex:1;min-width:0">
           <div class="candidate-name">${c.name}</div>
-          <div class="candidate-meta">
-            ${squad?`<span class="squad-badge">${squad.name}</span> · `:''}
-            ${c.agency||''}
-          </div>
-          <div style="height:4px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden">
-            <div style="height:100%;width:${pct}%;background:${pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)'};border-radius:2px"></div>
-          </div>
+          <div class="candidate-meta">${squad?`<span class="squad-badge">${squad.name}</span> `:''} ${c.agency||''}</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${col}"></div></div>
         </div>
-        <div class="candidate-stats">
-          <span class="stat-chip chip-info">${jprsHit} JPRs</span>
-          <span class="stat-chip ${pct>=80?'chip-good':pct>=50?'':'chip-warn'}">${pct}%</span>
+        <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+          ${jprsHit>0?`<span class="chip chip-info">${jprsHit} JPRs</span>`:''}
+          ${customHit>0?`<span class="chip chip-custom">${customHit} Skills</span>`:''}
+          <span style="font-weight:700;font-size:13px;color:${col}">${pct}%</span>
           <span style="color:var(--mist);font-size:16px">›</span>
         </div>
       </div>`;
-    });
-  }
-  html += `</div>`;
-  el.innerHTML = html;
+    }).join('')}
+  </div>`;
 }
 
-// ── Candidate detail modal ──
-function openCandidateModal(cid) {
-  const c = S.candidates.find(x=>x.id===cid);
-  if (!c) return;
-  const mine = S.attempts.filter(a=>a.candidate_id===cid);
-  const activeJprs = getActiveJprs();
-  const squad = S.squads.find(sq=>sq.id===c.squad_id);
-
-  document.getElementById('modal-title').textContent = c.name;
-  document.getElementById('modal-body').innerHTML = `
+function openCandidateModal(cid){
+  const c=S.candidates.find(x=>x.id===cid);if(!c) return;
+  const mine=S.attempts.filter(a=>a.candidate_id===cid);
+  const activeJprs=getActiveJprs();
+  const squad=S.squads.find(sq=>sq.id===c.squad_id);
+  setModal(c.name,`
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.8rem">
       ${squad?`<span class="squad-badge">${squad.name}</span>`:''}
-      ${c.agency?`<span class="stat-chip chip-mist">${c.agency}</span>`:''}
+      ${c.agency?`<span class="chip chip-mist">${c.agency}</span>`:''}
     </div>
-    <p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem">Tap any JPR to see full rep history.</p>
+    <p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem">Tap any skill to see session history.</p>
+    ${S.customSkills.length>0?`
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--custom);margin-bottom:0.4rem">Custom Skills</div>
     <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:1rem">
-      ${activeJprs.map(jpr => {
-        const sessions = mine.filter(a=>a.jpr_code===jpr.code);
-        const reps = sessions.reduce((s,a)=>s+a.reps,0);
-        const succ = sessions.reduce((s,a)=>s+a.successful_reps,0);
-        const pct  = reps>0?Math.round((succ/reps)*100):null;
-        return `
-        <div onclick="openJprHistory('${cid}','${jpr.code}')"
-          style="background:var(--paper);border-radius:8px;padding:9px 12px;
-          display:flex;align-items:center;gap:8px;cursor:pointer">
+      ${S.customSkills.map(sk=>{
+        const sessions=mine.filter(a=>a.custom_skill_id===sk.id);
+        const r=sessions.reduce((s,a)=>s+a.reps,0);
+        const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+        const pct=r>0?Math.round((sc/r)*100):null;
+        return `<div onclick="openSkillHistory('${cid}','custom','${sk.id}')"
+          style="background:var(--custom-pale);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:8px;cursor:pointer">
+          <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--custom)">${sk.name}</div></div>
+          <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+            ${r>0?`<span class="chip chip-custom">${r} reps</span>
+              <span class="chip ${pct>=80?'chip-good':pct>=50?'chip-info':'chip-warn'}">${pct}%</span>`
+              :`<span style="font-size:11px;color:var(--mist)">No reps</span>`}
+            <span style="color:var(--mist);font-size:14px">›</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`:''}
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--navy);margin-bottom:0.4rem">JPRs</div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:1rem">
+      ${activeJprs.map(jpr=>{
+        const sessions=mine.filter(a=>a.jpr_code===jpr.code);
+        const r=sessions.reduce((s,a)=>s+a.reps,0);
+        const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+        const pct=r>0?Math.round((sc/r)*100):null;
+        return `<div onclick="openSkillHistory('${cid}','jpr','${jpr.code}')"
+          style="background:var(--paper);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:8px;cursor:pointer">
           <div style="flex:1;min-width:0">
-            <div style="font-size:11px;font-weight:700;color:var(--navy)">${jpr.code}${jpr.mandatory?' <span class="mandatory-tag">Mandatory</span>':''}</div>
+            <div style="font-size:11px;font-weight:700;color:var(--navy)">${jpr.code}${jpr.mandatory?' <span class="mandatory-tag">Mand</span>':''}</div>
             <div style="font-size:12px;color:var(--ash)">${jpr.name}</div>
           </div>
           <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
-            ${reps>0
-              ? `<span class="stat-chip chip-info">${reps} reps</span>
-                 <span class="stat-chip ${pct>=80?'chip-good':pct>=50?'chip-mist':'chip-warn'}">${pct}%</span>`
-              : `<span style="font-size:11px;color:var(--mist)">No reps</span>`}
-            <span style="color:var(--mist);font-size:16px">›</span>
+            ${r>0?`<span class="chip chip-info">${r} reps</span>
+              <span class="chip ${pct>=80?'chip-good':pct>=50?'chip-mist':'chip-warn'}">${pct}%</span>`
+              :`<span style="font-size:11px;color:var(--mist)">No reps</span>`}
+            <span style="color:var(--mist);font-size:14px">›</span>
           </div>
         </div>`;
       }).join('')}
     </div>
-    <button class="btn btn-danger" onclick="confirmRemoveCandidate('${cid}','${c.name.replace(/'/g,"\\'")}')">🗑 Remove Candidate</button>`;
-
-  document.getElementById('modal-overlay').classList.add('open');
+    <button class="btn btn-danger" onclick="confirmRemoveCandidate('${cid}','${c.name.replace(/'/g,"\'")}')">🗑 Remove Candidate</button>`,'roster');
+  openModal();
 }
 
-// ── JPR history drill-down ──
-function openJprHistory(cid, jprCode) {
-  const c   = S.candidates.find(x=>x.id===cid);
-  const jpr = jprByCode(jprCode);
-  if (!c||!jpr) return;
-  const sessions = S.attempts.filter(a=>a.candidate_id===cid&&a.jpr_code===jprCode)
-    .sort((a,b)=>new Date(b.attempted_at)-new Date(a.attempted_at));
-  const totalReps = sessions.reduce((s,a)=>s+a.reps,0);
-  const totalSucc = sessions.reduce((s,a)=>s+a.successful_reps,0);
-  const pct = totalReps>0?Math.round((totalSucc/totalReps)*100):0;
-
-  document.getElementById('modal-title').textContent = jprCode;
-  document.getElementById('modal-body').innerHTML = `
-    <button onclick="openCandidateModal('${cid}')"
-      style="width:100%;background:var(--paper);border:1px solid var(--border);border-radius:8px;
-      padding:12px;margin-bottom:1rem;font-size:14px;font-weight:600;
-      color:var(--navy);display:flex;align-items:center;justify-content:center;gap:6px;
-      font-family:'DM Sans',sans-serif;cursor:pointer">
-      ‹ Back to ${c.name}
-    </button>
-
+function openSkillHistory(cid,type,skillId){
+  const c=S.candidates.find(x=>x.id===cid);
+  const isCustom=type==='custom';
+  const skill=isCustom?S.customSkills.find(s=>s.id===skillId):jprByCode(skillId);
+  if(!c||!skill) return;
+  const sessions=S.attempts.filter(a=>a.candidate_id===cid&&
+    (isCustom?a.custom_skill_id===skillId:a.jpr_code===skillId))
+    .sort((a,b)=>new Date(b.session_date||b.attempted_at)-new Date(a.session_date||a.attempted_at));
+  const totalR=sessions.reduce((s,a)=>s+a.reps,0);
+  const totalS=sessions.reduce((s,a)=>s+a.successful_reps,0);
+  const pct=totalR>0?Math.round((totalS/totalR)*100):0;
+  setModal(skill.code||skill.name,`
+    <button class="back-btn" onclick="openCandidateModal('${cid}')">‹ Back to ${c.name}</button>
     <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem">
-      <div style="font-size:13px;font-weight:600;color:var(--ash);margin-bottom:2px">${jpr.name}</div>
-      <div style="font-size:11px;color:var(--smoke)">${jpr.mandatory?'★ Mandatory':'Random'}</div>
+      <div style="font-size:13px;font-weight:600;color:var(--ash)">${skill.name}</div>
+      ${isCustom?'':`<div style="font-size:11px;color:var(--smoke)">${skill.mandatory?'★ Mandatory':'Random'} · Standard ${skill.standard}</div>`}
     </div>
-
     <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
-      <span class="stat-chip chip-info" style="font-size:13px;padding:5px 12px">${totalReps} Total Reps</span>
-      <span class="stat-chip chip-good" style="font-size:13px;padding:5px 12px">${totalSucc} Successful</span>
-      <span class="stat-chip ${pct>=80?'chip-good':pct>=50?'chip-mist':'chip-warn'}" style="font-size:13px;padding:5px 12px">${pct}% Rate</span>
+      <span class="chip chip-info" style="font-size:13px;padding:5px 12px">${totalR} Total Reps</span>
+      <span class="chip chip-good" style="font-size:13px;padding:5px 12px">${totalS} Successful</span>
+      <span class="chip ${pct>=80?'chip-good':pct>=50?'chip-mist':'chip-warn'}" style="font-size:13px;padding:5px 12px">${pct}% Rate</span>
     </div>
-
-    ${sessions.length===0 ? `
-    <div class="empty-state" style="padding:1.5rem">
-      <div class="empty-icon">📋</div>No sessions logged for this JPR yet.
-    </div>` : `
+    ${sessions.length===0?'<div class="empty-state" style="padding:1.5rem"><div class="empty-icon">📋</div>No sessions logged yet.</div>':`
     <div class="section-label">Session History</div>
     <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:1rem">
-      ${sessions.map(a => {
-        const dt  = new Date(a.attempted_at);
-        const ds  = dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        const ts  = dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-        const p   = a.reps>0?Math.round((a.successful_reps/a.reps)*100):0;
-        const col = p>=80?'var(--good)':p>=50?'#F9A825':'var(--warn)';
-        return `
-        <div style="background:var(--paper);border-radius:8px;padding:10px 12px;border-left:3px solid ${col}">
+      ${sessions.map(a=>{
+        const dt=new Date(a.session_date||a.attempted_at);
+        const ds=dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        const ts=new Date(a.attempted_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+        const p=a.reps>0?Math.round((a.successful_reps/a.reps)*100):0;
+        const col=p>=80?'var(--good)':p>=50?'#F9A825':'var(--warn)';
+        return `<div style="background:var(--paper);border-radius:8px;padding:10px 12px;border-left:3px solid ${col}">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
             <div>
               <span style="font-size:13px;font-weight:700;color:${col}">${a.successful_reps}/${a.reps} reps (${p}%)</span>
-              <span style="font-size:11px;color:var(--smoke);margin-left:8px">${ds} · ${ts}</span>
+              <span style="font-size:11px;color:var(--smoke);margin-left:8px">${ds}</span>
             </div>
-            <button onclick="deleteSessionFromHistory('${a.id}','${cid}','${jprCode}')"
+            <button onclick="deleteSessionFromHistory('${a.id}','${cid}','${type}','${skillId}')"
               style="background:none;border:none;color:var(--mist);font-size:15px;cursor:pointer;padding:2px 4px">✕</button>
           </div>
-          ${a.instructor?`<div style="font-size:11px;color:var(--smoke);margin-top:4px">👤 ${a.instructor}</div>`:''}
-          ${a.notes?`<div style="font-size:12px;color:var(--ash);margin-top:4px;font-style:italic">"${a.notes}"</div>`:''}
+          ${a.instructor?`<div style="font-size:11px;color:var(--smoke);margin-top:3px">👤 ${a.instructor} · ${ts}</div>`:`<div style="font-size:11px;color:var(--smoke);margin-top:3px">${ts}</div>`}
+          ${a.notes?`<div style="font-size:12px;color:var(--ash);margin-top:3px;font-style:italic">"${a.notes}"</div>`:''}
+          ${a.signature?`<img src="${a.signature}" style="max-height:36px;border:1px solid var(--border);border-radius:4px;margin-top:5px">`:''}
         </div>`;
       }).join('')}
-    </div>`}`;
+    </div>`}`,'roster');
+  openModal();
 }
 
-async function deleteSessionFromHistory(id, cid, jprCode) {
-  try {
-    await sb(`attempts?id=eq.${id}`, 'DELETE');
-    S.attempts = S.attempts.filter(a=>a.id!==id);
-    showToast('Session removed');
-    openJprHistory(cid, jprCode);
-  } catch(e) { showToast('⚠️ Delete failed'); }
+async function deleteSessionFromHistory(id,cid,type,skillId){
+  try{
+    await sb(`attempts?id=eq.${id}`,'DELETE');
+    S.attempts=S.attempts.filter(a=>a.id!==id);
+    showToast('Session removed');openSkillHistory(cid,type,skillId);
+  }catch(e){showToast('⚠️ Delete failed');}
 }
 
-function confirmRemoveCandidate(id, name) {
-  document.getElementById('modal-title').textContent = 'Remove Candidate';
-  document.getElementById('modal-body').innerHTML = `
-    <p style="font-size:14px;line-height:1.6;margin-bottom:1rem">
-      Remove <strong>${name}</strong>?<br>
-      <span style="color:var(--warn);font-size:13px">All their rep history will be permanently deleted.</span>
-    </p>
+function confirmRemoveCandidate(id,name){
+  setModal('Remove Candidate',`
+    <p style="font-size:14px;line-height:1.6;margin-bottom:1rem">Remove <strong>${name}</strong>?<br>
+      <span style="color:var(--warn);font-size:13px">All rep history will be permanently deleted.</span></p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
       <button class="btn" style="background:var(--warn);color:var(--white);border:none" onclick="removeCandidate('${id}')">Yes, Remove</button>
-    </div>`;
+    </div>`,'roster');
+  openModal();
 }
 
-async function removeCandidate(id) {
-  try {
-    await sb(`attempts?candidate_id=eq.${id}`, 'DELETE');
-    await sb(`candidates?id=eq.${id}`, 'DELETE');
-    S.candidates = S.candidates.filter(c=>c.id!==id);
-    S.attempts   = S.attempts.filter(a=>a.candidate_id!==id);
-    closeModal();
-    renderRoster();
-    showToast('Candidate removed');
-  } catch(e) { showToast('⚠️ Delete failed'); }
+async function removeCandidate(id){
+  try{
+    await sb(`attempts?candidate_id=eq.${id}`,'DELETE');
+    await sb(`candidates?id=eq.${id}`,'DELETE');
+    S.candidates=S.candidates.filter(c=>c.id!==id);
+    S.attempts=S.attempts.filter(a=>a.candidate_id!==id);
+    closeModal();renderRoster();showToast('Candidate removed');
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-// ══════════════════════════════════════════════
-// GRID SCREEN
-// ══════════════════════════════════════════════
-function renderGrid() {
-  const el = document.getElementById('grid-content');
-  if (!S.activeClass) { el.innerHTML = noClassHTML(); return; }
-  const activeJprs = getActiveJprs();
-  if (!S.candidates.length||!activeJprs.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div>Add candidates and JPRs to see the grid.</div>`;
-    return;
-  }
-
-  const thead = `<tr>
+// ══ GRID ══
+function renderGrid(){
+  const el=document.getElementById('grid-content');
+  if(!S.activeClass){el.innerHTML=noClassHTML();return;}
+  const activeJprs=getActiveJprs();
+  const displayC=getSquadCandidates();
+  if(!displayC.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📊</div>No candidates in this squad.</div>';return;}
+  const thead=`<tr>
     <th class="sticky-col">Candidate</th>
+    ${S.customSkills.map(sk=>`<th class="jpr-col custom-th" title="${sk.name}">${sk.name.substring(0,6)}</th>`).join('')}
     ${activeJprs.map(j=>`<th class="jpr-col" title="${j.name}">${j.code.replace('FFI-','')}</th>`).join('')}
   </tr>`;
-
-  const tbody = S.candidates.map(c => {
-    const cells = activeJprs.map(jpr => {
-      const sessions = S.attempts.filter(a=>a.candidate_id===c.id&&a.jpr_code===jpr.code);
-      const reps = sessions.reduce((s,a)=>s+a.reps,0);
-      const succ = sessions.reduce((s,a)=>s+a.successful_reps,0);
-      const pct  = reps>0?Math.round((succ/reps)*100):null;
-      const col  = pct===null?'var(--mist)':pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
-      return `<td class="jpr-cell">
-        <div class="jpr-cell-inner">
-          ${reps>0
-            ? `<div class="jpr-reps" style="color:${col}">${succ}/${reps}</div>
-               <div class="jpr-success" style="color:${col}">${pct}%</div>`
-            : `<div style="color:var(--mist);font-size:14px">—</div>`}
-        </div>
-      </td>`;
+  const tbody=displayC.map(c=>{
+    const customCells=S.customSkills.map(sk=>{
+      const sessions=S.attempts.filter(a=>a.candidate_id===c.id&&a.custom_skill_id===sk.id);
+      const r=sessions.reduce((s,a)=>s+a.reps,0);
+      const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+      const pct=r>0?Math.round((sc/r)*100):null;
+      const col=pct===null?'var(--mist)':pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+      return `<td class="jpr-cell"><div class="jpr-cell-inner">
+        ${r>0?`<div class="jpr-reps" style="color:${col}">${sc}/${r}</div><div class="jpr-pct" style="color:${col}">${pct}%</div>`
+        :`<div style="color:var(--mist);font-size:13px">—</div>`}
+      </div></td>`;
     }).join('');
-    const squad = S.squads.find(sq=>sq.id===c.squad_id);
-    return `<tr>
-      <td class="sticky-col">
-        ${c.name}
-        ${squad?`<div style="font-size:10px;color:var(--smoke)">${squad.name}</div>`:''}
-      </td>
-      ${cells}
-    </tr>`;
+    const jprCells=activeJprs.map(jpr=>{
+      const sessions=S.attempts.filter(a=>a.candidate_id===c.id&&a.jpr_code===jpr.code);
+      const r=sessions.reduce((s,a)=>s+a.reps,0);
+      const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+      const pct=r>0?Math.round((sc/r)*100):null;
+      const col=pct===null?'var(--mist)':pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+      return `<td class="jpr-cell"><div class="jpr-cell-inner">
+        ${r>0?`<div class="jpr-reps" style="color:${col}">${sc}/${r}</div><div class="jpr-pct" style="color:${col}">${pct}%</div>`
+        :`<div style="color:var(--mist);font-size:13px">—</div>`}
+      </div></td>`;
+    }).join('');
+    const squad=S.squads.find(sq=>sq.id===c.squad_id);
+    return `<tr><td class="sticky-col">${c.name}${squad?`<div style="font-size:9px;color:var(--smoke)">${squad.name}</div>`:''}</td>${customCells}${jprCells}</tr>`;
   }).join('');
-
-  el.innerHTML = `
-    <p style="font-size:11px;color:var(--smoke);margin-bottom:0.8rem">
-      Shows successful/total reps per JPR. Scroll right for all JPRs.
-    </p>
-    <div class="grid-scroll">
-      <table class="jpr-grid"><thead>${thead}</thead><tbody>${tbody}</tbody></table>
+  el.innerHTML=`
+    <div style="display:flex;gap:8px;margin-bottom:1rem">
+      <button class="btn btn-good btn-sm" style="flex:1" onclick="exportGridPDF()">⬇️ PDF Report</button>
+      <button class="btn btn-navy btn-sm" style="flex:1" onclick="exportGridExcel()">⬇️ Excel/CSV</button>
     </div>
+    ${S.customSkills.length>0?'<p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem"><span style="color:var(--custom)">■</span> Custom skills shown first</p>':''}
+    <div class="grid-scroll"><table class="jpr-grid"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>
     <div style="font-size:11px;color:var(--smoke);display:flex;gap:12px;flex-wrap:wrap;margin-top:0.5rem">
       <span style="color:var(--good)">■</span> ≥80% &nbsp;
       <span style="color:#F9A825">■</span> 50–79% &nbsp;
       <span style="color:var(--warn)">■</span> &lt;50% &nbsp;
-      <span style="color:var(--mist)">—</span> No reps yet
+      <span style="color:var(--mist)">—</span> No reps
     </div>`;
 }
 
-// ══════════════════════════════════════════════
-// SETUP SCREEN
-// ══════════════════════════════════════════════
-function renderSetup() {
-  const el  = document.getElementById('setup-content');
-  const cls = S.activeClass;
-  const activeJprCodes = cls?.active_jprs || JPRS.map(j=>j.code);
+function exportGridExcel(){
+  const displayC=getSquadCandidates();
+  const activeJprs=getActiveJprs();
+  if(!displayC.length){showToast('No candidates to export');return;}
+  const headers=['Candidate','Squad',...S.customSkills.map(s=>s.name),...activeJprs.map(j=>j.code+' — '+j.name)];
+  const rows=displayC.map(c=>{
+    const squad=S.squads.find(sq=>sq.id===c.squad_id);
+    const customVals=S.customSkills.map(sk=>{
+      const sessions=S.attempts.filter(a=>a.candidate_id===c.id&&a.custom_skill_id===sk.id);
+      const r=sessions.reduce((s,a)=>s+a.reps,0);
+      const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+      return r>0?`${sc}/${r} (${Math.round(sc/r*100)}%)`:'—';
+    });
+    const jprVals=activeJprs.map(jpr=>{
+      const sessions=S.attempts.filter(a=>a.candidate_id===c.id&&a.jpr_code===jpr.code);
+      const r=sessions.reduce((s,a)=>s+a.reps,0);
+      const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+      return r>0?`${sc}/${r} (${Math.round(sc/r*100)}%)`:'—';
+    });
+    return [c.name,squad?.name||'',...customVals,...jprVals];
+  });
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`NAFA_Grid_${(S.activeClass?.name||'Export').replace(/\s+/g,'_')}_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();URL.revokeObjectURL(url);showToast('✅ CSV exported');
+}
 
-  const jprChecklistHTML = Object.keys(SEC_LABELS).map(sec => {
-    const jprs = JPRS.filter(j=>j.sec===sec);
-    return `<div class="jpr-section-title">${SEC_LABELS[sec]}</div>
-    ${jprs.map(j=>`
-      <label class="jpr-check-item">
-        <input type="checkbox" value="${j.code}" ${activeJprCodes.includes(j.code)?'checked':''}
-          onchange="toggleJpr('${j.code}',this.checked)">
-        <div class="jpr-check-label">
-          <span class="jpr-code-badge">${j.code}${j.mandatory?' <span class="mandatory-tag">Mandatory</span>':''}</span>
-          ${j.name}
+function exportGridPDF(){
+  const displayC=getSquadCandidates();
+  const activeJprs=getActiveJprs();
+  if(!displayC.length){showToast('No candidates to export');return;}
+  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>NAFA JPR Report — ${S.activeClass?.name||''}</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:800px;margin:1rem auto;padding:1rem;color:#222;font-size:12px}
+    h1{font-size:1.4rem;color:#1A1A2E;margin-bottom:0.2rem}
+    .sub{color:#888;font-size:0.8rem;margin-bottom:1.5rem}
+    .candidate-section{margin-bottom:2.5rem;page-break-inside:avoid}
+    h2{font-size:1rem;color:#1A1A2E;border-bottom:2px solid #E8B84B;padding-bottom:4px;margin-bottom:0.8rem}
+    .meta{font-size:0.8rem;color:#666;margin-bottom:0.8rem}
+    table{width:100%;border-collapse:collapse;margin-bottom:0.5rem}
+    th{padding:5px 8px;text-align:left;font-size:0.75rem}
+    th.jpr{background:#1A1A2E;color:#fff}
+    th.custom{background:#6A1B9A;color:#fff}
+    td{padding:5px 8px;border-bottom:1px solid #eee;font-size:0.8rem}
+    .good{color:#2E7D32;font-weight:700}
+    .warn{color:#C62828;font-weight:700}
+    .mid{color:#F57F17;font-weight:700}
+    .none{color:#aaa}
+    .footer{margin-top:2rem;font-size:0.7rem;color:#aaa;border-top:1px solid #eee;padding-top:0.5rem}
+    @media print{.candidate-section{page-break-inside:avoid}}
+  </style></head><body>
+  <h1>NAFA JPR Progress Report</h1>
+  <div class="sub">${S.activeClass?.name||''} · Generated ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</div>`;
+  displayC.forEach(c=>{
+    const squad=S.squads.find(sq=>sq.id===c.squad_id);
+    const mine=S.attempts.filter(a=>a.candidate_id===c.id);
+    const totalR=mine.reduce((s,a)=>s+a.reps,0);
+    const totalS=mine.reduce((s,a)=>s+a.successful_reps,0);
+    const overallPct=totalR>0?Math.round((totalS/totalR)*100):0;
+    html+=`<div class="candidate-section"><h2>${c.name}</h2>
+    <div class="meta">${squad?`Squad: ${squad.name} · `:''}${c.agency?`Agency: ${c.agency} · `:''}${totalR} total reps · ${totalS} successful · ${overallPct}% overall</div>`;
+    if(S.customSkills.length>0){
+      html+=`<table><thead><tr><th class="custom">Custom Skill</th><th class="custom">Reps</th><th class="custom">Successful</th><th class="custom">Rate</th><th class="custom">Sessions</th></tr></thead><tbody>`;
+      S.customSkills.forEach(sk=>{
+        const sessions=mine.filter(a=>a.custom_skill_id===sk.id);
+        const r=sessions.reduce((s,a)=>s+a.reps,0);
+        const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+        const pct=r>0?Math.round((sc/r)*100):null;
+        const cls=pct===null?'none':pct>=80?'good':pct>=50?'mid':'warn';
+        html+=`<tr><td>${sk.name}</td><td>${r||'—'}</td><td>${r>0?sc:'—'}</td><td class="${cls}">${pct!==null?pct+'%':'—'}</td><td>${sessions.length}</td></tr>`;
+      });
+      html+=`</tbody></table>`;
+    }
+    html+=`<table><thead><tr><th class="jpr">JPR</th><th class="jpr">Skill</th><th class="jpr">Reps</th><th class="jpr">Successful</th><th class="jpr">Rate</th><th class="jpr">Sessions</th></tr></thead><tbody>`;
+    activeJprs.forEach(jpr=>{
+      const sessions=mine.filter(a=>a.jpr_code===jpr.code);
+      const r=sessions.reduce((s,a)=>s+a.reps,0);
+      const sc=sessions.reduce((s,a)=>s+a.successful_reps,0);
+      const pct=r>0?Math.round((sc/r)*100):null;
+      const cls=pct===null?'none':pct>=80?'good':pct>=50?'mid':'warn';
+      html+=`<tr><td>${jpr.code}${jpr.mandatory?' ★':''}</td><td>${jpr.name}</td><td>${r||'—'}</td><td>${r>0?sc:'—'}</td><td class="${cls}">${pct!==null?pct+'%':'—'}</td><td>${sessions.length}</td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  });
+  html+=`<div class="footer">NAFA JPR Tracker · North Area Fire Academy · Colorado DFPC FF1 (Revised 1/1/2025) · Open in browser and use File → Print to save as PDF</div></body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`NAFA_Report_${(S.activeClass?.name||'Export').replace(/\s+/g,'_')}_${new Date().toISOString().split('T')[0]}.html`;
+  a.click();URL.revokeObjectURL(url);showToast('✅ Report exported — open in browser to print as PDF');
+}
+
+// ══ REFERENCE ══
+function renderReference(){
+  const el=document.getElementById('reference-content');
+  el.innerHTML=`
+    <div class="filter-row">
+      <button class="filter-btn ${S.refFilter==='all'?'active':''}" onclick="setRefFilter('all')">All</button>
+      <button class="filter-btn ${S.refFilter==='mandatory'?'active':''}" onclick="setRefFilter('mandatory')">Mandatory</button>
+      ${Object.keys(SEC_LABELS).map(sec=>`
+      <button class="filter-btn ${S.refFilter===sec?'active':''}" onclick="setRefFilter('${sec}')">${SEC_LABELS[sec].split('—')[0].trim()}</button>`).join('')}
+    </div>
+    ${Object.keys(SEC_LABELS).map(sec=>{
+      const jprs=JPRS.filter(j=>j.sec===sec&&(S.refFilter==='all'||S.refFilter===sec||(S.refFilter==='mandatory'&&j.mandatory)));
+      if(!jprs.length) return '';
+      return `<div class="ref-section-header">${SEC_LABELS[sec]}</div>
+      ${jprs.map(jpr=>`
+      <div class="ref-jpr-item" onclick="openJprReference('${jpr.code}')">
+        <div class="ref-jpr-header">
+          <div>
+            <div class="ref-jpr-code">${jpr.code}${jpr.mandatory?' <span class="mandatory-tag">Mandatory</span>':''}</div>
+            <div class="ref-jpr-name">${jpr.name}</div>
+          </div>
+          <div class="ref-jpr-arrow">›</div>
         </div>
-      </label>`).join('')}`;
+      </div>`).join('')}`;
+    }).join('')}`;
+}
+
+function setRefFilter(f){S.refFilter=f;renderReference();}
+
+function openJprReference(code){
+  const jpr=jprByCode(code);if(!jpr) return;
+  setModal(jpr.code,`
+    <div style="background:var(--navy);border-radius:8px;padding:10px 14px;margin-bottom:1rem">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);line-height:1">${jpr.code}</div>
+      <div style="font-size:14px;color:var(--white);margin-top:2px">${jpr.name}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">${jpr.mandatory?'★ Mandatory':'Random'} · Standard ${jpr.standard}</div>
+    </div>
+    <div class="ref-detail-row"><div class="ref-detail-label">Task</div><div class="ref-detail-value">${jpr.task}</div></div>
+    <div class="ref-detail-row"><div class="ref-detail-label">Performance Outcome</div><div class="ref-detail-value">${jpr.outcome}</div></div>
+    <div style="height:1px;background:var(--border);margin:0.8rem 0"></div>
+    <div class="ref-detail-row"><div class="ref-detail-label">Equipment Required</div><div class="ref-detail-value">${jpr.equipment}</div></div>
+    <div class="ref-detail-row"><div class="ref-detail-label">Conditions</div><div class="ref-detail-value">${jpr.conditions}</div></div>
+    <div style="height:1px;background:var(--border);margin:0.8rem 0"></div>
+    <div class="ref-detail-label" style="margin-bottom:0.5rem">Task Steps</div>
+    <div>${jpr.steps.map(s=>`
+      <div class="task-step">
+        <div class="task-step-num">${s.n}</div>
+        <div><div>${s.t}</div>${s.subs?s.subs.map(sub=>`<div class="task-step-sub">${sub}</div>`).join(''):''}
+        </div>
+      </div>`).join('')}</div>
+    <div style="margin-top:1rem;padding:8px 12px;background:var(--warn-pale);border-radius:8px;font-size:12px;color:var(--warn)">
+      ⚠️ A safety violation is grounds for automatic failure. All proctors present shall review the safety violation.
+    </div>`,'reference');
+  openModal();
+}
+
+// ══ SETUP ══
+function renderSetup(){
+  const el=document.getElementById('setup-content');
+  const cls=S.activeClass;
+  const activeJprCodes=cls?.active_jprs||JPRS.map(j=>j.code);
+  const allSel=activeJprCodes.length===JPRS.length;
+  const mandSel=!allSel&&JPRS.filter(j=>j.mandatory).every(j=>activeJprCodes.includes(j.code))&&activeJprCodes.length===JPRS.filter(j=>j.mandatory).length;
+  const noneSel=activeJprCodes.length===0;
+  const jprChecklistHTML=Object.keys(SEC_LABELS).map(sec=>{
+    const jprs=JPRS.filter(j=>j.sec===sec);
+    return `<div class="jpr-section-title">${SEC_LABELS[sec]}</div>
+    ${jprs.map(j=>`<label class="jpr-check-item">
+      <input type="checkbox" value="${j.code}" ${activeJprCodes.includes(j.code)?'checked':''}
+        onchange="toggleJpr('${j.code}',this.checked)">
+      <div class="jpr-check-label">
+        <span class="jpr-code-badge">${j.code}${j.mandatory?' <span class="mandatory-tag">Mandatory</span>':''}</span>
+        ${j.name}
+      </div>
+    </label>`).join('')}`;
   }).join('');
-
-  el.innerHTML = `
-
-  <!-- SELECT CLASS -->
+  el.innerHTML=`
   <div class="card">
     <div class="card-header">🏫 Active Class</div>
     <div class="card-body">
-      ${S.classes.length>0?`
-      <div class="field">
-        <label class="field-label">Switch Class</label>
-        <select class="field-select" id="s-class-select" onchange="switchClass(this.value)">
-          <option value="">— Select a class —</option>
+      ${S.classes.length>0?`<div class="field"><label class="field-label">Switch Class</label>
+        <select class="field-select" onchange="switchClass(this.value)">
+          <option value="">— Select —</option>
           ${S.classes.map(c=>`<option value="${c.id}" ${cls?.id===c.id?'selected':''}>${c.name}</option>`).join('')}
-        </select>
-      </div>`:''}
+        </select></div>`:''}
       <p style="font-size:12px;color:var(--smoke)">${cls?`Active: <strong>${cls.name}</strong>`:'No class selected.'}</p>
     </div>
   </div>
-
-  <!-- CREATE CLASS -->
   <div class="card">
     <div class="card-header">➕ Create New Class</div>
     <div class="card-body">
-      <div class="field">
-        <label class="field-label">Class Name <span class="req">*</span></label>
-        <input class="field-input" id="s-classname" placeholder="e.g. Recruit Class 2025-A">
-      </div>
-      <div class="field">
-        <label class="field-label">Start Date</label>
-        <input class="field-input" type="date" id="s-startdate">
-      </div>
+      <div class="field"><label class="field-label">Class Name <span class="req">*</span></label>
+        <input class="field-input" id="s-classname" placeholder="e.g. Recruit Class 2025-A"></div>
+      <div class="field"><label class="field-label">Start Date</label>
+        <input class="field-input" type="date" id="s-startdate"></div>
       <button class="btn btn-gold" style="margin-top:0.5rem" onclick="createClass()">Create Class</button>
     </div>
   </div>
-
-  ${cls ? `
-
-  <!-- SQUADS -->
+  ${cls?`
   <div class="card">
-    <div class="card-header">
-      <span>👥 Squads (${S.squads.length})</span>
-    </div>
+    <div class="card-header"><span>👥 Squads (${S.squads.length})</span></div>
     <div class="card-body">
       <div style="display:flex;gap:8px;margin-bottom:0.8rem">
-        <input class="field-input" id="s-squadname" placeholder="Squad name e.g. Squad 1" style="flex:1">
-        <button class="btn btn-navy btn-sm" style="white-space:nowrap" onclick="addSquad()">＋ Add</button>
+        <input class="field-input" id="s-squadname" placeholder="e.g. Squad 1" style="flex:1">
+        <button class="btn btn-navy btn-sm" onclick="addSquad()">＋ Add</button>
       </div>
-      ${S.squads.length>0?`
-      <div>
-        ${S.squads.map(sq=>`
+      ${S.squads.length>0?`<div>${S.squads.map(sq=>`
         <div class="setup-item">
-          <div>
-            <div class="setup-item-name">${sq.name}</div>
+          <div><div class="setup-item-name">${sq.name}</div>
             <div class="setup-item-sub">${S.candidates.filter(c=>c.squad_id===sq.id).length} candidates</div>
           </div>
-          <div class="setup-item-actions">
-            <button class="action-btn danger" onclick="removeSquad('${sq.id}','${sq.name.replace(/'/g,"\\'")}')">Remove</button>
-          </div>
-        </div>`).join('')}
-      </div>`:'<p style="font-size:12px;color:var(--smoke)">No squads yet.</p>'}
+          <button class="action-btn danger" onclick="removeSquad('${sq.id}','${sq.name.replace(/'/g,"\'")}')">Remove</button>
+        </div>`).join('')}</div>`:'<p style="font-size:12px;color:var(--smoke)">No squads yet.</p>'}
     </div>
   </div>
-
-  <!-- ADD CANDIDATE -->
+  <div class="card">
+    <div class="card-header" style="background:var(--custom)"><span>🎯 Custom Skills (${S.customSkills.length})</span></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--smoke);margin-bottom:0.8rem">Skills trained beyond the JPR list — master streams, pump ops, hose lays, etc.</p>
+      <div style="display:flex;gap:8px;margin-bottom:0.8rem">
+        <input class="field-input" id="s-skillname" placeholder="Skill name" style="flex:1">
+        <button class="btn btn-custom btn-sm" onclick="addCustomSkillSetup()">＋ Add</button>
+      </div>
+      ${S.customSkills.length===0?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:0.8rem">
+        ${DEFAULT_CUSTOM_SKILLS.map(sk=>`<button onclick="addCustomSkillDefault('${sk.name.replace(/'/g,"\'")}')"
+          style="background:var(--custom-pale);border:1px solid rgba(106,27,154,0.2);border-radius:6px;
+          font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--custom);
+          padding:4px 10px;cursor:pointer">${sk.name}</button>`).join('')}
+      </div>`:''}
+      ${S.customSkills.length>0?`<div>${S.customSkills.map(sk=>`
+        <div class="setup-item">
+          <div style="flex:1;min-width:0"><div class="setup-item-name">${sk.name}</div></div>
+          <button class="action-btn danger" onclick="removeCustomSkill('${sk.id}')">Remove</button>
+        </div>`).join('')}</div>`:''}
+    </div>
+  </div>
   <div class="card">
     <div class="card-header">👤 Add Candidate</div>
     <div class="card-body">
-      <div class="field">
-        <label class="field-label">Name <span class="req">*</span></label>
-        <input class="field-input" id="s-cname" placeholder="First Last">
-      </div>
-      <div class="field">
-        <label class="field-label">Agency (optional)</label>
-        <input class="field-input" id="s-cagency" placeholder="e.g. Westminster FD">
-      </div>
-      <div class="field">
-        <label class="field-label">Squad</label>
+      <div class="field"><label class="field-label">Name <span class="req">*</span></label>
+        <input class="field-input" id="s-cname" placeholder="First Last"></div>
+      <div class="field"><label class="field-label">Agency (optional)</label>
+        <input class="field-input" id="s-cagency" placeholder="e.g. Westminster FD"></div>
+      <div class="field"><label class="field-label">Squad</label>
         <select class="field-select" id="s-csquad">
           <option value="">— No squad assigned —</option>
           ${S.squads.map(sq=>`<option value="${sq.id}">${sq.name}</option>`).join('')}
-        </select>
-      </div>
+        </select></div>
       <button class="btn btn-navy" style="margin-top:0.5rem" onclick="addCandidate()">＋ Add Candidate</button>
     </div>
   </div>
-
-  <!-- CANDIDATE LIST -->
   ${S.candidates.length>0?`
   <div class="card">
     <div class="card-header"><span>Candidates (${S.candidates.length})</span></div>
     <div style="padding:0.5rem">
       ${S.candidates.map(c=>{
-        const sq = S.squads.find(s=>s.id===c.squad_id);
-        return `
-        <div class="setup-item" onclick="openManageCandidate('${c.id}')" style="cursor:pointer">
+        const sq=S.squads.find(s=>s.id===c.squad_id);
+        return `<div class="setup-item" onclick="openManageCandidate('${c.id}')">
           <div style="flex:1;min-width:0">
             <div class="setup-item-name">${c.name}</div>
             <div class="setup-item-sub">
@@ -1006,344 +1452,261 @@ function renderSetup() {
       }).join('')}
     </div>
   </div>`:''}
-
-  <!-- ACTIVE JPRS -->
   <div class="card">
     <div class="card-header">
-      <span>📋 Active JPRs for This Class</span>
+      <span>📋 Active JPRs</span>
       <span style="font-weight:400;opacity:0.7;font-size:11px">${activeJprCodes.length}/${JPRS.length}</span>
     </div>
     <div class="card-body" style="padding:0.75rem">
-      <p style="font-size:12px;color:var(--smoke);margin-bottom:0.8rem">
-        Select which JPRs will appear in the Field and Grid tabs for this class. Deselect any that aren't being trained yet.
-      </p>
       <div style="display:flex;gap:8px;margin-bottom:0.8rem;flex-wrap:wrap">
-        ${(()=>{
-          const all  = activeJprCodes.length === JPRS.length;
-          const mand = !all && activeJprCodes.length === JPRS.filter(j=>j.mandatory).length &&
-                       JPRS.filter(j=>j.mandatory).every(j=>activeJprCodes.includes(j.code));
-          const none = activeJprCodes.length === 0;
-          return `
-          <button class="btn btn-sm ${all?'btn-navy':'btn-outline'}"    onclick="selectAllJprs()">Select All</button>
-          <button class="btn btn-sm ${mand?'btn-navy':'btn-outline'}"   onclick="selectMandatory()">Mandatory Only</button>
-          <button class="btn btn-sm ${none?'btn-navy':'btn-outline'}"   onclick="clearAllJprs()">Clear All</button>`;
-        })()}
+        <button class="btn btn-sm ${allSel?'btn-navy':'btn-outline'}" onclick="selectAllJprs()">All</button>
+        <button class="btn btn-sm ${mandSel?'btn-navy':'btn-outline'}" onclick="selectMandatory()">Mandatory Only</button>
+        <button class="btn btn-sm ${noneSel?'btn-navy':'btn-outline'}" onclick="clearAllJprs()">Clear All</button>
       </div>
       <div>${jprChecklistHTML}</div>
     </div>
   </div>
-
-  <!-- DANGER ZONE -->
   <div class="card">
     <div class="card-header" style="background:#7f0000">⚠️ Danger Zone</div>
     <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
       <div>
-        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">Clear all rep history. Candidates and squads remain.</p>
+        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">Clear all session history. Candidates and squads remain.</p>
         <button class="btn btn-danger" onclick="clearAllSessions()">Clear All Session History</button>
       </div>
       <div style="border-top:1px solid var(--border);padding-top:10px">
-        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">Permanently delete this class, all squads, candidates, and history.</p>
+        <p style="font-size:12px;color:var(--smoke);margin-bottom:0.6rem">Permanently delete this class and all data within it.</p>
         <button class="btn btn-danger" onclick="deleteClass()">Delete Entire Class</button>
       </div>
     </div>
-  </div>` : ''}
-
+  </div>`:''}
   <div style="height:0.5rem"></div>`;
 }
 
-// ── Setup actions ──
-async function createClass() {
-  const name      = document.getElementById('s-classname').value.trim();
-  const startDate = document.getElementById('s-startdate').value;
-  if (!name) { showToast('Class name is required'); return; }
-  if (!S.academyId) { showToast('Academy not found — check Supabase'); return; }
-  try {
-    const result = await sb('classes', 'POST', {
-      academy_id: S.academyId, name,
-      start_date: startDate||null,
-      certification_track: 'FF1',
-      active_jprs: JPRS.map(j=>j.code),
-      active: true
-    });
-    const cls = Array.isArray(result)?result[0]:result;
-    if (cls) {
-      S.classes.unshift(cls);
-      S.activeClass  = cls;
-      S.squads       = [];
-      S.candidates   = [];
-      S.attempts     = [];
-      S.lockedJpr    = null;
-      localStorage.setItem('nafa_class_id', cls.id);
-      updatePill();
-      showToast('✅ Class created!');
-      renderSetup();
-    }
-  } catch(e) { showToast('⚠️ '+e.message); }
+async function createClass(){
+  const name=document.getElementById('s-classname').value.trim();
+  const startDate=document.getElementById('s-startdate').value;
+  if(!name){showToast('Class name is required');return;}
+  if(!S.academyId){showToast('Academy not found');return;}
+  try{
+    const result=await sb('classes','POST',{academy_id:S.academyId,name,start_date:startDate||null,certification_track:'FF1',active_jprs:JPRS.map(j=>j.code),active:true});
+    const cls=Array.isArray(result)?result[0]:result;
+    if(cls){S.classes.unshift(cls);S.activeClass=cls;S.squads=[];S.candidates=[];S.attempts=[];S.customSkills=[];
+      S.lockedSkill=null;S.selectedSquadId='all';localStorage.setItem('nafa_class_id',cls.id);
+      updateSquadPill();showToast('✅ Class created!');renderSetup();}
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-async function switchClass(id) {
-  if (!id) return;
-  const found = S.classes.find(c=>c.id===id);
-  if (!found) return;
-  S.activeClass = found;
-  S.lockedJpr   = null;
-  localStorage.setItem('nafa_class_id', id);
-  showSpinner('setup');
-  await loadClassData();
-  updatePill();
-  renderSetup();
+async function switchClass(id){
+  if(!id) return;
+  const found=S.classes.find(c=>c.id===id);if(!found) return;
+  S.activeClass=found;S.lockedSkill=null;S.selectedSquadId='all';
+  localStorage.setItem('nafa_class_id',id);
+  showSpinner('setup');await loadClassData();updateSquadPill();renderSetup();
 }
 
-async function addSquad() {
-  const name = document.getElementById('s-squadname').value.trim();
-  if (!name) { showToast('Enter a squad name'); return; }
-  try {
-    const result = await sb('squads', 'POST', { class_id: S.activeClass.id, name });
-    const sq = Array.isArray(result)?result[0]:result;
-    if (sq) { S.squads.push(sq); S.squads.sort((a,b)=>a.name.localeCompare(b.name)); }
-    document.getElementById('s-squadname').value = '';
-    showToast(`✅ ${name} added`);
-    renderSetup();
-  } catch(e) { showToast('⚠️ '+e.message); }
+async function addSquad(){
+  const name=document.getElementById('s-squadname').value.trim();
+  if(!name){showToast('Enter a squad name');return;}
+  try{
+    const result=await sb('squads','POST',{class_id:S.activeClass.id,name});
+    const sq=Array.isArray(result)?result[0]:result;
+    if(sq){S.squads.push(sq);S.squads.sort((a,b)=>a.name.localeCompare(b.name));}
+    document.getElementById('s-squadname').value='';
+    showToast(`✅ ${name} added`);renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-async function removeSquad(id, name) {
-  if (!confirm(`Remove squad "${name}"? Candidates will be unassigned but not deleted.`)) return;
-  try {
-    await sb(`squads?id=eq.${id}`, 'DELETE');
-    S.squads = S.squads.filter(s=>s.id!==id);
-    S.candidates.forEach(c=>{ if (c.squad_id===id) c.squad_id=null; });
-    showToast('Squad removed');
-    renderSetup();
-  } catch(e) { showToast('⚠️ '+e.message); }
+async function removeSquad(id,name){
+  if(!confirm(`Remove squad "${name}"? Candidates will be unassigned.`)) return;
+  try{
+    await sb(`squads?id=eq.${id}`,'DELETE');
+    S.squads=S.squads.filter(s=>s.id!==id);
+    S.candidates.forEach(c=>{if(c.squad_id===id) c.squad_id=null;});
+    if(S.selectedSquadId===id){S.selectedSquadId='all';updateSquadPill();}
+    showToast('Squad removed');renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-async function addCandidate() {
-  const name    = document.getElementById('s-cname').value.trim();
-  const agency  = document.getElementById('s-cagency').value.trim();
-  const squadId = document.getElementById('s-csquad').value||null;
-  if (!name) { showToast('Enter a name'); return; }
-  try {
-    const result = await sb('candidates', 'POST', {
-      class_id: S.activeClass.id, name,
-      agency: agency||null,
-      squad_id: squadId||null
-    });
-    const c = Array.isArray(result)?result[0]:result;
-    if (c) {
-      // Attach squad name for display
-      c.squads = S.squads.find(s=>s.id===c.squad_id) || null;
-      S.candidates.push(c);
-      S.candidates.sort((a,b)=>a.name.localeCompare(b.name));
-    }
-    document.getElementById('s-cname').value   = '';
-    document.getElementById('s-cagency').value = '';
-    document.getElementById('s-csquad').value  = '';
-    showToast(`✅ ${name} added`);
-    renderSetup();
-  } catch(e) { showToast('⚠️ '+e.message); }
+async function addCustomSkillSetup(){
+  const name=document.getElementById('s-skillname')?.value.trim();
+  if(!name){showToast('Enter a skill name');return;}
+  await saveCustomSkill(name);
+  if(document.getElementById('s-skillname')) document.getElementById('s-skillname').value='';
+}
+async function addCustomSkillDefault(name){await saveCustomSkill(name);}
+async function saveCustomSkill(name){
+  try{
+    const result=await sb('custom_skills','POST',{class_id:S.activeClass.id,name});
+    const sk=Array.isArray(result)?result[0]:result;
+    if(sk) S.customSkills.push(sk);
+    showToast(`✅ ${name} added`);renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-function openManageCandidate(id) {
-  const c  = S.candidates.find(x=>x.id===id);
-  if (!c) return;
-  const sq = S.squads.find(s=>s.id===c.squad_id);
-  document.getElementById('modal-title').textContent = c.name;
-  document.getElementById('modal-body').innerHTML = `
-    <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem">
-      <div style="font-size:12px;color:var(--smoke)">
-        <strong>Squad:</strong> ${sq?sq.name:'Not assigned'}<br>
-        ${c.agency?`<strong>Agency:</strong> ${c.agency}`:''}
-      </div>
+async function removeCustomSkill(id){
+  if(!confirm('Remove this custom skill? All logged reps will be deleted.')) return;
+  try{
+    await sb(`attempts?custom_skill_id=eq.${id}`,'DELETE');
+    await sb(`custom_skills?id=eq.${id}`,'DELETE');
+    S.customSkills=S.customSkills.filter(s=>s.id!==id);
+    S.attempts=S.attempts.filter(a=>a.custom_skill_id!==id);
+    showToast('Custom skill removed');renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
+}
+
+async function addCandidate(){
+  const name=document.getElementById('s-cname').value.trim();
+  const agency=document.getElementById('s-cagency').value.trim();
+  const squadId=document.getElementById('s-csquad').value||null;
+  if(!name){showToast('Enter a name');return;}
+  try{
+    const result=await sb('candidates','POST',{class_id:S.activeClass.id,name,agency:agency||null,squad_id:squadId||null});
+    const c=Array.isArray(result)?result[0]:result;
+    if(c){c.squads=S.squads.find(s=>s.id===c.squad_id)||null;S.candidates.push(c);S.candidates.sort((a,b)=>a.name.localeCompare(b.name));}
+    document.getElementById('s-cname').value='';document.getElementById('s-cagency').value='';document.getElementById('s-csquad').value='';
+    showToast(`✅ ${name} added`);renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
+}
+
+function openManageCandidate(id){
+  const c=S.candidates.find(x=>x.id===id);if(!c) return;
+  const sq=S.squads.find(s=>s.id===c.squad_id);
+  setModal(c.name,`
+    <div style="background:var(--paper);border-radius:8px;padding:10px 12px;margin-bottom:1rem;font-size:12px;color:var(--smoke)">
+      <strong>Squad:</strong> ${sq?sq.name:'Not assigned'}<br>
+      ${c.agency?`<strong>Agency:</strong> ${c.agency}`:''}
     </div>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <button class="btn btn-navy" onclick="openReassignSquad('${id}','${c.name.replace(/'/g,"\\'")}')">
-        👥 Reassign Squad
-      </button>
-      <button class="btn btn-outline" style="color:var(--ash);border-color:var(--border)" onclick="openEditCandidate('${id}')">
-        ✏️ Edit Name / Agency
-      </button>
-      <button class="btn btn-danger" style="margin-top:0.5rem" onclick="confirmRemoveCandidate('${id}','${c.name.replace(/'/g,"\\'")}')">
-        🗑 Remove Candidate
-      </button>
-    </div>`;
-  document.getElementById('modal-overlay').classList.add('open');
+      <button class="btn btn-navy" onclick="openReassignSquad('${id}','${c.name.replace(/'/g,"\'")}')" >👥 Reassign Squad</button>
+      <button class="btn btn-outline" style="color:var(--ash)" onclick="openEditCandidate('${id}')">✏️ Edit Name / Agency</button>
+      <button class="btn btn-danger" style="margin-top:0.5rem" onclick="confirmRemoveCandidate('${id}','${c.name.replace(/'/g,"\'")}')" >🗑 Remove Candidate</button>
+    </div>`,'setup');
+  openModal();
 }
 
-function openReassignSquad(cid, name) {
-  document.getElementById('modal-title').textContent = 'Reassign Squad';
-  document.getElementById('modal-body').innerHTML = `
-    <button onclick="openManageCandidate('${cid}')"
-      style="width:100%;background:var(--paper);border:1px solid var(--border);border-radius:8px;
-      padding:10px;margin-bottom:1rem;font-size:13px;font-weight:600;color:var(--navy);
-      font-family:'DM Sans',sans-serif;cursor:pointer">
-      ‹ Back to ${name}
-    </button>
+function openReassignSquad(cid,name){
+  setModal('Reassign Squad',`
+    <button class="back-btn" onclick="openManageCandidate('${cid}')">‹ Back to ${name}</button>
     <p style="font-size:14px;margin-bottom:1rem">Move <strong>${name}</strong> to a different squad.</p>
-    <div class="field">
-      <label class="field-label">Squad</label>
+    <div class="field"><label class="field-label">Squad</label>
       <select class="field-select" id="reassign-squad">
         <option value="">— No squad —</option>
         ${S.squads.map(sq=>`<option value="${sq.id}">${sq.name}</option>`).join('')}
       </select>
     </div>
-    <button class="btn btn-navy" style="margin-top:0.5rem" onclick="saveReassignSquad('${cid}')">Save</button>`;
-  document.getElementById('modal-overlay').classList.add('open');
+    <button class="btn btn-navy" style="margin-top:0.5rem" onclick="saveReassignSquad('${cid}')">Save</button>`,'setup');
+  openModal();
 }
 
-async function saveReassignSquad(cid) {
-  const squadId = document.getElementById('reassign-squad').value || null;
-  try {
-    await sb(`candidates?id=eq.${cid}`, 'PATCH', { squad_id: squadId });
-    const idx = S.candidates.findIndex(c=>c.id===cid);
-    if (idx!==-1) {
-      S.candidates[idx].squad_id = squadId;
-      S.candidates[idx].squads   = S.squads.find(s=>s.id===squadId)||null;
-    }
-    showToast('✅ Squad updated');
-    openManageCandidate(cid);
-    renderSetup();
-  } catch(e) { showToast('⚠️ '+e.message); }
+async function saveReassignSquad(cid){
+  const squadId=document.getElementById('reassign-squad').value||null;
+  try{
+    await sb(`candidates?id=eq.${cid}`,'PATCH',{squad_id:squadId});
+    const idx=S.candidates.findIndex(c=>c.id===cid);
+    if(idx!==-1){S.candidates[idx].squad_id=squadId;S.candidates[idx].squads=S.squads.find(s=>s.id===squadId)||null;}
+    showToast('✅ Squad updated');openManageCandidate(cid);renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-function openEditCandidate(id) {
-  const c = S.candidates.find(x=>x.id===id);
-  if (!c) return;
-  document.getElementById('modal-title').textContent = 'Edit Candidate';
-  document.getElementById('modal-body').innerHTML = `
-    <div class="field">
-      <label class="field-label">Name <span class="req">*</span></label>
-      <input class="field-input" id="edit-name" value="${c.name}">
-    </div>
-    <div class="field">
-      <label class="field-label">Agency</label>
-      <input class="field-input" id="edit-agency" value="${c.agency||''}">
-    </div>
+function openEditCandidate(id){
+  const c=S.candidates.find(x=>x.id===id);if(!c) return;
+  setModal('Edit Candidate',`
+    <div class="field"><label class="field-label">Name <span class="req">*</span></label>
+      <input class="field-input" id="edit-name" value="${c.name}"></div>
+    <div class="field"><label class="field-label">Agency</label>
+      <input class="field-input" id="edit-agency" value="${c.agency||''}"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.5rem">
       <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
       <button class="btn btn-navy" onclick="saveEditCandidate('${id}')">Save</button>
-    </div>`;
-  document.getElementById('modal-overlay').classList.add('open');
+    </div>`,'setup');
+  openModal();
 }
 
-async function saveEditCandidate(id) {
-  const name   = document.getElementById('edit-name').value.trim();
-  const agency = document.getElementById('edit-agency').value.trim();
-  if (!name) { showToast('Name required'); return; }
-  try {
-    await sb(`candidates?id=eq.${id}`, 'PATCH', {name, agency:agency||null});
-    const idx = S.candidates.findIndex(c=>c.id===id);
-    if (idx!==-1) { S.candidates[idx].name=name; S.candidates[idx].agency=agency||null; }
+async function saveEditCandidate(id){
+  const name=document.getElementById('edit-name').value.trim();
+  const agency=document.getElementById('edit-agency').value.trim();
+  if(!name){showToast('Name required');return;}
+  try{
+    await sb(`candidates?id=eq.${id}`,'PATCH',{name,agency:agency||null});
+    const idx=S.candidates.findIndex(c=>c.id===id);
+    if(idx!==-1){S.candidates[idx].name=name;S.candidates[idx].agency=agency||null;}
     S.candidates.sort((a,b)=>a.name.localeCompare(b.name));
-    closeModal();
-    showToast('✅ Updated');
-    renderSetup();
-  } catch(e) { showToast('⚠️ '+e.message); }
+    closeModal();showToast('✅ Updated');renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-async function toggleJpr(code, checked) {
-  if (!S.activeClass) return;
-  const cur = S.activeClass.active_jprs || JPRS.map(j=>j.code);
-  const upd = checked ? [...cur,code] : cur.filter(c=>c!==code);
-  try {
-    await sb(`classes?id=eq.${S.activeClass.id}`, 'PATCH', {active_jprs: upd});
-    S.activeClass.active_jprs = upd;
-  } catch(e) { showToast('⚠️ Save failed'); }
+async function toggleJpr(code,checked){
+  if(!S.activeClass) return;
+  const cur=S.activeClass.active_jprs||JPRS.map(j=>j.code);
+  const upd=checked?[...cur,code]:cur.filter(c=>c!==code);
+  try{await sb(`classes?id=eq.${S.activeClass.id}`,'PATCH',{active_jprs:upd});S.activeClass.active_jprs=upd;}
+  catch(e){showToast('⚠️ Save failed');}
 }
 
-async function selectAllJprs() {
-  await setActiveJprs(JPRS.map(j=>j.code)); renderSetup();
+async function setActiveJprs(jprs){
+  if(!S.activeClass) return;
+  try{await sb(`classes?id=eq.${S.activeClass.id}`,'PATCH',{active_jprs:jprs});S.activeClass.active_jprs=jprs;}
+  catch(e){showToast('⚠️ Save failed');}
 }
-async function selectMandatory() {
-  await setActiveJprs(JPRS.filter(j=>j.mandatory).map(j=>j.code)); renderSetup();
-}
-async function clearAllJprs() {
-  if (!confirm('Clear all active JPRs?')) return;
-  await setActiveJprs([]); renderSetup();
-}
-async function setActiveJprs(jprs) {
-  if (!S.activeClass) return;
-  try {
-    await sb(`classes?id=eq.${S.activeClass.id}`, 'PATCH', {active_jprs: jprs});
-    S.activeClass.active_jprs = jprs;
-  } catch(e) { showToast('⚠️ Save failed'); }
+async function selectAllJprs(){await setActiveJprs(JPRS.map(j=>j.code));renderSetup();}
+async function selectMandatory(){await setActiveJprs(JPRS.filter(j=>j.mandatory).map(j=>j.code));renderSetup();}
+async function clearAllJprs(){if(!confirm('Clear all active JPRs?')) return;await setActiveJprs([]);renderSetup();}
+
+async function clearAllSessions(){
+  if(!confirm('Clear ALL session history? Candidates and squads remain.')) return;
+  try{
+    if(S.candidates.length) await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})`, 'DELETE');
+    S.attempts=[];showToast('Session history cleared');
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-async function clearAllSessions() {
-  if (!confirm('Clear ALL session history? Candidates remain but all rep data will be deleted.')) return;
-  try {
-    if (S.candidates.length) {
-      await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})`, 'DELETE');
-    }
-    S.attempts = [];
-    showToast('Session history cleared');
-  } catch(e) { showToast('⚠️ '+e.message); }
-}
-
-async function deleteClass() {
-  if (!S.activeClass) return;
-  const name = S.activeClass.name;
-  if (!confirm(`Delete "${name}"?\n\nThis permanently deletes the class, all squads, candidates, and rep history.`)) return;
-  if (!confirm(`Are you absolutely sure? This cannot be undone.`)) return;
-  try {
-    const cid = S.activeClass.id;
-    if (S.candidates.length)
-      await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})`, 'DELETE');
-    await sb(`candidates?class_id=eq.${cid}`, 'DELETE');
-    await sb(`squads?class_id=eq.${cid}`, 'DELETE');
-    await sb(`classes?id=eq.${cid}`, 'DELETE');
-    S.classes      = S.classes.filter(c=>c.id!==cid);
-    S.activeClass  = null;
-    S.squads       = [];
-    S.candidates   = [];
-    S.attempts     = [];
-    S.lockedJpr    = null;
+async function deleteClass(){
+  if(!S.activeClass) return;
+  const name=S.activeClass.name;
+  if(!confirm(`Delete "${name}"? This permanently deletes all data.`)) return;
+  if(!confirm('Are you absolutely sure? This cannot be undone.')) return;
+  try{
+    const cid=S.activeClass.id;
+    if(S.candidates.length) await sb(`attempts?candidate_id=in.(${S.candidates.map(c=>c.id).join(',')})`, 'DELETE');
+    await sb(`candidates?class_id=eq.${cid}`,'DELETE');
+    await sb(`squads?class_id=eq.${cid}`,'DELETE');
+    await sb(`custom_skills?class_id=eq.${cid}`,'DELETE');
+    await sb(`classes?id=eq.${cid}`,'DELETE');
+    S.classes=S.classes.filter(c=>c.id!==cid);
+    S.activeClass=null;S.squads=[];S.candidates=[];S.attempts=[];S.customSkills=[];
+    S.lockedSkill=null;S.selectedSquadId='all';
     localStorage.removeItem('nafa_class_id');
-    updatePill();
-    showToast(`"${name}" deleted`);
-    renderSetup();
-  } catch(e) { showToast('⚠️ '+e.message); }
+    updateSquadPill();showToast(`"${name}" deleted`);renderSetup();
+  }catch(e){showToast('⚠️ '+e.message);}
 }
 
-// ══════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════
-function getActiveJprs() {
-  const codes = S.activeClass?.active_jprs || JPRS.map(j=>j.code);
-  return JPRS.filter(j=>codes.includes(j.code));
-}
-
-function noClassHTML(msg='No class selected.', tab='setup') {
+// ══ HELPERS ══
+function noClassHTML(){
   return `<div class="no-class">
-    <div class="no-class-icon">🏫</div>
-    <div class="no-class-text">${msg}</div>
-    <button class="btn btn-gold" onclick="showTab('${tab}')">Go to Setup</button>
+    <div style="font-size:2rem;margin-bottom:0.5rem">🏫</div>
+    <div style="font-size:14px;color:var(--smoke);margin-bottom:1rem">No active class selected.</div>
+    <button class="btn btn-gold" onclick="showTab('setup')">Go to Setup</button>
   </div>`;
 }
-
-function showSpinner(tab) {
-  document.getElementById(tab+'-content').innerHTML =
-    `<div class="spinner-wrap"><div class="spinner"></div></div>`;
+function showSpinner(tab){document.getElementById(tab+'-content').innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';}
+function showError(tab,msg){document.getElementById(tab+'-content').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠️</div><div>${msg}</div></div>`;}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-function showError(tab, msg) {
-  document.getElementById(tab+'-content').innerHTML =
-    `<div class="empty-state"><div class="empty-icon">⚠️</div><div>${msg}</div></div>`;
+let _modalHomeTab='roster';
+function setModal(title,body,homeTab='roster'){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=body;
+  _modalHomeTab=homeTab;
+  document.getElementById('modal-home-btn').onclick=()=>{closeModal();showTab(homeTab);};
 }
+function openModal(){document.getElementById('modal-overlay').classList.add('open');}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay')) closeModal();}
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2500);
-}
-
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-function closeModalOutside(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
-
-// ══════════════════════════════════════════════
-// START
-// ══════════════════════════════════════════════
 init();
 </script>
 </body>
