@@ -530,6 +530,9 @@ async function init(){
     const storedSquad=localStorage.getItem('nafa_squad_id');
     if(storedSquad) S.selectedSquadId=storedSquad;
     updateSquadPill();renderLog();
+    // Retry any sessions queued from a previous offline period
+    updateQueueBanner();
+    if(getQueue().length) flushQueue();
   }catch(e){showError('log',e.message);}
 }
 
@@ -837,6 +840,72 @@ function initSigCanvas(){
 }
 function clearSig(){if(sigCtx) sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);S.sigData=null;}
 
+// ── OFFLINE QUEUE ──
+// Failed session saves are queued in localStorage and retried when connectivity returns.
+const QUEUE_KEY='nafa_pending_queue';
+
+function getQueue(){
+  try{return JSON.parse(localStorage.getItem(QUEUE_KEY))||[];}catch(e){return [];}
+}
+function setQueue(q){
+  try{localStorage.setItem(QUEUE_KEY,JSON.stringify(q));}
+  catch(e){
+    // localStorage full (likely signatures) — drop signatures from queued items to make room
+    q.forEach(item=>{delete item.payload.signature;});
+    try{localStorage.setItem(QUEUE_KEY,JSON.stringify(q));}catch(e2){}
+  }
+  updateQueueBanner();
+}
+
+function updateQueueBanner(){
+  const q=getQueue();
+  let banner=document.getElementById('sync-banner');
+  if(q.length===0){if(banner) banner.remove();return;}
+  if(!banner){
+    banner=document.createElement('div');
+    banner.id='sync-banner';
+    banner.style.cssText='position:fixed;top:calc(env(safe-area-inset-top) + 105px);left:50%;transform:translateX(-50%);'+
+      'background:#F57F17;color:#fff;padding:6px 16px;border-radius:16px;font-size:12px;font-weight:700;'+
+      'z-index:250;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;white-space:nowrap';
+    banner.onclick=()=>flushQueue(true);
+    document.body.appendChild(banner);
+  }
+  banner.textContent=`⏳ ${q.length} session${q.length>1?'s':''} pending sync — tap to retry`;
+}
+
+async function flushQueue(manual=false){
+  const q=getQueue();
+  if(!q.length) return;
+  if(manual) showToast('Retrying pending sessions…');
+  const remaining=[];
+  let synced=0;
+  for(const item of q){
+    try{
+      const r=await sb('attempts','POST',item.payload);
+      const a=Array.isArray(r)?r[0]:r;
+      if(a){
+        // Replace the local placeholder with the real record
+        S.attempts=S.attempts.filter(x=>x.id!==item.localId);
+        S.attempts.unshift(a);
+        synced++;
+      }
+    }catch(e){remaining.push(item);}
+  }
+  setQueue(remaining);
+  if(synced>0){
+    showToast(`✅ ${synced} pending session${synced>1?'s':''} synced`);
+    const el=document.getElementById('recent-log');
+    if(el) el.innerHTML=renderRecentHTML();
+  } else if(manual&&remaining.length>0){
+    showToast('⚠️ Still offline — will keep retrying');
+  }
+}
+
+// Retry triggers: connectivity returns, app becomes visible again, every 60s as backup
+window.addEventListener('online',()=>flushQueue());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden) flushQueue();});
+setInterval(()=>{if(getQueue().length) flushQueue();},60000);
+
 async function logSession(){
   if(!S.lockedSkill||!S.selectedCandidateIds.length){showToast('Select skill and candidates');return;}
   const instructor=document.getElementById('f-instructor')?.value.trim()||'';
@@ -844,30 +913,57 @@ async function logSession(){
   const sessionDate=document.getElementById('f-date')?.value||new Date().toISOString().split('T')[0];
   if(instructor) localStorage.setItem('nafa_instructor',instructor);
   S.sigData=sigCanvas?sigCanvas.toDataURL():null;
-  try{
-    const isGroup=S.logMode==='group';
-    const isJpr=S.lockedSkillType==='jpr';
-    const promises=S.selectedCandidateIds.map(cid=>{
-      const reps=isGroup?S.groupReps:S.individualReps[cid]?.reps||1;
-      const succ=isGroup?S.groupSuccReps:S.individualReps[cid]?.succ||0;
-      return sb('attempts','POST',{
-        candidate_id:cid,
-        jpr_code:isJpr?S.lockedSkill.code:null,
-        custom_skill_id:!isJpr?S.lockedSkill.id:null,
-        skill_type:S.lockedSkillType,
-        reps,successful_reps:succ,
-        instructor,notes,
-        session_date:sessionDate,
-        signature:S.sigData,
-        group_session:isGroup&&S.selectedCandidateIds.length>1,
+
+  const isGroup=S.logMode==='group';
+  const isJpr=S.lockedSkillType==='jpr';
+  const count=S.selectedCandidateIds.length;
+
+  // Build all payloads first
+  const entries=S.selectedCandidateIds.map(cid=>({
+    localId:'local_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),
+    payload:{
+      candidate_id:cid,
+      jpr_code:isJpr?S.lockedSkill.code:null,
+      custom_skill_id:!isJpr?S.lockedSkill.id:null,
+      skill_type:S.lockedSkillType,
+      reps:isGroup?S.groupReps:S.individualReps[cid]?.reps||1,
+      successful_reps:isGroup?S.groupSuccReps:S.individualReps[cid]?.succ||0,
+      instructor,notes,
+      session_date:sessionDate,
+      signature:S.sigData,
+      group_session:isGroup&&count>1,
+    }
+  }));
+
+  // Try each save individually so partial failures don't duplicate on retry
+  const failed=[];
+  for(const entry of entries){
+    try{
+      const r=await sb('attempts','POST',entry.payload);
+      const a=Array.isArray(r)?r[0]:r;
+      if(a) S.attempts.unshift(a);
+    }catch(e){
+      // Queue it and show a local placeholder so it appears in recent sessions
+      failed.push(entry);
+      S.attempts.unshift({
+        id:entry.localId,
+        attempted_at:new Date().toISOString(),
+        _pending:true,
+        ...entry.payload
       });
-    });
-    const results=await Promise.all(promises);
-    results.forEach(r=>{const a=Array.isArray(r)?r[0]:r;if(a) S.attempts.unshift(a);});
-    showToast(`✅ Logged for ${S.selectedCandidateIds.length} candidate${S.selectedCandidateIds.length>1?'s':''}`);
-    S.groupReps=1;S.groupSuccReps=0;S.individualReps={};S.selectedCandidateIds=[];S.sigData=null;
-    renderLog();
-  }catch(e){showToast('⚠️ Save failed: '+e.message);}
+    }
+  }
+
+  if(failed.length){
+    const q=getQueue();
+    setQueue([...q,...failed]);
+    showToast(`📡 ${failed.length} of ${count} saved offline — will sync when signal returns`);
+  } else {
+    showToast(`✅ Logged for ${count} candidate${count>1?'s':''}`);
+  }
+
+  S.groupReps=1;S.groupSuccReps=0;S.individualReps={};S.selectedCandidateIds=[];S.sigData=null;
+  renderLog();
 }
 
 function renderRecentHTML(){
@@ -883,11 +979,12 @@ function renderRecentHTML(){
     const dt=new Date(a.session_date||a.attempted_at);
     const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     const timeStr=new Date(a.attempted_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    const pendingBadge=a._pending?'<span class="chip" style="background:#FFF8E1;color:#F57F17;margin-left:4px">⏳ pending sync</span>':'';
     return `
     <div class="log-item" onclick="openSessionDetail('${a.id}')">
-      <div class="log-bar" style="background:${isCustom?'var(--custom)':col}"></div>
+      <div class="log-bar" style="background:${a._pending?'#F57F17':isCustom?'var(--custom)':col}"></div>
       <div class="log-text">
-        <strong>${cand?.name||'—'}</strong> · <span style="color:${isCustom?'var(--custom)':'var(--navy)'}">${skillCode}</span><br>
+        <strong>${cand?.name||'—'}</strong> · <span style="color:${isCustom?'var(--custom)':'var(--navy)'}">${skillCode}</span>${pendingBadge}<br>
         <span style="font-size:11px;color:var(--smoke)">${skillName} · ${a.successful_reps}/${a.reps} reps (${pct}%)</span>
         ${a.notes?`<br><span style="font-size:11px;color:var(--smoke);font-style:italic">${a.notes}</span>`:''}
       </div>
@@ -931,6 +1028,15 @@ function openSessionDetail(id){
 }
 
 async function deleteSession(id){
+  // Pending (unsynced) sessions just get removed from the local queue
+  if(String(id).startsWith('local_')){
+    setQueue(getQueue().filter(item=>item.localId!==id));
+    S.attempts=S.attempts.filter(a=>a.id!==id);
+    const el=document.getElementById('recent-log');
+    if(el) el.innerHTML=renderRecentHTML();
+    showToast('Pending session removed');
+    return;
+  }
   try{
     await sb(`attempts?id=eq.${id}`,'DELETE');
     S.attempts=S.attempts.filter(a=>a.id!==id);
