@@ -1076,6 +1076,15 @@ async function saveQuickCustomSkill(){
 }
 
 // ══ ROSTER ══
+function getMandatoryReadiness(cid){
+  const mandatoryJprs=getActiveJprs().filter(j=>j.mandatory);
+  if(!mandatoryJprs.length) return null;
+  const mine=S.attempts.filter(a=>a.candidate_id===cid&&a.skill_type==='jpr');
+  const withReps=new Set(mine.filter(a=>a.reps>0).map(a=>a.jpr_code));
+  const done=mandatoryJprs.filter(j=>withReps.has(j.code)).length;
+  return {done,total:mandatoryJprs.length};
+}
+
 function renderRoster(){
   const el=document.getElementById('roster-content');
   if(!S.activeClass){el.innerHTML=noClassHTML();return;}
@@ -1083,12 +1092,25 @@ function renderRoster(){
   const totalReps=S.attempts.reduce((s,a)=>s+a.reps,0);
   const totalSucc=S.attempts.reduce((s,a)=>s+a.successful_reps,0);
   const overallPct=totalReps>0?Math.round((totalSucc/totalReps)*100):0;
+  const readinessCounts=displayC.map(c=>getMandatoryReadiness(c.id)).filter(Boolean);
+  const fullyReady=readinessCounts.filter(r=>r.done===r.total).length;
   el.innerHTML=`
   <div class="stat-row">
     <div class="stat-card"><div class="stat-num">${displayC.length}</div><div class="stat-label">${S.selectedSquadId==='all'?'Total':'Squad'} Candidates</div></div>
     <div class="stat-card"><div class="stat-num">${totalReps}</div><div class="stat-label">Total Reps</div></div>
     <div class="stat-card"><div class="stat-num">${overallPct}%</div><div class="stat-label">Success Rate</div></div>
   </div>
+  ${readinessCounts.length>0?`
+  <div style="background:var(--white);border-radius:var(--radius);border:1px solid var(--border);
+    padding:0.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--smoke)">Certification Readiness</div>
+      <div style="font-size:12px;color:var(--smoke);margin-top:2px">Candidates with reps logged on every mandatory JPR</div>
+    </div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:${fullyReady===displayC.length?'var(--good)':'var(--navy)'};flex-shrink:0">
+      ${fullyReady}/${displayC.length}
+    </div>
+  </div>`:''}
   <div class="candidate-list">
     ${displayC.length===0?'<div class="empty-state"><div class="empty-icon">👤</div>No candidates in this squad.</div>':''}
     ${displayC.map(c=>{
@@ -1100,6 +1122,9 @@ function renderRoster(){
       const customHit=new Set(mine.filter(a=>a.skill_type==='custom').map(a=>a.custom_skill_id)).size;
       const squad=S.squads.find(sq=>sq.id===c.squad_id);
       const col=pct>=80?'var(--good)':pct>=50?'#F9A825':'var(--warn)';
+      const readiness=getMandatoryReadiness(c.id);
+      const readinessChip=readiness?`<span class="chip ${readiness.done===readiness.total?'chip-good':'chip-warn'}" style="margin-right:2px">
+        ★ ${readiness.done}/${readiness.total}</span>`:'';
       return `
       <div class="candidate-row" onclick="openCandidateModal('${c.id}')">
         <div style="flex:1;min-width:0">
@@ -1107,7 +1132,8 @@ function renderRoster(){
           <div class="candidate-meta">${squad?`<span class="squad-badge">${squad.name}</span> `:''} ${c.agency||''}</div>
           <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${col}"></div></div>
         </div>
-        <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+        <div style="display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;max-width:150px">
+          ${readinessChip}
           ${jprsHit>0?`<span class="chip chip-info">${jprsHit} JPRs</span>`:''}
           ${customHit>0?`<span class="chip chip-custom">${customHit} Skills</span>`:''}
           <span style="font-weight:700;font-size:13px;color:${col}">${pct}%</span>
@@ -1123,11 +1149,30 @@ function openCandidateModal(cid){
   const mine=S.attempts.filter(a=>a.candidate_id===cid);
   const activeJprs=getActiveJprs();
   const squad=S.squads.find(sq=>sq.id===c.squad_id);
+  const mandatoryJprs=activeJprs.filter(j=>j.mandatory);
+  const withReps=new Set(mine.filter(a=>a.skill_type==='jpr'&&a.reps>0).map(a=>a.jpr_code));
+  const missingMandatory=mandatoryJprs.filter(j=>!withReps.has(j.code));
+  const readinessReady=mandatoryJprs.length>0&&missingMandatory.length===0;
   setModal(c.name,`
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.8rem">
       ${squad?`<span class="squad-badge">${squad.name}</span>`:''}
       ${c.agency?`<span class="chip chip-mist">${c.agency}</span>`:''}
     </div>
+    ${mandatoryJprs.length>0?`
+    <div style="background:${readinessReady?'var(--good-pale)':'var(--warn-pale)'};border-radius:8px;padding:10px 12px;margin-bottom:1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div style="font-size:12px;font-weight:700;color:${readinessReady?'var(--good)':'var(--warn)'}">
+          ${readinessReady?'✅ Mandatory JPRs Ready':'★ Certification Readiness'}
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:${readinessReady?'var(--good)':'var(--warn)'}">
+          ${mandatoryJprs.length-missingMandatory.length}/${mandatoryJprs.length}
+        </div>
+      </div>
+      ${missingMandatory.length>0?`
+      <div style="font-size:11px;color:var(--smoke);margin-top:6px">Missing reps on:
+        ${missingMandatory.map(j=>`<span style="font-weight:700;color:var(--warn)">${j.code}</span>`).join(', ')}
+      </div>`:'<div style="font-size:11px;color:var(--smoke);margin-top:4px">Reps logged on every mandatory JPR.</div>'}
+    </div>`:''}
     <p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem">Tap any skill to see session history.</p>
     ${S.customSkills.length>0?`
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--custom);margin-bottom:0.4rem">Custom Skills</div>
@@ -1292,10 +1337,13 @@ function renderGrid(){
     return `<tr><td class="sticky-col">${c.name}${squad?`<div style="font-size:9px;color:var(--smoke)">${squad.name}</div>`:''}</td>${customCells}${jprCells}</tr>`;
   }).join('');
   el.innerHTML=`
-    <div style="display:flex;gap:8px;margin-bottom:1rem">
+    <div style="display:flex;gap:8px;margin-bottom:0.6rem">
       <button class="btn btn-good btn-sm" style="flex:1" onclick="exportGridPDF()">⬇️ PDF Report</button>
-      <button class="btn btn-navy btn-sm" style="flex:1" onclick="exportGridExcel()">⬇️ Excel/CSV</button>
+      <button class="btn btn-navy btn-sm" style="flex:1" onclick="exportGridExcel()">⬇️ Grid CSV</button>
     </div>
+    <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:1rem" onclick="exportRawSessionLog()">
+      📋 Export Raw Session Log (audit trail)
+    </button>
     ${S.customSkills.length>0?'<p style="font-size:11px;color:var(--smoke);margin-bottom:0.6rem"><span style="color:var(--custom)">■</span> Custom skills shown first</p>':''}
     <div class="grid-scroll"><table class="jpr-grid"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>
     <div style="font-size:11px;color:var(--smoke);display:flex;gap:12px;flex-wrap:wrap;margin-top:0.5rem">
@@ -1304,6 +1352,47 @@ function renderGrid(){
       <span style="color:var(--warn)">■</span> &lt;50% &nbsp;
       <span style="color:var(--mist)">—</span> No reps
     </div>`;
+}
+
+function exportRawSessionLog(){
+  const displayC=getSquadCandidates();
+  const displayIds=new Set(displayC.map(c=>c.id));
+  const rows=S.attempts
+    .filter(a=>displayIds.has(a.candidate_id))
+    .slice()
+    .sort((a,b)=>new Date(a.session_date||a.attempted_at)-new Date(b.session_date||b.attempted_at));
+  if(!rows.length){showToast('No sessions to export');return;}
+
+  const headers=['Date','Time Logged','Candidate','Squad','Skill Type','Skill Code','Skill Name',
+    'Reps Attempted','Reps Successful','Success Rate','Instructor','Group Session','Notes','Signed'];
+
+  const csvRows=rows.map(a=>{
+    const cand=S.candidates.find(c=>c.id===a.candidate_id);
+    const squad=S.squads.find(sq=>sq.id===cand?.squad_id);
+    const isCustom=a.skill_type==='custom';
+    const skillName=isCustom?(S.customSkills.find(s=>s.id===a.custom_skill_id)?.name||'Custom Skill'):(jprByCode(a.jpr_code)?.name||'');
+    const skillCode=isCustom?'Custom':(a.jpr_code||'');
+    const pct=a.reps>0?Math.round((a.successful_reps/a.reps)*100):0;
+    const dt=new Date(a.session_date||a.attempted_at);
+    const dateStr=dt.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+    const timeStr=new Date(a.attempted_at).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    return [
+      dateStr,timeStr,cand?.name||'—',squad?.name||'',
+      isCustom?'Custom Skill':'JPR',skillCode,skillName,
+      a.reps,a.successful_reps,pct+'%',
+      a.instructor||'',a.group_session?'Yes':'No',
+      a.notes||'',a.signature?'Yes':'No'
+    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
+  });
+
+  const csv=[headers.join(','),...csvRows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`NAFA_SessionLog_${(S.activeClass?.name||'Export').replace(/\s+/g,'_')}_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();URL.revokeObjectURL(url);
+  showToast(`✅ ${rows.length} sessions exported`);
 }
 
 function exportGridExcel(){
